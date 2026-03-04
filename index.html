@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🚛 Трекер техники - История</title>
+    <title>🚛 Трекер техники - PNOTRANSPORT</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { 
@@ -332,6 +332,8 @@
         .bg-tyagach { background: #9b59b6; }
         .bg-ppu { background: #f39c12; }
         .bg-ca320 { background: #1abc9c; }
+        .bg-akn { background: #e67e22; }
+        .bg-amkador { background: #16a085; }
         
         .base-badge {
             display: inline-block;
@@ -385,8 +387,8 @@
 </head>
 <body>
     <div class="header">
-        <h1>🏗️ Трекер техники v8.0</h1>
-        <p>Начальник смены | <span id="currentTime" class="current-time"></span></p>
+        <h1>🏗️ PNOTRANSPORT</h1>
+        <p>Трекер техники | <span id="currentTime" class="current-time"></span></p>
     </div>
     
     <div class="shift-info">
@@ -400,6 +402,22 @@
     <div id="section-quick" class="section active">
         <div class="quick-assign">
             <h3>⚡ Быстрое назначение</h3>
+            
+            <!-- НОВЫЙ ФИЛЬТР ПО ТИПУ ТЕХНИКИ -->
+            <div class="form-group">
+                <label style="color: rgba(255,255,255,0.9);">Тип техники</label>
+                <select id="quickType" onchange="filterQuickEquipment()" style="background: white; color: #2c3e50;">
+                    <option value="">Все типы</option>
+                    <option value="avtokran">🏗️ Автокран</option>
+                    <option value="polupricep">🚛 Полуприцеп</option>
+                    <option value="tyagach">🚚 Тягач</option>
+                    <option value="ppu">⚙️ ППУ</option>
+                    <option value="ca320">🔧 ЦА-320</option>
+                    <option value="akn">🚰 АКН</option>
+                    <option value="amkador">🚜 Амкодор</option>
+                </select>
+            </div>
+            
             <div class="form-group">
                 <label style="color: rgba(255,255,255,0.9);">База</label>
                 <select id="quickBase" onchange="filterQuickEquipment()" style="background: white; color: #2c3e50;">
@@ -441,6 +459,10 @@
                 <option value="avtokran">Автокран</option>
                 <option value="polupricep">Полуприцеп</option>
                 <option value="tyagach">Тягач</option>
+                <option value="ppu">ППУ</option>
+                <option value="ca320">ЦА-320</option>
+                <option value="akn">АКН</option>
+                <option value="amkador">Амкодор</option>
             </select>
             <select id="filterStatus" onchange="renderActiveCards()">
                 <option value="all">Все</option>
@@ -498,6 +520,10 @@
                 <option value="avtokran">Автокран</option>
                 <option value="polupricep">Полуприцеп</option>
                 <option value="tyagach">Тягач</option>
+                <option value="ppu">ППУ</option>
+                <option value="ca320">ЦА-320</option>
+                <option value="akn">АКН</option>
+                <option value="amkador">Амкодор</option>
             </select>
         </div>
         
@@ -527,6 +553,19 @@
         <button class="btn btn-primary" onclick="openAddDbModal()" style="width: 100%; margin-bottom: 15px;">➕ Добавить технику</button>
         
         <input type="text" class="search-box" id="searchDb" placeholder="🔍 Поиск..." oninput="renderDatabaseCards()">
+        
+        <div class="filter-row">
+            <select id="filterDbType" onchange="renderDatabaseCards()">
+                <option value="all">Все типы</option>
+                <option value="avtokran">Автокран</option>
+                <option value="polupricep">Полуприцеп</option>
+                <option value="tyagach">Тягач</option>
+                <option value="ppu">ППУ</option>
+                <option value="ca320">ЦА-320</option>
+                <option value="akn">АКН</option>
+                <option value="amkador">Амкодор</option>
+            </select>
+        </div>
         
         <div id="databaseCards"></div>
         <div id="dbEmpty" class="empty-state">
@@ -661,14 +700,17 @@
         
         const SHIFT_CHANGE_MORNING = { start: 7, end: 8 };
         const SHIFT_CHANGE_EVENING = { start: 19, end: 20 };
-        const HISTORY_RETENTION_DAYS = 90; // Хранить историю 90 дней
+        const HISTORY_RETENTION_DAYS = 90;
         
+        // ОБНОВЛЁННЫЕ ТИПЫ ТЕХНИКИ
         const typeNames = {
             'avtokran': 'Автокран',
             'polupricep': 'Полуприцеп',
             'tyagach': 'Тягач',
             'ppu': 'ППУ',
-            'ca320': 'ЦА-320'
+            'ca320': 'ЦА-320',
+            'akn': 'АКН',
+            'amkador': 'Амкодор'
         };
         
         const contractorNames = {
@@ -804,6 +846,8 @@
                         <option value="tyagach">🚚 Тягач</option>
                         <option value="ppu">⚙️ ППУ</option>
                         <option value="ca320">🔧 ЦА-320</option>
+                        <option value="akn">🚰 АКН</option>
+                        <option value="amkador">🚜 Амкодор</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -957,8 +1001,13 @@
             const container = document.getElementById('databaseCards');
             const empty = document.getElementById('dbEmpty');
             const search = document.getElementById('searchDb')?.value.toLowerCase() || '';
+            const filterType = document.getElementById('filterDbType')?.value || 'all';
             
-            let filtered = database.filter(d => d.num.toLowerCase().includes(search));
+            let filtered = database.filter(d => {
+                const typeMatch = filterType === 'all' || d.type === filterType;
+                const searchMatch = d.num.toLowerCase().includes(search);
+                return typeMatch && searchMatch;
+            });
             
             if (filtered.length === 0) { container.innerHTML = ''; empty.style.display = 'block'; return; }
             empty.style.display = 'none';
@@ -1003,6 +1052,7 @@
         
         // ==================== БЫСТРОЕ НАЗНАЧЕНИЕ ====================
         function updateQuickEquipment() {
+            const typeFilter = document.getElementById('quickType')?.value || '';
             const baseFilter = document.getElementById('quickBase')?.value || '';
             const select = document.getElementById('quickEquipment');
             const now = new Date();
@@ -1011,12 +1061,13 @@
             select.innerHTML = '<option value="">-- Выберите --</option>';
             
             let available = database.filter(d => {
+                const typeMatch = typeFilter === '' || d.type === typeFilter;
                 const baseMatch = baseFilter === '' || d.base === baseFilter;
                 const notInWork = !equipment.find(e => e.type === d.type && e.equipNum === d.num && now < e.endDt);
                 const notInRepair = !repairList.find(r => r.type === d.type && r.num === d.num);
                 const shiftType = d.shiftType || 'full';
                 const isAvailableByTime = isEquipmentAvailable(shiftType);
-                return baseMatch && notInWork && notInRepair && isAvailableByTime;
+                return typeMatch && baseMatch && notInWork && notInRepair && isAvailableByTime;
             });
             
             available.forEach(d => {
@@ -1164,7 +1215,6 @@
             
             if (!repairWhat) { showAlert('⚠️ Укажите что сломалось!', 'warning'); return; }
             
-            // Сохраняем в историю перед удалением
             const itemToArchive = equipment.find(e => e.type === repairId.type && e.equipNum === repairId.num);
             if (itemToArchive) {
                 archiveAssignment(itemToArchive, 'Ремонт');
@@ -1219,13 +1269,10 @@
                 completionReason: reason || 'Завершено'
             };
             
-            // Удаляем функции и объекты Date для сохранения
             archiveRecord.startDt = assignment.startDt.toISOString();
             archiveRecord.endDt = assignment.endDt.toISOString();
             
-            history.unshift(archiveRecord); // Добавляем в начало
-            
-            // Очищаем старую историю
+            history.unshift(archiveRecord);
             cleanOldHistory();
             saveData();
         }
@@ -1309,7 +1356,6 @@
             const filterType = document.getElementById('historyType')?.value || 'all';
             const search = document.getElementById('searchHistory')?.value.toLowerCase() || '';
             
-            // Фильтр по периоду
             let filtered = [...history];
             
             if (period !== 'all') {
@@ -1318,12 +1364,10 @@
                 filtered = filtered.filter(h => new Date(h.startDt) >= cutoffDate);
             }
             
-            // Фильтр по типу
             if (filterType !== 'all') {
                 filtered = filtered.filter(h => h.type === filterType);
             }
             
-            // Поиск
             if (search) {
                 filtered = filtered.filter(h => 
                     h.brigade.toLowerCase().includes(search) || 
@@ -1334,7 +1378,6 @@
             if (filtered.length === 0) { container.innerHTML = ''; empty.style.display = 'block'; return; }
             empty.style.display = 'none';
             
-            // Группировка по датам
             const grouped = {};
             filtered.forEach(h => {
                 const dateKey = new Date(h.startDt).toLocaleDateString('ru-RU');
@@ -1397,7 +1440,6 @@
                 return;
             }
             
-            // Формируем CSV
             let csv = 'Дата начала;Дата окончания;Техника;№;База;Бригада;Часов;Пересменка;Статус\n';
             filtered.forEach(h => {
                 const startDate = new Date(h.startDt);
@@ -1407,7 +1449,6 @@
                 csv += `${h.start};${h.end};${typeNames[h.type]};${h.equipNum};${h.base};${h.brigade};${duration}ч;${h.shiftText};${h.completionReason || 'Завершено'}\n`;
             });
             
-            // Скачивание файла
             const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
@@ -1697,6 +1738,7 @@
         function quickAssignFromFree(type, num, base, contractor, phoneDay) {
             refreshPaused = true;
             document.getElementById('quickBase').value = base;
+            document.getElementById('quickType').value = type;
             filterQuickEquipment();
             
             const select = document.getElementById('quickEquipment');
