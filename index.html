@@ -383,6 +383,28 @@
             text-align: center;
             font-weight: 600;
         }
+        
+        .repair-stats {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .repair-stats h3 { font-size: 16px; margin-bottom: 10px; }
+        .repair-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .repair-stat-item {
+            background: rgba(255,255,255,0.2);
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .repair-stat-item strong { display: block; font-size: 20px; }
+        .repair-stat-item span { font-size: 11px; opacity: 0.9; }
     </style>
 </head>
 <body>
@@ -403,7 +425,6 @@
         <div class="quick-assign">
             <h3>⚡ Быстрое назначение</h3>
             
-            <!-- НОВЫЙ ФИЛЬТР ПО ТИПУ ТЕХНИКИ -->
             <div class="form-group">
                 <label style="color: rgba(255,255,255,0.9);">Тип техники</label>
                 <select id="quickType" onchange="filterQuickEquipment()" style="background: white; color: #2c3e50;">
@@ -438,8 +459,12 @@
                 <input type="text" id="quickBrigade" placeholder="бр12" style="background: white; color: #2c3e50;">
             </div>
             <div class="form-group">
-                <label style="color: rgba(255,255,255,0.9);">Время (ч)</label>
+                <label style="color: rgba(255,255,255,0.9);">Время работы (ч)</label>
                 <input type="number" id="quickWorkHours" value="4" step="0.01" style="background: white; color: #2c3e50;">
+            </div>
+            <div class="form-group">
+                <label style="color: rgba(255,255,255,0.9);">Время пути (ч)</label>
+                <input type="number" id="quickTravelHours" value="0" step="0.01" style="background: white; color: #2c3e50;">
             </div>
             <button class="btn btn-success" onclick="quickAssign()" style="width: 100%;">📞 Назначить и звонить</button>
         </div>
@@ -499,6 +524,31 @@
         </div>
     </div>
     
+    <!-- Секция: Ремонт -->
+    <div id="section-repair" class="section">
+        <h2 style="font-size: 18px; margin-bottom: 15px; color: #2c3e50;">🔧 В ремонте</h2>
+        
+        <div class="repair-stats">
+            <h3>📊 Статистика ремонта</h3>
+            <div class="repair-stats-grid">
+                <div class="repair-stat-item">
+                    <strong id="totalRepair">0</strong>
+                    <span>В ремонте</span>
+                </div>
+                <div class="repair-stat-item">
+                    <strong id="todayRepair">0</strong>
+                    <span>Сегодня сломалось</span>
+                </div>
+            </div>
+        </div>
+        
+        <div id="repairCards"></div>
+        <div id="repairEmpty" class="empty-state">
+            <div class="icon">✅</div>
+            <p>Вся техника исправна</p>
+        </div>
+    </div>
+    
     <!-- Секция: История -->
     <div id="section-history" class="section">
         <h2 style="font-size: 18px; margin-bottom: 15px; color: #2c3e50;">📜 История движений</h2>
@@ -533,16 +583,6 @@
         <div id="historyEmpty" class="empty-state">
             <div class="icon">📜</div>
             <p>История пуста</p>
-        </div>
-    </div>
-    
-    <!-- Секция: Ремонт -->
-    <div id="section-repair" class="section">
-        <h2 style="font-size: 18px; margin-bottom: 15px; color: #2c3e50;">🔧 В ремонте</h2>
-        <div id="repairCards"></div>
-        <div id="repairEmpty" class="empty-state">
-            <div class="icon">✅</div>
-            <p>Вся техника исправна</p>
         </div>
     </div>
     
@@ -584,13 +624,13 @@
             <span class="icon">🔴</span>
             <span>В работе</span>
         </button>
+        <button class="nav-item" onclick="showSection('repair')">
+            <span class="icon">🔧</span>
+            <span>Ремонт</span>
+        </button>
         <button class="nav-item" onclick="showSection('history')">
             <span class="icon">📜</span>
             <span>История</span>
-        </button>
-        <button class="nav-item" onclick="showSection('free')">
-            <span class="icon">🟢</span>
-            <span>Свободна</span>
         </button>
         <button class="nav-item" onclick="showSection('database')">
             <span class="icon">📚</span>
@@ -702,7 +742,6 @@
         const SHIFT_CHANGE_EVENING = { start: 19, end: 20 };
         const HISTORY_RETENTION_DAYS = 90;
         
-        // ОБНОВЛЁННЫЕ ТИПЫ ТЕХНИКИ
         const typeNames = {
             'avtokran': 'Автокран',
             'polupricep': 'Полуприцеп',
@@ -774,6 +813,7 @@
             database.forEach(d => {
                 if (!d.shiftType) { d.shiftType = 'full'; saved = true; }
                 if (!d.comment) { d.comment = ''; saved = true; }
+                if (!d.travelHours) { d.travelHours = 0; saved = true; }
             });
             if (saved) saveData();
         }
@@ -1092,12 +1132,13 @@
             const select = document.getElementById('quickEquipment');
             const brigade = document.getElementById('quickBrigade')?.value.trim();
             const workHours = parseFloat(document.getElementById('quickWorkHours')?.value) || 4;
+            const travelHours = parseFloat(document.getElementById('quickTravelHours')?.value) || 0;
             
             if (!select.value) { showAlert('⚠️ Выберите технику!', 'warning'); return; }
             if (!brigade) { showAlert('⚠️ Введите бригаду!', 'warning'); return; }
             
             const data = JSON.parse(select.value);
-            callData = { ...data, brigade, workHours, travelHours: 0 };
+            callData = { ...data, brigade, workHours, travelHours };
             
             const modalBody = document.getElementById('callModalBody');
             modalBody.innerHTML = `
@@ -1115,8 +1156,16 @@
                         <span class="card-value">${brigade}</span>
                     </div>
                     <div class="card-row">
-                        <span class="card-label">Время</span>
+                        <span class="card-label">Время работы</span>
                         <span class="card-value">${workHours}ч</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Время пути</span>
+                        <span class="card-value">${travelHours}ч</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">ВСЕГО</span>
+                        <span class="card-value"><strong>${(workHours + travelHours).toFixed(2)}ч</strong></span>
                     </div>
                 </div>
                 <div class="card repair">
@@ -1177,6 +1226,7 @@
             
             document.getElementById('quickBrigade').value = '';
             document.getElementById('quickEquipment').value = '';
+            document.getElementById('quickTravelHours').value = '0';
             
             showAlert(`✅ Назначен в ${callData.brigade}`, 'success');
         }
@@ -1248,7 +1298,7 @@
         }
         
         function restoreFromRepair(id) {
-            if (!confirm('❗ Восстановить?')) return;
+            if (!confirm('❗ Восстановить технику из ремонта?')) return;
             const item = repairList.find(r => r.id === id);
             if (item) {
                 const dbItem = database.find(d => d.type === item.type && d.num === item.num);
@@ -1322,6 +1372,14 @@
                     <div class="card-row">
                         <span class="card-label">Окончание</span>
                         <span class="card-value">${record.end}</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Работа</span>
+                        <span class="card-value">${record.workHours}ч</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Путь</span>
+                        <span class="card-value">${record.travelHours || 0}ч</span>
                     </div>
                     <div class="card-row">
                         <span class="card-label">Длительность</span>
@@ -1412,7 +1470,7 @@
                         </div>
                         <div class="card-row">
                             <span class="card-label">Время</span>
-                            <span class="card-value">${duration}ч (${h.start.split(' ')[1]} - ${h.end.split(' ')[1]})</span>
+                            <span class="card-value">${duration}ч (${h.workHours}ч + ${h.travelHours || 0}ч путь)</span>
                         </div>
                         <div class="card-row">
                             <span class="card-label">Пересменка</span>
@@ -1440,13 +1498,13 @@
                 return;
             }
             
-            let csv = 'Дата начала;Дата окончания;Техника;№;База;Бригада;Часов;Пересменка;Статус\n';
+            let csv = 'Дата начала;Дата окончания;Техника;№;База;Бригада;Работа;Путь;Всего;Пересменка;Статус\n';
             filtered.forEach(h => {
                 const startDate = new Date(h.startDt);
                 const endDate = new Date(h.endDt);
                 const duration = ((endDate - startDate) / 1000 / 60 / 60).toFixed(1);
                 
-                csv += `${h.start};${h.end};${typeNames[h.type]};${h.equipNum};${h.base};${h.brigade};${duration}ч;${h.shiftText};${h.completionReason || 'Завершено'}\n`;
+                csv += `${h.start};${h.end};${typeNames[h.type]};${h.equipNum};${h.base};${h.brigade};${h.workHours}ч;${h.travelHours || 0}ч;${duration}ч;${h.shiftText};${h.completionReason || 'Завершено'}\n`;
             });
             
             const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
@@ -1476,6 +1534,10 @@
                     <input type="number" id="editWorkHours" value="${item.workHours}" step="0.01">
                 </div>
                 <div class="form-group">
+                    <label>Время пути (ч)</label>
+                    <input type="number" id="editTravelHours" value="${item.travelHours || 0}" step="0.01">
+                </div>
+                <div class="form-group">
                     <label>Пересменка</label>
                     <select id="editShiftLocation">
                         <option value="base" ${item.shiftLocation === 'base' ? 'selected' : ''}>🏠 На базе</option>
@@ -1498,13 +1560,15 @@
             
             const newBrigade = document.getElementById('editBrigade')?.value.trim();
             const newWorkHours = parseFloat(document.getElementById('editWorkHours')?.value) || 4;
+            const newTravelHours = parseFloat(document.getElementById('editTravelHours')?.value) || 0;
             const shiftLocation = document.getElementById('editShiftLocation')?.value || 'base';
             
             if (!newBrigade) { showAlert('⚠️ Введите бригаду!', 'warning'); return; }
             
             item.brigade = newBrigade;
             item.workHours = newWorkHours;
-            item.totalHours = newWorkHours + item.travelHours;
+            item.travelHours = newTravelHours;
+            item.totalHours = newWorkHours + newTravelHours;
             item.endDt = new Date(item.startDt.getTime() + item.totalHours * 60 * 60 * 1000);
             item.end = item.endDt.toLocaleString('ru-RU');
             item.shiftLocation = shiftLocation;
@@ -1633,7 +1697,7 @@
                     </div>
                     <div class="card-row">
                         <span class="card-label">Время</span>
-                        <span class="card-value">${e.totalHours.toFixed(1)}ч</span>
+                        <span class="card-value">${e.totalHours.toFixed(1)}ч (работа: ${e.workHours}ч + путь: ${e.travelHours || 0}ч)</span>
                     </div>
                     <div class="card-row">
                         <span class="card-label">Окончание</span>
@@ -1758,6 +1822,12 @@
             const container = document.getElementById('repairCards');
             const empty = document.getElementById('repairEmpty');
             
+            // Обновляем статистику
+            const today = new Date().toLocaleDateString('ru-RU');
+            const todayCount = repairList.filter(r => new Date(r.when).toLocaleDateString('ru-RU') === today).length;
+            document.getElementById('totalRepair').textContent = repairList.length;
+            document.getElementById('todayRepair').textContent = todayCount;
+            
             if (repairList.length === 0) { container.innerHTML = ''; empty.style.display = 'block'; return; }
             empty.style.display = 'none';
             
@@ -1783,9 +1853,13 @@
                         <span class="card-value">${r.what}</span>
                     </div>
                     ${r.comment ? `<div class="card-row"><span class="card-label">Комментарий</span><span class="card-value">${r.comment}</span></div>` : ''}
+                    <div class="card-row">
+                        <span class="card-label">Телефон</span>
+                        <span class="card-value"><a href="tel:${r.phoneDay}" class="phone-link">${r.phoneDay}</a></span>
+                    </div>
                     <div class="card-actions">
                         <button class="btn btn-success" onclick="restoreFromRepair(${r.id})">✅ Восстановить</button>
-                        <button class="btn btn-danger" onclick="if(confirm('Удалить?')){repairList=repairList.filter(x=>x.id!==${r.id});saveData();renderAll();}">❌ Удалить</button>
+                        <button class="btn btn-danger" onclick="if(confirm('Удалить запись?')){repairList=repairList.filter(x=>x.id!==${r.id});saveData();renderAll();}">❌ Удалить</button>
                     </div>
                 </div>
             `).join('');
