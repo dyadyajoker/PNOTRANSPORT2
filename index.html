@@ -2,8 +2,8 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🚛 Трекер техники - PNOTRANSPORT | Южно-Приобское</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚛 Трекер техники - PNOTRANSPORT</title>
     <style>
         :root {
             --bg-primary: #f5f6fa;
@@ -15,11 +15,8 @@
             --gradient-header: linear-gradient(135deg, #2c3e50, #3498db);
             --gradient-shift: linear-gradient(135deg, #f39c12, #e67e22);
             --gradient-quick: linear-gradient(135deg, #27ae60, #2ecc71);
-            --gradient-repair: linear-gradient(135deg, #e67e22, #d35400);
-            --gradient-history: linear-gradient(135deg, #17a2b8, #138496);
-            --gradient-dashboard: linear-gradient(135deg, #8e44ad, #9b59b6);
             --gradient-location: linear-gradient(135deg, #16a085, #1abc9c);
-            --gradient-status: #2c3e50;
+            --gradient-dashboard: linear-gradient(135deg, #8e44ad, #9b59b6);
         }
 
         [data-theme="dark"] {
@@ -29,29 +26,15 @@
             --text-secondary: #a0a0a0;
             --border-color: #333;
             --shadow: rgba(0,0,0,0.3);
-            --gradient-header: linear-gradient(135deg, #1a1a2e, #16213e);
-            --gradient-shift: linear-gradient(135deg, #c0392b, #e67e22);
-            --gradient-quick: linear-gradient(135deg, #1e8449, #27ae60);
-            --gradient-repair: linear-gradient(135deg, #d35400, #a04000);
-            --gradient-history: linear-gradient(135deg, #148f77, #1e8449);
-            --gradient-dashboard: linear-gradient(135deg, #6c3483, #8e44ad);
-            --gradient-location: linear-gradient(135deg, #145a32, #16a085);
-            --gradient-status: #16213e;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             padding-bottom: 140px;
-            transition: all 0.3s ease;
         }
 
         .header {
@@ -71,20 +54,10 @@
             margin-bottom: 10px;
         }
 
-        .header h1 {
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
+        .header h1 { font-size: 16px; margin-bottom: 5px; }
+        .header p { opacity: 0.8; font-size: 11px; }
 
-        .header p {
-            opacity: 0.8;
-            font-size: 11px;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 8px;
-        }
+        .header-actions { display: flex; gap: 8px; }
 
         .header-btn {
             background: rgba(255,255,255,0.2);
@@ -106,30 +79,12 @@
             cursor: pointer;
         }
 
-        .location-bar {
-            background: var(--gradient-location);
-            color: white;
-            padding: 10px 15px;
-            text-align: center;
-            font-size: 12px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
         .shift-info {
             background: var(--gradient-shift);
             color: white;
             padding: 10px 15px;
             text-align: center;
             font-size: 12px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
         }
 
         .bottom-nav {
@@ -158,7 +113,6 @@
             border: none;
             cursor: pointer;
             min-width: 55px;
-            transition: all 0.2s ease;
         }
 
         .nav-item.active {
@@ -166,14 +120,9 @@
             background: rgba(52, 152, 219, 0.1);
         }
 
-        .nav-item .icon {
-            font-size: 18px;
-            margin-bottom: 2px;
-        }
+        .nav-item .icon { font-size: 18px; margin-bottom: 2px; }
 
-        .nav-dropdown {
-            position: relative;
-        }
+        .nav-dropdown { position: relative; }
 
         .nav-dropdown-menu {
             display: none;
@@ -190,10 +139,7 @@
             border: 1px solid var(--border-color);
         }
 
-        .nav-dropdown-menu.show {
-            display: block;
-            animation: fadeIn 0.2s ease;
-        }
+        .nav-dropdown-menu.show { display: block; }
 
         .nav-dropdown-item {
             display: flex;
@@ -203,34 +149,13 @@
             border-radius: 8px;
             color: var(--text-primary);
             cursor: pointer;
-            transition: background 0.2s ease;
         }
 
-        .nav-dropdown-item:hover {
-            background: rgba(52, 152, 219, 0.1);
-        }
+        .nav-dropdown-item:hover { background: rgba(52, 152, 219, 0.1); }
 
-        .section {
-            display: none;
-            padding: 15px;
-            max-width: 100%;
-        }
-
-        .section.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .section h2 {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: var(--text-primary);
-        }
+        .section { display: none; padding: 15px; }
+        .section.active { display: block; }
+        .section h2 { font-size: 18px; margin-bottom: 15px; }
 
         .card {
             background: var(--bg-secondary);
@@ -239,18 +164,15 @@
             margin-bottom: 12px;
             box-shadow: 0 2px 8px var(--shadow);
             border-left: 4px solid #3498db;
-            transition: all 0.2s ease;
         }
 
         .card.working { border-left-color: #e74c3c; }
         .card.ready { border-left-color: #27ae60; }
         .card.soon { border-left-color: #f39c12; }
-        .card.repair { border-left-color: #e67e22; }
         .card.free { border-left-color: #1abc9c; }
         .card.history { border-left-color: #9b59b6; }
         .card.dashboard { border-left-color: #8e44ad; }
         .card.location { border-left-color: #16a085; }
-        .card.bundle { border-left-color: #9b59b6; }
 
         .card-header {
             display: flex;
@@ -259,12 +181,7 @@
             margin-bottom: 10px;
         }
 
-        .card-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
+        .card-title { font-size: 16px; font-weight: 600; }
         .card-badge {
             padding: 4px 10px;
             border-radius: 12px;
@@ -276,11 +193,10 @@
         .badge-working { background: #e74c3c; }
         .badge-ready { background: #27ae60; }
         .badge-soon { background: #f39c12; }
-        .badge-repair { background: #e67e22; }
         .badge-free { background: #1abc9c; }
         .badge-history { background: #9b59b6; }
         .badge-dashboard { background: #8e44ad; }
-        .badge-bundle { background: #9b59b6; }
+        .badge-location { background: #16a085; }
 
         .card-row {
             display: flex;
@@ -290,20 +206,9 @@
             font-size: 13px;
         }
 
-        .card-row:last-child {
-            border-bottom: none;
-        }
-
-        .card-label {
-            color: var(--text-secondary);
-        }
-
-        .card-value {
-            color: var(--text-primary);
-            font-weight: 500;
-            text-align: right;
-            word-break: break-word;
-        }
+        .card-row:last-child { border-bottom: none; }
+        .card-label { color: var(--text-secondary); }
+        .card-value { color: var(--text-primary); font-weight: 500; text-align: right; }
 
         .card-actions {
             display: flex;
@@ -321,24 +226,17 @@
             cursor: pointer;
             flex: 1;
             min-width: 80px;
-            transition: opacity 0.2s ease;
         }
 
-        .btn:hover { opacity: 0.9; }
         .btn-primary { background: #3498db; color: white; }
         .btn-success { background: #27ae60; color: white; }
         .btn-warning { background: #f39c12; color: white; }
         .btn-danger { background: #e74c3c; color: white; }
         .btn-secondary { background: #95a5a6; color: white; }
-        .btn-info { background: #17a2b8; color: white; }
         .btn-location { background: #16a085; color: white; }
-        .btn-bundle { background: #9b59b6; color: white; }
         .btn-sms { background: #8e44ad; color: white; }
 
-        .form-group {
-            margin-bottom: 15px;
-        }
-
+        .form-group { margin-bottom: 15px; }
         .form-group label {
             display: block;
             font-size: 13px;
@@ -374,23 +272,13 @@
             margin-bottom: 15px;
         }
 
-        .quick-assign h3 {
-            font-size: 16px;
-            margin-bottom: 12px;
-        }
-
-        .quick-assign label {
-            color: rgba(255,255,255,0.9);
-        }
-
+        .quick-assign h3 { font-size: 16px; margin-bottom: 12px; }
+        .quick-assign label { color: rgba(255,255,255,0.9); }
         .quick-assign input,
-        .quick-assign select {
-            background: white;
-            color: #2c3e50;
-        }
+        .quick-assign select { background: white; color: #2c3e50; }
 
         .status-bar {
-            background: var(--gradient-status);
+            background: #2c3e50;
             color: white;
             padding: 12px 15px;
             display: flex;
@@ -405,14 +293,8 @@
             z-index: 999;
         }
 
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-item strong {
-            display: block;
-            font-size: 16px;
-        }
+        .stat-item { text-align: center; }
+        .stat-item strong { display: block; font-size: 16px; }
 
         .modal {
             display: none;
@@ -427,9 +309,7 @@
             align-items: flex-end;
         }
 
-        .modal.show {
-            display: flex;
-        }
+        .modal.show { display: flex; }
 
         .modal-content {
             background: var(--bg-secondary);
@@ -438,19 +318,12 @@
             width: 100%;
             max-height: 85vh;
             overflow-y: auto;
-            animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
         }
 
         .modal-header {
             font-size: 18px;
             font-weight: 600;
             margin-bottom: 20px;
-            color: var(--text-primary);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -477,7 +350,6 @@
             margin: 15px;
             font-size: 13px;
             font-weight: 600;
-            animation: fadeIn 0.3s ease;
             position: fixed;
             top: 100px;
             left: 50%;
@@ -489,16 +361,8 @@
         .alert-warning { background: #fff3cd; color: #856404; }
         .alert-info { background: #d1ecf1; color: #0c5460; }
 
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--text-secondary);
-        }
-
-        .empty-state .icon {
-            font-size: 48px;
-            margin-bottom: 15px;
-        }
+        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-secondary); }
+        .empty-state .icon { font-size: 48px; margin-bottom: 15px; }
 
         .search-box {
             width: 100%;
@@ -516,7 +380,6 @@
             gap: 10px;
             margin-bottom: 15px;
             overflow-x: auto;
-            padding-bottom: 5px;
         }
 
         .filter-row select {
@@ -525,7 +388,6 @@
             border-radius: 8px;
             font-size: 13px;
             white-space: nowrap;
-            flex-shrink: 0;
             background: var(--bg-secondary);
             color: var(--text-primary);
         }
@@ -578,19 +440,11 @@
             margin: 10px 0;
         }
 
-        .checkbox-group input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-        }
-
-        .checkbox-group label {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
+        .checkbox-group input[type="checkbox"] { width: 20px; height: 20px; }
+        .checkbox-group label { font-size: 14px; font-weight: 500; }
 
         .history-date {
-            background: var(--gradient-status);
+            background: #2c3e50;
             color: white;
             padding: 10px 15px;
             border-radius: 8px;
@@ -600,7 +454,7 @@
         }
 
         .export-btn {
-            background: var(--gradient-history);
+            background: #17a2b8;
             color: white;
             padding: 15px;
             border-radius: 12px;
@@ -608,53 +462,6 @@
             text-align: center;
             font-weight: 600;
             cursor: pointer;
-        }
-
-        .backup-btn {
-            background: linear-gradient(135deg, #8e44ad, #9b59b6);
-            color: white;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            text-align: center;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .repair-stats {
-            background: var(--gradient-repair);
-            color: white;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .repair-stats h3 {
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
-
-        .repair-stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
-
-        .repair-stat-item {
-            background: rgba(255,255,255,0.2);
-            padding: 10px;
-            border-radius: 8px;
-        }
-
-        .repair-stat-item strong {
-            display: block;
-            font-size: 20px;
-        }
-
-        .repair-stat-item span {
-            font-size: 11px;
-            opacity: 0.9;
         }
 
         .dashboard-grid {
@@ -672,89 +479,9 @@
             box-shadow: 0 2px 8px var(--shadow);
         }
 
-        .dashboard-card .icon {
-            font-size: 32px;
-            margin-bottom: 8px;
-        }
-
-        .dashboard-card .value {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .dashboard-card .label {
-            font-size: 11px;
-            color: var(--text-secondary);
-            margin-top: 4px;
-        }
-
-        .dashboard-chart {
-            background: var(--bg-secondary);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 8px var(--shadow);
-        }
-
-        .dashboard-chart h3 {
-            font-size: 14px;
-            margin-bottom: 12px;
-            color: var(--text-primary);
-        }
-
-        .chart-bar {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .chart-bar .label {
-            width: 80px;
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
-        .chart-bar .bar {
-            flex: 1;
-            height: 20px;
-            background: #ecf0f1;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .chart-bar .fill {
-            height: 100%;
-            border-radius: 4px;
-            transition: width 0.5s ease;
-        }
-
-        .chart-bar .value {
-            width: 40px;
-            text-align: right;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .shift-driver-badge {
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-            display: inline-block;
-            margin-left: 5px;
-        }
-
-        .shift-day { background: #f39c12; color: white; }
-        .shift-night { background: #2c3e50; color: white; }
-
-        .phone-link {
-            color: #27ae60;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 16px;
-        }
+        .dashboard-card .icon { font-size: 32px; margin-bottom: 8px; }
+        .dashboard-card .value { font-size: 24px; font-weight: 700; }
+        .dashboard-card .label { font-size: 11px; color: var(--text-secondary); margin-top: 4px; }
 
         .current-time {
             background: rgba(255,255,255,0.2);
@@ -762,61 +489,6 @@
             border-radius: 5px;
             font-family: monospace;
             font-size: 13px;
-        }
-
-        .location-info {
-            background: var(--bg-primary);
-            border-radius: 8px;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid var(--border-color);
-        }
-
-        .location-info .distance {
-            font-size: 18px;
-            font-weight: 700;
-            color: #16a085;
-        }
-
-        .location-info .time {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .wellpad-select {
-            background: linear-gradient(135deg, #16a085, #1abc9c);
-            color: white;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-        }
-
-        .wellpad-select label {
-            color: rgba(255,255,255,0.9);
-        }
-
-        .wellpad-select select,
-        .wellpad-select input {
-            background: white;
-            color: #2c3e50;
-        }
-
-        .bundle-selector {
-            background: linear-gradient(135deg, #8e44ad, #9b59b6);
-            color: white;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-        }
-
-        .bundle-selector label {
-            color: rgba(255,255,255,0.9);
-        }
-
-        .bundle-selector select,
-        .bundle-selector input {
-            background: white;
-            color: #2c3e50;
         }
 
         .wait-time-badge {
@@ -831,28 +503,41 @@
         .wait-yellow { background: #f39c12; color: white; }
         .wait-red { background: #e74c3c; color: white; }
 
-        .map-preview {
-            background: #ecf0f1;
-            border-radius: 8px;
+        .bundle-selector {
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
+            color: white;
             padding: 15px;
-            text-align: center;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .bundle-selector label { color: rgba(255,255,255,0.9); }
+        .bundle-selector select { background: white; color: #2c3e50; }
+
+        .wellpad-select {
+            background: linear-gradient(135deg, #16a085, #1abc9c);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .wellpad-select label { color: rgba(255,255,255,0.9); }
+        .wellpad-select select { background: white; color: #2c3e50; }
+
+        .location-info {
+            background: var(--bg-primary);
+            border-radius: 8px;
+            padding: 12px;
             margin: 10px 0;
-            font-size: 12px;
-            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
         }
 
-        #alertsContainer {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 3000;
-            pointer-events: none;
-        }
+        .location-info .distance { font-size: 18px; font-weight: 700; color: #16a085; }
+        .location-info .time { font-size: 14px; color: var(--text-secondary); }
 
-        #backupInput {
-            display: none;
-        }
+        #alertsContainer { position: fixed; top: 0; left: 0; right: 0; z-index: 3000; pointer-events: none; }
+        #backupInput { display: none; }
 
         @media (max-width: 480px) {
             .header h1 { font-size: 14px; }
@@ -867,36 +552,27 @@
     </style>
 </head>
 <body>
-    <!-- Шапка -->
     <header class="header">
         <div class="header-top">
             <h1>🏗️ PNOTRANSPORT | Южно-Приобское</h1>
             <div class="header-actions">
-                <button class="header-btn" onclick="openBackupModal()" title="Резервное копирование">💾</button>
-                <button class="header-btn" onclick="openWellpadModal()" title="Кусты">📍</button>
+                <button class="header-btn" onclick="openBackupModal()">💾</button>
+                <button class="header-btn" onclick="openWellpadModal()">📍</button>
                 <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">🌙</button>
             </div>
         </div>
         <p>Трекер техники | <span id="currentTime" class="current-time"></span></p>
     </header>
 
-    <!-- Информация о локации -->
-    <div class="location-bar">
-        <span>📍 Южно-Приобское месторождение</span>
-        <span id="locationStatus">🌐 GPS готов</span>
-    </div>
-
-    <!-- Информация о смене -->
     <div class="shift-info">
         <span>🕐 Пересменка: 07-08 | 19-20</span>
         <span id="currentShift"></span>
         <span id="currentShiftBadge"></span>
     </div>
 
-    <!-- Контейнер уведомлений -->
     <div id="alertsContainer"></div>
 
-    <!-- Секция: Дашборд -->
+    <!-- ДАШБОРД -->
     <section id="section-dashboard" class="section">
         <h2>📊 Дашборд начальника смены</h2>
         <div class="dashboard-grid">
@@ -933,18 +609,10 @@
                 <div class="label">Выполнено за смену</div>
             </div>
         </div>
-        <div class="dashboard-chart">
-            <h3>📈 Загрузка по типам техники</h3>
-            <div id="typeChart"></div>
-        </div>
-        <div class="dashboard-chart">
-            <h3>🏢 Загрузка по базам</h3>
-            <div id="baseChart"></div>
-        </div>
     </section>
 
-    <!-- Секция: Быстрый разгон -->
-    <section id="section-quick" class="section">
+    <!-- БЫСТРЫЙ РАЗГОН -->
+    <section id="section-quick" class="section active">
         <div class="quick-assign">
             <h3>⚡ БЫСТРЫЙ РАЗГОН (07:30-09:00)</h3>
             <p style="opacity: 0.9; font-size: 12px; margin-bottom: 12px;">📋 Выберите технику → Укажите базу → Введите бригаду и время</p>
@@ -994,7 +662,7 @@
                         <option value="">-- Не указано --</option>
                     </select>
                 </div>
-                <div id="travelInfo" class="location-info" style="display: none; background: rgba(255,255,255,0.2);">
+                <div id="travelInfo" class="location-info" style="display: none;">
                     <div class="distance" id="travelDistance">0 км</div>
                     <div class="time" id="travelTime">~0 мин</div>
                 </div>
@@ -1023,8 +691,8 @@
             </div>
         </div>
 
-        <div class="dashboard-chart">
-            <h3>⏱️ Освободятся до...</h3>
+        <div class="card dashboard">
+            <h3 style="margin-bottom: 12px;">⏱️ Освободятся до...</h3>
             <div class="filter-row">
                 <select id="freeByTime" onchange="renderFreeByTime()">
                     <option value="1">До 1 часа</option>
@@ -1037,7 +705,7 @@
         </div>
     </section>
 
-    <!-- Секция: В работе -->
+    <!-- В РАБОТЕ -->
     <section id="section-active" class="section">
         <h2>🔴 В работе</h2>
         <input type="text" class="search-box" id="searchActive" placeholder="🔍 Поиск по бригаде..." oninput="renderActiveCards()">
@@ -1066,7 +734,7 @@
         </div>
     </section>
 
-    <!-- Секция: Свободная -->
+    <!-- СВОБОДНАЯ -->
     <section id="section-free" class="section">
         <h2>🟢 Свободная техника</h2>
         <input type="text" class="search-box" id="searchFree" placeholder="🔍 Поиск..." oninput="renderFreeCards()">
@@ -1089,22 +757,9 @@
         </div>
     </section>
 
-    <!-- Секция: Ремонт -->
+    <!-- РЕМОНТ -->
     <section id="section-repair" class="section">
         <h2>🔧 В ремонте</h2>
-        <div class="repair-stats">
-            <h3>📊 Статистика ремонта</h3>
-            <div class="repair-stats-grid">
-                <div class="repair-stat-item">
-                    <strong id="totalRepair">0</strong>
-                    <span>В ремонте</span>
-                </div>
-                <div class="repair-stat-item">
-                    <strong id="todayRepair">0</strong>
-                    <span>Сегодня сломалось</span>
-                </div>
-            </div>
-        </div>
         <div id="repairCards"></div>
         <div id="repairEmpty" class="empty-state">
             <div class="icon">✅</div>
@@ -1112,32 +767,19 @@
         </div>
     </section>
 
-    <!-- Секция: История -->
+    <!-- ИСТОРИЯ -->
     <section id="section-history" class="section">
         <h2>📜 История движений</h2>
-        <div class="export-btn" onclick="exportHistory()">
-            📤 Экспорт истории за 30 дней
-        </div>
+        <div class="export-btn" onclick="exportHistory()">📤 Экспорт истории за 30 дней</div>
         <div class="filter-row">
             <select id="historyPeriod" onchange="renderHistoryCards()">
                 <option value="7">За 7 дней</option>
                 <option value="14">За 14 дней</option>
                 <option value="30" selected>За 30 дней</option>
-                <option value="90">За 90 дней</option>
                 <option value="all">Вся история</option>
             </select>
-            <select id="historyType" onchange="renderHistoryCards()">
-                <option value="all">Все типы</option>
-                <option value="avtokran">Автокран</option>
-                <option value="polupricep">Полуприцеп</option>
-                <option value="tyagach">Тягач</option>
-                <option value="ppu">ППУ</option>
-                <option value="ca320">ЦА-320</option>
-                <option value="akn">АКН</option>
-                <option value="amkador">Амкодор</option>
-            </select>
         </div>
-        <input type="text" class="search-box" id="searchHistory" placeholder="🔍 Поиск по бригаде или № техники..." oninput="renderHistoryCards()">
+        <input type="text" class="search-box" id="searchHistory" placeholder="🔍 Поиск..." oninput="renderHistoryCards()">
         <div id="historyCards"></div>
         <div id="historyEmpty" class="empty-state">
             <div class="icon">📜</div>
@@ -1145,25 +787,11 @@
         </div>
     </section>
 
-    <!-- Секция: База -->
+    <!-- БАЗА -->
     <section id="section-database" class="section">
         <h2>📚 База техники</h2>
-        <button class="btn btn-primary" onclick="openAddDbModal()" style="width: 100%; margin-bottom: 15px;">
-            ➕ Добавить технику
-        </button>
+        <button class="btn btn-primary" onclick="openAddDbModal()" style="width: 100%; margin-bottom: 15px;">➕ Добавить технику</button>
         <input type="text" class="search-box" id="searchDb" placeholder="🔍 Поиск..." oninput="renderDatabaseCards()">
-        <div class="filter-row">
-            <select id="filterDbType" onchange="renderDatabaseCards()">
-                <option value="all">Все типы</option>
-                <option value="avtokran">Автокран</option>
-                <option value="polupricep">Полуприцеп</option>
-                <option value="tyagach">Тягач</option>
-                <option value="ppu">ППУ</option>
-                <option value="ca320">ЦА-320</option>
-                <option value="akn">АКН</option>
-                <option value="amkador">Амкодор</option>
-            </select>
-        </div>
         <div id="databaseCards"></div>
         <div id="dbEmpty" class="empty-state">
             <div class="icon">📚</div>
@@ -1171,12 +799,10 @@
         </div>
     </section>
 
-    <!-- Секция: Кусты -->
+    <!-- КУСТЫ -->
     <section id="section-wellpads" class="section">
         <h2>📍 Кустовые площадки</h2>
-        <button class="btn btn-location" onclick="openAddWellpadModal()" style="width: 100%; margin-bottom: 15px;">
-            ➕ Добавить куст
-        </button>
+        <button class="btn btn-location" onclick="openAddWellpadModal()" style="width: 100%; margin-bottom: 15px;">➕ Добавить куст</button>
         <input type="text" class="search-box" id="searchWellpad" placeholder="🔍 Поиск куста..." oninput="renderWellpadCards()">
         <div id="wellpadCards"></div>
         <div id="wellpadEmpty" class="empty-state">
@@ -1185,7 +811,7 @@
         </div>
     </section>
 
-    <!-- Нижняя навигация -->
+    <!-- НАВИГАЦИЯ -->
     <nav class="bottom-nav">
         <button class="nav-item" onclick="showSection('dashboard', event)">
             <span class="icon">📊</span>
@@ -1208,32 +834,25 @@
             <span>Ещё</span>
             <div class="nav-dropdown-menu" id="navDropdown">
                 <div class="nav-dropdown-item" onclick="showSection('free', event)">
-                    <span>🟢</span>
-                    <span>Свободная</span>
+                    <span>🟢</span><span>Свободная</span>
                 </div>
                 <div class="nav-dropdown-item" onclick="showSection('repair', event)">
-                    <span>🔧</span>
-                    <span>Ремонт</span>
+                    <span>🔧</span><span>Ремонт</span>
                 </div>
                 <div class="nav-dropdown-item" onclick="showSection('history', event)">
-                    <span>📜</span>
-                    <span>История</span>
+                    <span>📜</span><span>История</span>
                 </div>
                 <div class="nav-dropdown-item" onclick="showSection('database', event)">
-                    <span>📚</span>
-                    <span>База</span>
+                    <span>📚</span><span>База</span>
                 </div>
             </div>
         </button>
     </nav>
 
-    <!-- Статус бар -->
     <div class="status-bar" id="statusBar"></div>
-
-    <!-- Скрытый input для загрузки backup -->
     <input type="file" id="backupInput" accept=".json" onchange="importBackup(this)">
 
-    <!-- Модальные окна -->
+    <!-- МОДАЛЬНЫЕ ОКНА -->
     <div id="callModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1244,10 +863,7 @@
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="closeCallModal()">Закрыть</button>
                 <button class="btn btn-sms" onclick="openSMSFromCall()">💬 SMS</button>
-                <button class="btn btn-danger" onclick="openRepairFromCall()">🔧 В ремонт</button>
-                <button class="btn btn-success" id="confirmAssignBtn" onclick="confirmQuickAssign()" style="display:none;">
-                    ✅ Подтвердить
-                </button>
+                <button class="btn btn-success" id="confirmAssignBtn" onclick="confirmQuickAssign()" style="display:none;">✅ Подтвердить</button>
             </div>
         </div>
     </div>
@@ -1255,132 +871,13 @@
     <div id="editModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <span>✏️ Редактирование (добавить куст/операцию)</span>
+                <span>✏️ Редактирование</span>
                 <button class="modal-close" onclick="closeEditModal()">&times;</button>
             </div>
             <div id="editModalBody"></div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="closeEditModal()">Отмена</button>
-                <button class="btn btn-sms" onclick="sendSMSEdit()">💬 SMS водителю</button>
                 <button class="btn btn-success" onclick="saveEdit()">💾 Сохранить</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="repairModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span>🔧 В ремонт</span>
-                <button class="modal-close" onclick="closeRepairModal()">&times;</button>
-            </div>
-            <div id="repairModalBody"></div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeRepairModal()">Отмена</button>
-                <button class="btn btn-danger" onclick="saveRepair()">🔧 В ремонт</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="dbEditModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span>✏️ Редактирование</span>
-                <button class="modal-close" onclick="closeDbEditModal()">&times;</button>
-            </div>
-            <div id="dbEditModalBody"></div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeDbEditModal()">Отмена</button>
-                <button class="btn btn-sms" onclick="sendSMSFromDb()">💬 SMS водителю</button>
-                <button class="btn btn-success" onclick="saveDbEdit()">💾 Сохранить</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="addDbModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span>➕ Добавить технику</span>
-                <button class="modal-close" onclick="closeAddDbModal()">&times;</button>
-            </div>
-            <div id="addDbModalBody"></div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeAddDbModal()">Отмена</button>
-                <button class="btn btn-success" onclick="addToDatabase()">💾 Добавить</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="historyDetailModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span>📋 Детали назначения</span>
-                <button class="modal-close" onclick="closeHistoryDetailModal()">&times;</button>
-            </div>
-            <div id="historyDetailBody"></div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeHistoryDetailModal()">Закрыть</button>
-                <button class="btn btn-sms" onclick="sendSMSFromHistory()">💬 SMS водителю</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="backupModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span>💾 Резервное копирование</span>
-                <button class="modal-close" onclick="closeBackupModal()">&times;</button>
-            </div>
-            <div style="padding: 20px 0;">
-                <button class="btn btn-success" onclick="exportBackup()" style="width: 100%; margin-bottom: 10px;">
-                    📤 Экспорт данных (JSON)
-                </button>
-                <button class="btn btn-primary" onclick="document.getElementById('backupInput').click()" style="width: 100%;">
-                    📥 Импорт данных (JSON)
-                </button>
-                <p style="text-align: center; margin-top: 15px; font-size: 12px; color: var(--text-secondary);">
-                    Экспорт сохранит все данные в файл<br>
-                    Импорт восстановит данные из файла
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeBackupModal()">Закрыть</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="wellpadModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span>📍 Кустовые площадки</span>
-                <button class="modal-close" onclick="closeWellpadModal()">&times;</button>
-            </div>
-            <div style="padding: 20px 0;">
-                <p style="margin-bottom: 15px; color: var(--text-secondary);">
-                    База кустовых площадок Южно-Приобского месторождения
-                </p>
-                <button class="btn btn-location" onclick="showSection('wellpads', null); closeWellpadModal();" style="width: 100%;">
-                    📋 Открыть список кустов
-                </button>
-                <button class="btn btn-primary" onclick="openAddWellpadModal(); closeWellpadModal();" style="width: 100%; margin-top: 10px;">
-                    ➕ Добавить куст
-                </button>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeWellpadModal()">Закрыть</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="addWellpadModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span>➕ Добавить куст</span>
-                <button class="modal-close" onclick="closeAddWellpadModal()">&times;</button>
-            </div>
-            <div id="addWellpadModalBody"></div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeAddWellpadModal()">Отмена</button>
-                <button class="btn btn-success" onclick="addWellpad()">💾 Добавить</button>
             </div>
         </div>
     </div>
@@ -1399,6 +896,79 @@
         </div>
     </div>
 
+    <div id="addDbModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>➕ Добавить технику</span>
+                <button class="modal-close" onclick="closeAddDbModal()">&times;</button>
+            </div>
+            <div id="addDbModalBody"></div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeAddDbModal()">Отмена</button>
+                <button class="btn btn-success" onclick="addToDatabase()">💾 Добавить</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="addWellpadModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>➕ Добавить куст</span>
+                <button class="modal-close" onclick="closeAddWellpadModal()">&times;</button>
+            </div>
+            <div id="addWellpadModalBody"></div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeAddWellpadModal()">Отмена</button>
+                <button class="btn btn-success" onclick="addWellpad()">💾 Добавить</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="wellpadModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>📍 Кустовые площадки</span>
+                <button class="modal-close" onclick="closeWellpadModal()">&times;</button>
+            </div>
+            <div style="padding: 20px 0;">
+                <button class="btn btn-location" onclick="showSection('wellpads', null); closeWellpadModal();" style="width: 100%;">📋 Открыть список кустов</button>
+                <button class="btn btn-primary" onclick="openAddWellpadModal(); closeWellpadModal();" style="width: 100%; margin-top: 10px;">➕ Добавить куст</button>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeWellpadModal()">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="backupModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>💾 Резервное копирование</span>
+                <button class="modal-close" onclick="closeBackupModal()">&times;</button>
+            </div>
+            <div style="padding: 20px 0;">
+                <button class="btn btn-success" onclick="exportBackup()" style="width: 100%; margin-bottom: 10px;">📤 Экспорт данных (JSON)</button>
+                <button class="btn btn-primary" onclick="document.getElementById('backupInput').click()" style="width: 100%;">📥 Импорт данных (JSON)</button>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeBackupModal()">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="historyDetailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>📋 Детали назначения</span>
+                <button class="modal-close" onclick="closeHistoryDetailModal()">&times;</button>
+            </div>
+            <div id="historyDetailBody"></div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeHistoryDetailModal()">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // ==================== КОНФИГУРАЦИЯ ====================
         const CONFIG = {
@@ -1408,22 +978,11 @@
                 REPAIR: 'equipment_repair_v11',
                 HISTORY: 'equipment_history_v11',
                 THEME: 'equipment_theme_v11',
-                NOTIFICATIONS: 'equipment_notifications_v11',
                 WELLPADS: 'equipment_wellpads_v11',
                 WAITTIMERS: 'equipment_waittimers_v11'
             },
-            SHIFT: {
-                MORNING_START: 7,
-                MORNING_END: 8,
-                EVENING_START: 19,
-                EVENING_END: 20,
-                DAY_START: 8,
-                DAY_END: 20
-            },
-            HISTORY_RETENTION_DAYS: 90,
+            SHIFT: { DAY_START: 8, DAY_END: 20 },
             REFRESH_INTERVAL: 1000,
-            PAUSE_TIMEOUT: 5000,
-            NOTIFICATION_MINUTES: 30,
             AVERAGE_SPEED: 40
         };
 
@@ -1437,72 +996,37 @@
             'amkador': 'Амкодор'
         };
 
-        const CONTRACTOR_NAMES = {
-            'ours': 'Наша',
-            'pno': 'ПНО',
-            'fdv': 'ФДВ',
-            'onr': 'ОНР',
-            'eprs': 'ЕПРС'
-        };
-
-        const SHIFT_LABELS = {
-            'full': 'День+Ночь',
-            'day': 'Только день',
-            'night': 'Только ночь',
-            'repair': 'В ремонте'
-        };
-
-        const BASES = ['БСО-1', 'БСО-2', 'КП-135'];
-
-        // Шаблоны комплектов техники
         const BUNDLE_TEMPLATES = {
             'glushenie': {
                 name: 'Глушение',
-                code: 'Р/Р 1.01',
                 equipment: [
                     { type: 'ca320', count: 2, name: 'ЦА-320' },
                     { type: 'ppu', count: 1, name: 'ППУ' }
-                ],
-                avgTime: 4
+                ]
             },
             'pereezd': {
                 name: 'Переезд',
-                code: 'Переезд',
                 equipment: [
                     { type: 'avtokran', count: 1, name: 'Автокран' },
                     { type: 'polupricep', count: 1, name: 'Полуприцеп', selectable: true, min: 1, max: 5 }
-                ],
-                avgTime: 6
+                ]
             },
             'zavoz': {
                 name: 'Завоз НКТ/СБТ',
-                code: 'НКТ/СБТ',
                 equipment: [
                     { type: 'avtokran', count: 1, name: 'Автокран' },
                     { type: 'polupricep', count: 1, name: 'Полуприцеп', selectable: true, min: 1, max: 3 }
-                ],
-                avgTime: 5
+                ]
             }
         };
 
-        // База кустов
         let wellpads = [
             { id: 1, name: 'Куст 101', lat: 61.0850, lon: 73.4500, area: 'ЮП-1' },
             { id: 2, name: 'Куст 102', lat: 61.0870, lon: 73.4550, area: 'ЮП-1' },
-            { id: 3, name: 'Куст 103', lat: 61.0890, lon: 73.4600, area: 'ЮП-1' },
-            { id: 4, name: 'Куст 201', lat: 61.0950, lon: 73.4700, area: 'ЮП-2' },
-            { id: 5, name: 'Куст 202', lat: 61.0970, lon: 73.4750, area: 'ЮП-2' },
-            { id: 6, name: 'Куст 301', lat: 61.1050, lon: 73.4850, area: 'ЮП-3' },
-            { id: 7, name: 'Куст 302', lat: 61.1070, lon: 73.4900, area: 'ЮП-3' },
-            { id: 8, name: 'Куст 401', lat: 61.1150, lon: 73.5000, area: 'ЮП-4' },
-            { id: 9, name: 'Куст 402', lat: 61.1170, lon: 73.5050, area: 'ЮП-4' },
-            { id: 10, name: 'Куст 501', lat: 61.1250, lon: 73.5150, area: 'ЮП-5' },
             { id: 100, name: 'БСО-1', lat: 61.0500, lon: 73.4000, area: 'База' },
-            { id: 101, name: 'БСО-2', lat: 61.0550, lon: 73.4100, area: 'База' },
-            { id: 102, name: 'КП-135', lat: 61.0600, lon: 73.4200, area: 'База' }
+            { id: 101, name: 'БСО-2', lat: 61.0550, lon: 73.4100, area: 'База' }
         ];
 
-        // ==================== ДАННЫЕ ====================
         let equipment = [];
         let database = [];
         let repairList = [];
@@ -1510,12 +1034,8 @@
         let waitTimers = [];
         let callData = null;
         let editingId = null;
-        let repairId = null;
-        let dbEditId = null;
-        let historyDetailData = null;
         let locationEditId = null;
         let refreshPaused = false;
-        let notifiedEquipment = [];
 
         // ==================== ТЕМА ====================
         function loadTheme() {
@@ -1533,82 +1053,44 @@
             localStorage.setItem(CONFIG.STORAGE_KEYS.THEME, newTheme);
         }
 
-        // ==================== ЗАГРУЗКА ДАННЫХ ====================
+        // ==================== ЗАГРУЗКА/СОХРАНЕНИЕ ====================
         function loadData() {
             try {
-                const savedEquip = localStorage.getItem(CONFIG.STORAGE_KEYS.EQUIPMENT);
-                const savedDb = localStorage.getItem(CONFIG.STORAGE_KEYS.DATABASE);
-                const savedRepair = localStorage.getItem(CONFIG.STORAGE_KEYS.REPAIR);
-                const savedHistory = localStorage.getItem(CONFIG.STORAGE_KEYS.HISTORY);
-                const savedNotifications = localStorage.getItem(CONFIG.STORAGE_KEYS.NOTIFICATIONS);
-                const savedWellpads = localStorage.getItem(CONFIG.STORAGE_KEYS.WELLPADS);
-                const savedWaitTimers = localStorage.getItem(CONFIG.STORAGE_KEYS.WAITTIMERS);
+                const keys = ['EQUIPMENT', 'DATABASE', 'REPAIR', 'HISTORY', 'WELLPADS', 'WAITTIMERS'];
+                const vars = ['equipment', 'database', 'repairList', 'history', 'wellpads', 'waitTimers'];
                 
-                if (savedEquip) {
-                    equipment = JSON.parse(savedEquip);
-                    equipment.forEach(e => {
-                        e.startDt = new Date(e.startDt);
-                        e.endDt = new Date(e.endDt);
-                    });
-                }
-                
-                if (savedDb) database = JSON.parse(savedDb);
-                if (savedRepair) repairList = JSON.parse(savedRepair);
-                if (savedHistory) {
-                    history = JSON.parse(savedHistory);
-                    history.forEach(h => {
-                        h.startDt = new Date(h.startDt);
-                        h.endDt = new Date(h.endDt);
-                    });
-                }
-                if (savedNotifications) notifiedEquipment = JSON.parse(savedNotifications);
-                if (savedWellpads) wellpads = JSON.parse(savedWellpads);
-                if (savedWaitTimers) {
-                    waitTimers = JSON.parse(savedWaitTimers);
-                    waitTimers.forEach(w => {
-                        w.startTime = new Date(w.startTime);
-                    });
-                }
+                keys.forEach((key, idx) => {
+                    const saved = localStorage.getItem(CONFIG.STORAGE_KEYS[key]);
+                    if (saved) {
+                        const data = JSON.parse(saved);
+                        if (idx === 0 || idx === 3) {
+                            data.forEach(e => {
+                                e.startDt = new Date(e.startDt);
+                                e.endDt = new Date(e.endDt);
+                            });
+                        }
+                        if (idx === 5) {
+                            data.forEach(w => { w.startTime = new Date(w.startTime); });
+                        }
+                        window[vars[idx]] = data;
+                    }
+                });
             } catch (e) {
-                console.error('Ошибка загрузки данных:', e);
-                showAlert('⚠️ Ошибка загрузки данных', 'warning');
+                console.error('Ошибка загрузки:', e);
             }
         }
 
-        // ==================== СОХРАНЕНИЕ ДАННЫХ ====================
         function saveData() {
             try {
                 localStorage.setItem(CONFIG.STORAGE_KEYS.EQUIPMENT, JSON.stringify(equipment));
                 localStorage.setItem(CONFIG.STORAGE_KEYS.DATABASE, JSON.stringify(database));
                 localStorage.setItem(CONFIG.STORAGE_KEYS.REPAIR, JSON.stringify(repairList));
                 localStorage.setItem(CONFIG.STORAGE_KEYS.HISTORY, JSON.stringify(history));
-                localStorage.setItem(CONFIG.STORAGE_KEYS.NOTIFICATIONS, JSON.stringify(notifiedEquipment));
                 localStorage.setItem(CONFIG.STORAGE_KEYS.WELLPADS, JSON.stringify(wellpads));
                 localStorage.setItem(CONFIG.STORAGE_KEYS.WAITTIMERS, JSON.stringify(waitTimers));
             } catch (e) {
-                console.error('Ошибка сохранения данных:', e);
-                showAlert('⚠️ Ошибка сохранения', 'warning');
+                console.error('Ошибка сохранения:', e);
             }
-        }
-
-        // ==================== ИСПРАВЛЕНИЕ ДАННЫХ ====================
-        function fixOldData() {
-            let saved = false;
-            database.forEach(d => {
-                if (!d.shiftType) { d.shiftType = 'full'; saved = true; }
-                if (!d.comment) { d.comment = ''; saved = true; }
-                if (!d.phoneNight) { d.phoneNight = d.phoneDay; saved = true; }
-            });
-            if (saved) saveData();
-        }
-
-        // ==================== ОЧИСТКА ИСТОРИИ ====================
-        function cleanOldHistory() {
-            const cutoffDate = new Date();
-            cutoffDate.setDate(cutoffDate.getDate() - CONFIG.HISTORY_RETENTION_DAYS);
-            const originalLength = history.length;
-            history = history.filter(h => new Date(h.startDt) >= cutoffDate);
-            if (history.length !== originalLength) saveData();
         }
 
         // ==================== ГЕОЛОКАЦИЯ ====================
@@ -1616,36 +1098,24 @@
             const R = 6371;
             const dLat = (lat2 - lat1) * Math.PI / 180;
             const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = 
-                Math.sin(dLat/2) * Math.sin(dLat/2) +
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
                 Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
                 Math.sin(dLon/2) * Math.sin(dLon/2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-            return (R * c).toFixed(1);
+            return (R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))).toFixed(1);
         }
 
-        function calculateTravelTime(distance) {
-            return (distance / CONFIG.AVERAGE_SPEED).toFixed(2);
-        }
-
-        function getWellpadById(id) {
-            return wellpads.find(w => w.id == id);
-        }
+        function getWellpadById(id) { return wellpads.find(w => w.id == id); }
 
         // ==================== БИЗНЕС-ЛОГИКА ====================
         function getCurrentShift() {
             const hour = new Date().getHours();
-            if (hour >= CONFIG.SHIFT.DAY_START && hour < CONFIG.SHIFT.DAY_END) return 'day';
-            return 'night';
+            return (hour >= CONFIG.SHIFT.DAY_START && hour < CONFIG.SHIFT.DAY_END) ? 'day' : 'night';
         }
 
-        function getShiftLabel(shift) {
-            return shift === 'day' ? '☀️ Дневная' : '🌙 Ночная';
-        }
+        function getShiftLabel(shift) { return shift === 'day' ? '☀️ Дневная' : '🌙 Ночная'; }
 
         function getDriverPhone(data, shift) {
-            if (shift === 'night') return data.phoneNight || data.phoneDay;
-            return data.phoneDay || data.phoneNight;
+            return shift === 'night' ? (data.phoneNight || data.phoneDay) : (data.phoneDay || data.phoneNight);
         }
 
         function isEquipmentAvailable(shiftType) {
@@ -1659,42 +1129,14 @@
         function getShiftAvailabilityLabel(shiftType) {
             if (shiftType === 'repair') return '🔧 В ремонте';
             const hour = new Date().getHours();
-            if (shiftType === 'day') {
-                return hour >= 8 && hour < 20 ? '☀️ Доступно' : '🌙 Недоступно';
-            } else if (shiftType === 'night') {
-                return hour >= 20 || hour < 8 ? '🌙 Доступно' : '☀️ Недоступно';
-            }
+            if (shiftType === 'day') return hour >= 8 && hour < 20 ? '☀️ Доступно' : '🌙 Недоступно';
+            if (shiftType === 'night') return hour >= 20 || hour < 8 ? '🌙 Доступно' : '☀️ Недоступно';
             return '🕐 Всегда';
-        }
-
-        function isShiftChangeWindow(hour) {
-            if (hour >= CONFIG.SHIFT.MORNING_START && hour < CONFIG.SHIFT.MORNING_END) return true;
-            if (hour >= CONFIG.SHIFT.EVENING_START && hour < CONFIG.SHIFT.EVENING_END) return true;
-            return false;
-        }
-
-        function getShiftChangeLocation(startDt, endDt, defaultLocation) {
-            const endHour = endDt.getHours();
-            const endMinutes = endDt.getMinutes();
-            const endTimeDecimal = endHour + (endMinutes / 60);
-            
-            if (endTimeDecimal < 7) return { location: 'base', text: '🏠 На базе', nextShift: 'дневной' };
-            if (isShiftChangeWindow(endHour)) return { location: 'site', text: '📍 На кусту', nextShift: endHour >= 19 ? 'ночной' : 'дневной' };
-            if (endTimeDecimal >= 8 && endTimeDecimal < 19) return { location: 'base', text: '🏠 На базе', nextShift: 'дневной' };
-            if (endTimeDecimal >= 20) return { location: 'base', text: '🏠 На базе', nextShift: 'ночной' };
-            
-            return { location: defaultLocation || 'base', text: '🏠 На базе', nextShift: 'дневной' };
         }
 
         // ==================== ТАЙМЕРЫ ОЖИДАНИЯ ====================
         function startWaitTimer(brigade, equipmentId) {
-            waitTimers.push({
-                id: Date.now(),
-                brigade,
-                equipmentId,
-                startTime: new Date(),
-                status: 'waiting'
-            });
+            waitTimers.push({ id: Date.now(), brigade, equipmentId, startTime: new Date(), status: 'waiting' });
             saveData();
         }
 
@@ -1705,8 +1147,7 @@
 
         function getWaitTime(equipmentId) {
             const timer = waitTimers.find(w => w.equipmentId === equipmentId);
-            if (!timer) return 0;
-            return Math.floor((new Date() - timer.startTime) / 1000 / 60);
+            return timer ? Math.floor((new Date() - timer.startTime) / 1000 / 60) : 0;
         }
 
         function getWaitBadgeClass(minutes) {
@@ -1715,49 +1156,14 @@
             return 'wait-red';
         }
 
-        function checkWaitTimes() {
-            waitTimers.forEach(w => {
-                const waitMinutes = Math.floor((new Date() - w.startTime) / 1000 / 60);
-                if (waitMinutes > 90 && w.status === 'waiting' && !w.notified) {
-                    showAlert(`⚠️ бр ${w.brigade} ждёт ${waitMinutes} мин!`, 'warning');
-                    w.notified = true;
-                    saveData();
-                }
-            });
-        }
-
-        function checkEndingSoon() {
-            const now = new Date();
-            equipment.forEach(e => {
-                const timeToEnd = (e.endDt - now) / 1000 / 60;
-                const alreadyNotified = notifiedEquipment.includes(e.id);
-                
-                if (timeToEnd <= CONFIG.NOTIFICATION_MINUTES && timeToEnd > 0 && !alreadyNotified) {
-                    showAlert(`⏰ ${TYPE_NAMES[e.type]} №${e.equipNum} скоро освободится! (${Math.floor(timeToEnd)} мин)`, 'warning');
-                    notifiedEquipment.push(e.id);
-                    saveData();
-                    if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
-                }
-                
-                if (timeToEnd <= 0 && alreadyNotified) {
-                    notifiedEquipment = notifiedEquipment.filter(id => id !== e.id);
-                    saveData();
-                }
-            });
-        }
-
         // ==================== НАВИГАЦИЯ ====================
         function showSection(section, event) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            
             document.getElementById(`section-${section}`).classList.add('active');
-            
             if (event) event.currentTarget.classList.add('active');
-            
             document.getElementById('navDropdown').classList.remove('show');
             renderAll();
-            window.scrollTo(0, 0);
         }
 
         function toggleDropdown(event) {
@@ -1771,79 +1177,90 @@
             }
         });
 
-        // ==================== КОМПЛЕКТЫ ТЕХНИКИ ====================
+        // ==================== КОМПЛЕКТЫ ====================
         function loadBundleTemplate() {
             const bundleType = document.getElementById('quickBundle')?.value;
             const selector = document.getElementById('bundleSelector');
             const equipmentDiv = document.getElementById('bundleEquipment');
             
-            if (!bundleType) {
-                selector.style.display = 'none';
-                return;
-            }
+            if (!bundleType) { selector.style.display = 'none'; return; }
             
             const template = BUNDLE_TEMPLATES[bundleType];
             if (!template) return;
             
             selector.style.display = 'block';
-            
             let html = '';
             template.equipment.forEach((eq, idx) => {
                 if (eq.selectable) {
-                    html += `
-                        <div class="form-group" style="margin-bottom: 10px;">
-                            <label style="color: rgba(255,255,255,0.9);">${eq.name} (${eq.count} шт)</label>
-                            <select id="bundleEquip_${idx}" onchange="updateBundleEquipment()" style="background: white; color: #2c3e50;">
-                    `;
+                    html += `<div class="form-group"><label>${eq.name}</label><select id="bundleEquip_${idx}">`;
                     for (let i = eq.min; i <= eq.max; i++) {
                         html += `<option value="${i}" ${i === eq.count ? 'selected' : ''}>${i} шт</option>`;
                     }
                     html += `</select></div>`;
                 } else {
-                    html += `
-                        <div class="form-group" style="margin-bottom: 10px;">
-                            <label style="color: rgba(255,255,255,0.9);">${eq.name}</label>
-                            <div style="background: rgba(255,255,255,0.2); padding: 10px; border-radius: 8px;">
-                                ${eq.count} × ${TYPE_NAMES[eq.type]}
-                            </div>
-                        </div>
-                    `;
+                    html += `<div class="form-group"><label>${eq.name}</label><div style="background:rgba(255,255,255,0.2);padding:10px;border-radius:8px;">${eq.count} × ${TYPE_NAMES[eq.type]}</div></div>`;
                 }
             });
-            
             equipmentDiv.innerHTML = html;
-        }
-
-        function updateBundleEquipment() {
-            // Обновление доступной техники для комплекта
-            updateQuickEquipment();
         }
 
         // ==================== БЫСТРОЕ НАЗНАЧЕНИЕ ====================
         function updateQuickEquipment() {
             const select = document.getElementById('quickEquipment');
             const now = new Date();
-            const currentValue = select.value;
-            
             select.innerHTML = '<option value="">-- Выберите --</option>';
             
-            let available = database.filter(d => {
+            database.filter(d => {
                 const notInWork = !equipment.find(e => e.type === d.type && e.equipNum === d.num && now < e.endDt);
                 const notInRepair = !repairList.find(r => r.type === d.type && r.num === d.num);
-                const shiftType = d.shiftType || 'full';
-                return notInWork && notInRepair && isEquipmentAvailable(shiftType);
-            });
-            
-            available.forEach(d => {
+                return notInWork && notInRepair && isEquipmentAvailable(d.shiftType || 'full');
+            }).forEach(d => {
                 const option = document.createElement('option');
-                const shiftType = d.shiftType || 'full';
                 option.value = JSON.stringify(d);
-                const availLabel = getShiftAvailabilityLabel(shiftType);
-                option.textContent = `${TYPE_NAMES[d.type]} №${d.num} - ${d.base} - ${availLabel}`;
+                option.textContent = `${TYPE_NAMES[d.type]} №${d.num} - ${d.base}`;
                 select.appendChild(option);
             });
+        }
+
+        function populateWellpadSelects() {
+            const select1 = document.getElementById('quickWellpad');
+            const select2 = document.getElementById('quickWellpadFrom');
+            if (!select1 || !select2) return;
             
-            if (currentValue) select.value = currentValue;
+            select1.innerHTML = '<option value="">-- Не указано --</option>';
+            select2.innerHTML = '<option value="">-- Не указано --</option>';
+            
+            wellpads.forEach(w => {
+                [select1, select2].forEach(sel => {
+                    const opt = document.createElement('option');
+                    opt.value = w.id;
+                    opt.textContent = `${w.name} (${w.area})`;
+                    sel.appendChild(opt);
+                });
+            });
+        }
+
+        function calculateTravelTime() {
+            const wellpadTo = document.getElementById('quickWellpad')?.value;
+            const wellpadFrom = document.getElementById('quickWellpadFrom')?.value;
+            const travelInfo = document.getElementById('travelInfo');
+            
+            if (!wellpadTo || !wellpadFrom) {
+                travelInfo.style.display = 'none';
+                return;
+            }
+            
+            const wpTo = getWellpadById(wellpadTo);
+            const wpFrom = getWellpadById(wellpadFrom);
+            if (!wpTo || !wpFrom) return;
+            
+            const distance = calculateDistance(wpFrom.lat, wpFrom.lon, wpTo.lat, wpTo.lon);
+            const timeHours = (distance / CONFIG.AVERAGE_SPEED).toFixed(2);
+            
+            document.getElementById('travelDistance').textContent = `📏 ${distance} км`;
+            document.getElementById('travelTime').textContent = `⏱️ ~${(timeHours * 60).toFixed(0)} мин`;
+            document.getElementById('quickTravelHours').value = timeHours;
+            travelInfo.style.display = 'block';
         }
 
         function quickAssign() {
@@ -1857,61 +1274,26 @@
             if (!brigade) { showAlert('⚠️ Введите бригаду!', 'warning'); return; }
             
             const data = JSON.parse(select.value);
-            const currentShift = getCurrentShift();
-            const driverPhone = getDriverPhone(data, currentShift);
+            const driverPhone = getDriverPhone(data, getCurrentShift());
             
-            callData = { 
-                ...data, 
-                brigade, 
-                workHours, 
-                travelHours, 
-                currentShift, 
-                driverPhone,
-                base: base || data.base
-            };
+            callData = { ...data, brigade, workHours, travelHours, base: base || data.base, driverPhone };
             
-            const shiftBadge = currentShift === 'day' 
-                ? '<span class="shift-driver-badge shift-day">☀️ Дневная смена</span>'
-                : '<span class="shift-driver-badge shift-night">🌙 Ночная смена</span>';
-            
-            const modalBody = document.getElementById('callModalBody');
-            modalBody.innerHTML = `
+            document.getElementById('callModalBody').innerHTML = `
                 <div class="card working">
                     <div class="card-header">
                         <span class="card-title">${TYPE_NAMES[data.type]} №${data.num}</span>
                         <span class="card-badge badge-working">Назначение</span>
                     </div>
-                    <div class="card-row">
-                        <span class="card-label">База</span>
-                        <span class="card-value">${base || data.base}</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">Бригада</span>
-                        <span class="card-value">${brigade}</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">Время работы</span>
-                        <span class="card-value">${workHours}ч</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">Время пути</span>
-                        <span class="card-value">${travelHours}ч</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">ВСЕГО</span>
-                        <span class="card-value"><strong>${(workHours + travelHours).toFixed(2)}ч</strong></span>
-                    </div>
+                    <div class="card-row"><span class="card-label">База</span><span class="card-value">${base || data.base}</span></div>
+                    <div class="card-row"><span class="card-label">Бригада</span><span class="card-value">${brigade}</span></div>
+                    <div class="card-row"><span class="card-label">Время</span><span class="card-value">${(workHours + travelHours).toFixed(2)}ч</span></div>
                 </div>
-                <div class="card repair">
-                    <h4 style="margin-bottom: 10px; font-size: 14px;">📞 Позвоните водителю ${shiftBadge}:</h4>
-                    <p style="text-align: center; font-size: 20px; margin: 15px 0;">
-                        <a href="tel:${driverPhone}" class="phone-link">${driverPhone}</a>
-                    </p>
-                    <p style="text-align: center; font-size: 12px; color: var(--text-secondary);">Нажмите на номер для звонка</p>
+                <div class="card">
+                    <p style="text-align:center;font-size:20px;margin:15px 0;"><a href="tel:${driverPhone}" style="color:#27ae60;">📞 ${driverPhone}</a></p>
                 </div>
                 <div class="checkbox-group">
-                    <input type="checkbox" id="driverConfirmed" onchange="toggleConfirmButton()">
-                    <label for="driverConfirmed">Водитель подтвердил задание</label>
+                    <input type="checkbox" id="driverConfirmed" onchange="document.getElementById('confirmAssignBtn').style.display=this.checked?'block':'none'">
+                    <label>Водитель подтвердил</label>
                 </div>
             `;
             
@@ -1932,11 +1314,6 @@
             confirmAssignment(data, brigade, workHours, travelHours, base || data.base);
         }
 
-        function toggleConfirmButton() {
-            const confirmed = document.getElementById('driverConfirmed').checked;
-            document.getElementById('confirmAssignBtn').style.display = confirmed ? 'block' : 'none';
-        }
-
         function confirmQuickAssign() {
             if (!callData) return;
             confirmAssignment(callData, callData.brigade, callData.workHours, callData.travelHours, callData.base);
@@ -1946,29 +1323,23 @@
             const now = new Date();
             const totalHours = workHours + travelHours;
             const endDt = new Date(now.getTime() + totalHours * 60 * 60 * 1000);
-            const shiftInfo = getShiftChangeLocation(now, endDt, 'base');
             
             const assignment = {
                 id: Date.now(),
                 type: data.type,
                 equipNum: data.num,
                 base: base,
-                contractor: data.contractor,
                 brigade: brigade,
                 workHours: workHours,
                 travelHours: travelHours,
-                totalHours,
+                totalHours: totalHours,
                 start: now.toLocaleString('ru-RU'),
                 startDt: now,
                 end: endDt.toLocaleString('ru-RU'),
-                endDt,
+                endDt: endDt,
                 status: 'В работе',
-                shiftLocation: shiftInfo.location,
-                shiftText: shiftInfo.text,
                 phoneDay: data.phoneDay,
                 phoneNight: data.phoneNight,
-                assignedShift: getCurrentShift(),
-                completed: false,
                 wellpadTo: null,
                 wellpadFrom: null,
                 workType: ''
@@ -1982,8 +1353,6 @@
             
             document.getElementById('quickBrigade').value = '';
             document.getElementById('quickEquipment').value = '';
-            document.getElementById('quickTravelHours').value = '0';
-            
             showAlert(`✅ Назначен в ${brigade}`, 'success');
         }
 
@@ -1993,43 +1362,7 @@
             document.getElementById('confirmAssignBtn').style.display = 'none';
         }
 
-        // ==================== ОСТАЛЬНОЙ КОД (сокращён для экономии места) ====================
-        // ... (все остальные функции из предыдущей версии)
-        // Для полной версии нужно добавить все функции из предыдущего кода
-
-        // ==================== ИНИЦИАЛИЗАЦИЯ ====================
-        window.onload = function() {
-            loadTheme();
-            loadData();
-            fixOldData();
-            cleanOldHistory();
-            
-            if (database.length === 0) {
-                addToDatabaseDirect('avtokran', '369', 'БСО-1', 'ours', '8-992-222-00-60', '8-992-222-00-61', 'full', '');
-                addToDatabaseDirect('avtokran', '307', 'БСО-1', 'ours', '8-992-222-00-61', '8-992-222-00-62', 'full', '');
-                addToDatabaseDirect('ca320', '545', 'БСО-1', 'ours', '8-992-222-00-62', '8-992-222-00-63', 'full', '');
-            }
-            
-            renderAll();
-            setInterval(updateColors, CONFIG.REFRESH_INTERVAL);
-            updateCurrentTime();
-        };
-
-        // ==================== ЗАГЛУШКИ ДЛЯ ОСТАЛЬНЫХ ФУНКЦИЙ ====================
-        function addToDatabaseDirect(type, num, base, contractor, phoneDay, phoneNight, shiftType, comment) {
-            const exists = database.find(d => d.type === type && d.num === num);
-            if (exists) return false;
-            database.push({
-                id: Date.now() + Math.random(),
-                type, num, base, contractor, phoneDay,
-                phoneNight: phoneNight || phoneDay,
-                shiftType, comment,
-                added: new Date().toLocaleString('ru-RU')
-            });
-            saveData();
-            return true;
-        }
-
+        // ==================== ОТРИСОВКА ====================
         function renderAll() {
             renderDashboard();
             renderActiveCards();
@@ -2038,72 +1371,35 @@
             renderRepairCards();
             renderDatabaseCards();
             renderWellpadCards();
+            renderFreeByTime();
             updateQuickEquipment();
             populateWellpadSelects();
-            renderFreeByTime();
-        }
-
-        function updateColors() {
-            if (refreshPaused) return;
-            const now = new Date();
-            
-            equipment.forEach(e => {
-                const timeToEnd = (e.endDt - now) / 1000 / 60;
-                if (!e.manualStatus) {
-                    if (now >= e.endDt) e.status = 'Готов';
-                    else if (timeToEnd <= 60) e.status = 'Скоро';
-                    else e.status = 'В работе';
-                }
-                if (!e.shiftManual) {
-                    const shiftInfo = getShiftChangeLocation(e.startDt, e.endDt, e.base);
-                    e.shiftLocation = shiftInfo.location;
-                    e.shiftText = shiftInfo.text;
-                }
-            });
-            
-            checkEndingSoon();
-            checkWaitTimes();
-            
-            renderAll();
             updateStatusBar();
             updateCurrentTime();
         }
 
         function updateCurrentTime() {
             const now = new Date();
-            const timeStr = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-            document.getElementById('currentTime').textContent = `🕐 ${timeStr}`;
-            
-            const currentShift = getCurrentShift();
-            document.getElementById('currentShift').textContent = getShiftLabel(currentShift);
-            document.getElementById('currentShiftBadge').textContent = currentShift === 'day' ? '☀️' : '🌙';
+            document.getElementById('currentTime').textContent = `🕐 ${now.toLocaleTimeString('ru-RU', {hour:'2-digit',minute:'2-digit'})}`;
+            document.getElementById('currentShift').textContent = getShiftLabel(getCurrentShift());
+            document.getElementById('currentShiftBadge').textContent = getCurrentShift() === 'day' ? '☀️' : '🌙';
         }
 
         function updateStatusBar() {
             const now = new Date();
-            const totalInWork = equipment.filter(e => now < e.endDt).length;
-            const totalFree = database.filter(d => {
+            const inWork = equipment.filter(e => now < e.endDt).length;
+            const free = database.filter(d => {
                 const notInWork = !equipment.find(e => e.type === d.type && e.equipNum === d.num && now < e.endDt);
                 const notInRepair = !repairList.find(r => r.type === d.type && r.num === d.num);
-                const shiftType = d.shiftType || 'full';
-                return notInWork && notInRepair && isEquipmentAvailable(shiftType) && d.contractor === 'ours';
+                return notInWork && notInRepair && isEquipmentAvailable(d.shiftType || 'full');
             }).length;
             
             document.getElementById('statusBar').innerHTML = `
-                <div class="stat-item">🔴 <strong>${totalInWork}</strong>В работе</div>
-                <div class="stat-item">🟢 <strong>${totalFree}</strong>Свободно</div>
-                <div class="stat-item">🔧 <strong>${repairList.length}</strong>Ремонт</div>
-                <div class="stat-item">📜 <strong>${history.length}</strong>История</div>
+                <div class="stat-item">🔴<strong>${inWork}</strong>В работе</div>
+                <div class="stat-item">🟢<strong>${free}</strong>Свободно</div>
+                <div class="stat-item">🔧<strong>${repairList.length}</strong>Ремонт</div>
+                <div class="stat-item">📜<strong>${history.length}</strong>История</div>
             `;
-        }
-
-        function showAlert(message, type) {
-            const container = document.getElementById('alertsContainer');
-            const alert = document.createElement('div');
-            alert.className = `alert alert-${type}`;
-            alert.textContent = message;
-            container.appendChild(alert);
-            setTimeout(() => alert.remove(), 3000);
         }
 
         function renderDashboard() {
@@ -2112,15 +1408,11 @@
             const free = database.filter(d => {
                 const notInWork = !equipment.find(e => e.type === d.type && e.equipNum === d.num && now < e.endDt);
                 const notInRepair = !repairList.find(r => r.type === d.type && r.num === d.num);
-                const shiftType = d.shiftType || 'full';
-                return notInWork && notInRepair && isEquipmentAvailable(shiftType);
+                return notInWork && notInRepair && isEquipmentAvailable(d.shiftType || 'full');
             }).length;
             
             const waiting = waitTimers.filter(w => w.status === 'waiting').length;
-            const avgWait = waitTimers.length > 0 
-                ? Math.floor(waitTimers.reduce((sum, w) => sum + getWaitTime(w.equipmentId), 0) / waitTimers.length)
-                : 0;
-            
+            const avgWait = waitTimers.length > 0 ? Math.floor(waitTimers.reduce((sum, w) => sum + getWaitTime(w.equipmentId), 0) / waitTimers.length) : 0;
             const today = new Date().toLocaleDateString('ru-RU');
             const completed = history.filter(h => new Date(h.startDt).toLocaleDateString('ru-RU') === today).length;
             
@@ -2131,62 +1423,6 @@
             document.getElementById('dashAvgWait').textContent = avgWait;
             document.getElementById('dashCompleted').textContent = completed;
         }
-
-        function populateWellpadSelects() {
-            const select1 = document.getElementById('quickWellpad');
-            const select2 = document.getElementById('quickWellpadFrom');
-            if (!select1 || !select2) return;
-            
-            select1.innerHTML = '<option value="">-- Не указано --</option>';
-            select2.innerHTML = '<option value="">-- Не указано --</option>';
-            
-            wellpads.forEach(w => {
-                const option1 = document.createElement('option');
-                option1.value = w.id;
-                option1.textContent = `${w.name} (${w.area})`;
-                select1.appendChild(option1);
-                
-                const option2 = document.createElement('option');
-                option2.value = w.id;
-                option2.textContent = `${w.name} (${w.area})`;
-                select2.appendChild(option2);
-            });
-        }
-
-        function renderFreeByTime() {
-            const hours = parseInt(document.getElementById('freeByTime')?.value) || 1;
-            const container = document.getElementById('freeByTimeCards');
-            const now = new Date();
-            const cutoffTime = new Date(now.getTime() + hours * 60 * 60 * 1000);
-            
-            const freeing = equipment.filter(e => e.endDt <= cutoffTime && e.endDt > now);
-            
-            if (freeing.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">Нет техники, освобождающейся в этот период</p>';
-                return;
-            }
-            
-            container.innerHTML = freeing.map(e => {
-                const minutes = Math.floor((e.endDt - now) / 1000 / 60);
-                return `
-                    <div class="card ready" style="padding: 10px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <strong>${TYPE_NAMES[e.type]} №${e.equipNum}</strong>
-                                <div style="font-size: 12px; color: var(--text-secondary);">${e.brigade}</div>
-                            </div>
-                            <div style="text-align: right;">
-                                <div style="font-weight: 600; color: #16a085;">${minutes} мин</div>
-                                <div style="font-size: 11px;">${e.end.split(' ')[1]}</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // Остальные функции рендеринга (activeCards, freeCards, historyCards, repairCards, databaseCards, wellpadCards)
-        // нужно добавить из предыдущей полной версии кода
 
         function renderActiveCards() {
             const container = document.getElementById('activeCards');
@@ -2216,7 +1452,7 @@
                 const statusText = e.status === 'Готов' ? '🟢 Готов' : (e.status === 'Скоро' ? '🟡 Скоро' : '🔴 В работе');
                 const soonBadge = timeToEnd <= 60 && timeToEnd > 0 ? ` ⏰ ${Math.floor(timeToEnd)} мин` : '';
                 const waitMinutes = getWaitTime(e.id);
-                const waitBadge = waitMinutes > 0 ? `<span class="wait-time-badge ${getWaitBadgeClass(waitMinutes)}">⏱️ ${waitMinutes} мин ожидания</span>` : '';
+                const waitBadge = waitMinutes > 0 ? `<span class="wait-time-badge ${getWaitBadgeClass(waitMinutes)}">⏱️ ${waitMinutes} мин</span>` : '';
                 
                 let locationInfo = '';
                 if (e.wellpadTo) {
@@ -2232,28 +1468,16 @@
                             </div>
                             <span class="card-badge ${statusBadge}">${statusText}${soonBadge}</span>
                         </div>
-                        ${waitBadge ? `<div style="margin-bottom: 10px;">${waitBadge}</div>` : ''}
-                        <div class="card-row">
-                            <span class="card-label">Бригада</span>
-                            <span class="card-value">${e.brigade}</span>
-                        </div>
-                        <div class="card-row">
-                            <span class="card-label">База</span>
-                            <span class="card-value"><span class="base-badge">${e.base}</span></span>
-                        </div>
+                        ${waitBadge ? `<div style="margin-bottom:10px;">${waitBadge}</div>` : ''}
+                        <div class="card-row"><span class="card-label">Бригада</span><span class="card-value">${e.brigade}</span></div>
+                        <div class="card-row"><span class="card-label">База</span><span class="card-value">${e.base}</span></div>
                         ${locationInfo}
-                        <div class="card-row">
-                            <span class="card-label">Время</span>
-                            <span class="card-value">${e.totalHours.toFixed(1)}ч</span>
-                        </div>
-                        <div class="card-row">
-                            <span class="card-label">Окончание</span>
-                            <span class="card-value">${e.end.split(' ')[1]}</span>
-                        </div>
+                        <div class="card-row"><span class="card-label">Время</span><span class="card-value">${e.totalHours.toFixed(1)}ч</span></div>
+                        <div class="card-row"><span class="card-label">Окончание</span><span class="card-value">${e.end.split(' ')[1]}</span></div>
                         <div class="card-actions">
-                            <button class="btn btn-location" onclick="openAddLocationModal(${e.id})">📍 Куст/Операция</button>
-                            <button class="btn btn-primary" onclick="openEditModal(${e.id})">✏️ Изменить</button>
-                            <button class="btn btn-success" onclick="completeEquipment(${e.id})">✅ Освободить</button>
+                            <button class="btn btn-location" onclick="openAddLocationModal(${e.id})">📍 Куст</button>
+                            <button class="btn btn-primary" onclick="openEditModal(${e.id})">✏️</button>
+                            <button class="btn btn-success" onclick="completeEquipment(${e.id})">✅</button>
                         </div>
                     </div>`;
             }).join('');
@@ -2271,8 +1495,7 @@
                 const searchMatch = d.num.toLowerCase().includes(search);
                 const notInWork = !equipment.find(e => e.type === d.type && e.equipNum === d.num && now < e.endDt);
                 const notInRepair = !repairList.find(r => r.type === d.type && r.num === d.num);
-                const shiftType = d.shiftType || 'full';
-                return typeMatch && searchMatch && notInWork && notInRepair && isEquipmentAvailable(shiftType);
+                return typeMatch && searchMatch && notInWork && notInRepair && isEquipmentAvailable(d.shiftType || 'full');
             });
             
             if (freeTech.length === 0) { container.innerHTML = ''; empty.style.display = 'block'; return; }
@@ -2287,26 +1510,17 @@
                         </div>
                         <span class="card-badge badge-free">${getShiftAvailabilityLabel(f.shiftType || 'full')}</span>
                     </div>
-                    <div class="card-row">
-                        <span class="card-label">База</span>
-                        <span class="card-value"><span class="base-badge">${f.base}</span></span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">Телефон</span>
-                        <span class="card-value"><a href="tel:${f.phoneDay}" class="phone-link">${f.phoneDay}</a></span>
-                    </div>
+                    <div class="card-row"><span class="card-label">База</span><span class="card-value">${f.base}</span></div>
+                    <div class="card-row"><span class="card-label">Телефон</span><span class="card-value"><a href="tel:${f.phoneDay}" style="color:#27ae60;">${f.phoneDay}</a></span></div>
                     <div class="card-actions">
-                        <button class="btn btn-success" onclick="quickAssignFromFree('${f.type}', '${f.num}', '${f.base}', '${f.contractor}', '${f.phoneDay}')">⚡ Назначить</button>
+                        <button class="btn btn-success" onclick="quickAssignFromFree('${f.type}','${f.num}','${f.base}')">⚡ Назначить</button>
                     </div>
                 </div>`).join('');
         }
 
-        function quickAssignFromFree(type, num, base, contractor, phoneDay) {
-            refreshPaused = true;
+        function quickAssignFromFree(type, num, base) {
             document.getElementById('quickBase').value = base;
-            document.getElementById('quickType')?.value = type;
             updateQuickEquipment();
-            
             const select = document.getElementById('quickEquipment');
             for (let i = 0; i < select.options.length; i++) {
                 if (select.options[i].value.includes(num)) {
@@ -2314,9 +1528,7 @@
                     break;
                 }
             }
-            
             showSection('quick', null);
-            setTimeout(() => { refreshPaused = false; }, CONFIG.PAUSE_TIMEOUT);
             showAlert('ℹ️ Техника выбрана', 'info');
         }
 
@@ -2324,7 +1536,6 @@
             const container = document.getElementById('historyCards');
             const empty = document.getElementById('historyEmpty');
             const period = document.getElementById('historyPeriod')?.value || '30';
-            const filterType = document.getElementById('historyType')?.value || 'all';
             const search = document.getElementById('searchHistory')?.value.toLowerCase() || '';
             
             let filtered = [...history];
@@ -2333,7 +1544,6 @@
                 cutoffDate.setDate(cutoffDate.getDate() - parseInt(period));
                 filtered = filtered.filter(h => new Date(h.startDt) >= cutoffDate);
             }
-            if (filterType !== 'all') filtered = filtered.filter(h => h.type === filterType);
             if (search) filtered = filtered.filter(h => h.brigade.toLowerCase().includes(search) || h.equipNum.toLowerCase().includes(search));
             
             if (filtered.length === 0) { container.innerHTML = ''; empty.style.display = 'block'; return; }
@@ -2347,11 +1557,7 @@
             });
             
             let html = '';
-            Object.keys(grouped).sort((a, b) => {
-                const dateA = new Date(a.split('.').reverse().join('-'));
-                const dateB = new Date(b.split('.').reverse().join('-'));
-                return dateB - dateA;
-            }).forEach(date => {
+            Object.keys(grouped).sort((a, b) => new Date(b.split('.').reverse().join('-')) - new Date(a.split('.').reverse().join('-'))).forEach(date => {
                 html += `<div class="history-date">📅 ${date}</div>`;
                 html += grouped[date].map(h => `
                     <div class="card history" onclick="openHistoryDetailModal(${JSON.stringify(h).replace(/"/g, '&quot;')})">
@@ -2362,14 +1568,8 @@
                             </div>
                             <span class="card-badge badge-history">${h.completionReason || 'Завершено'}</span>
                         </div>
-                        <div class="card-row">
-                            <span class="card-label">Бригада</span>
-                            <span class="card-value">${h.brigade}</span>
-                        </div>
-                        <div class="card-row">
-                            <span class="card-label">Время</span>
-                            <span class="card-value">${h.totalHours.toFixed(1)}ч</span>
-                        </div>
+                        <div class="card-row"><span class="card-label">Бригада</span><span class="card-value">${h.brigade}</span></div>
+                        <div class="card-row"><span class="card-label">Время</span><span class="card-value">${h.totalHours.toFixed(1)}ч</span></div>
                     </div>`).join('');
             });
             
@@ -2379,11 +1579,6 @@
         function renderRepairCards() {
             const container = document.getElementById('repairCards');
             const empty = document.getElementById('repairEmpty');
-            const today = new Date().toLocaleDateString('ru-RU');
-            const todayCount = repairList.filter(r => new Date(r.when).toLocaleDateString('ru-RU') === today).length;
-            
-            document.getElementById('totalRepair').textContent = repairList.length;
-            document.getElementById('todayRepair').textContent = todayCount;
             
             if (repairList.length === 0) { container.innerHTML = ''; empty.style.display = 'block'; return; }
             empty.style.display = 'none';
@@ -2395,16 +1590,10 @@
                             <span class="type-badge bg-${r.type}">${TYPE_NAMES[r.type]}</span>
                             <span class="card-title">${r.num}</span>
                         </div>
-                        <span class="card-badge badge-repair">🔧 Ремонт</span>
+                        <span class="card-badge badge-repair">🔧</span>
                     </div>
-                    <div class="card-row">
-                        <span class="card-label">Сломалась</span>
-                        <span class="card-value">${r.when}</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">Проблема</span>
-                        <span class="card-value">${r.what}</span>
-                    </div>
+                    <div class="card-row"><span class="card-label">Сломалась</span><span class="card-value">${r.when}</span></div>
+                    <div class="card-row"><span class="card-label">Проблема</span><span class="card-value">${r.what}</span></div>
                     <div class="card-actions">
                         <button class="btn btn-success" onclick="restoreFromRepair(${r.id})">✅ Восстановить</button>
                     </div>
@@ -2415,13 +1604,8 @@
             const container = document.getElementById('databaseCards');
             const empty = document.getElementById('dbEmpty');
             const search = document.getElementById('searchDb')?.value.toLowerCase() || '';
-            const filterType = document.getElementById('filterDbType')?.value || 'all';
             
-            let filtered = database.filter(d => {
-                const typeMatch = filterType === 'all' || d.type === filterType;
-                const searchMatch = d.num.toLowerCase().includes(search);
-                return typeMatch && searchMatch;
-            });
+            let filtered = database.filter(d => d.num.toLowerCase().includes(search));
             
             if (filtered.length === 0) { container.innerHTML = ''; empty.style.display = 'block'; return; }
             empty.style.display = 'none';
@@ -2433,18 +1617,11 @@
                             <span class="type-badge bg-${d.type}">${TYPE_NAMES[d.type]}</span>
                             <span class="card-title">${d.num}</span>
                         </div>
-                        <span class="card-badge badge-free">${SHIFT_LABELS[d.shiftType || 'full']}</span>
                     </div>
-                    <div class="card-row">
-                        <span class="card-label">База</span>
-                        <span class="card-value">${d.base}</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">Телефон</span>
-                        <span class="card-value"><a href="tel:${d.phoneDay}" class="phone-link">${d.phoneDay}</a></span>
-                    </div>
+                    <div class="card-row"><span class="card-label">База</span><span class="card-value">${d.base}</span></div>
+                    <div class="card-row"><span class="card-label">Телефон</span><span class="card-value">${d.phoneDay}</span></div>
                     <div class="card-actions">
-                        <button class="btn btn-primary" onclick="openDbEditModal(${d.id})">✏️ Изменить</button>
+                        <button class="btn btn-danger" onclick="deleteFromDatabase(${d.id})">❌ Удалить</button>
                     </div>
                 </div>`).join('');
         }
@@ -2459,123 +1636,61 @@
             if (filtered.length === 0) { container.innerHTML = ''; empty.style.display = 'block'; return; }
             empty.style.display = 'none';
             
-            const grouped = {};
-            filtered.forEach(w => {
-                if (!grouped[w.area]) grouped[w.area] = [];
-                grouped[w.area].push(w);
-            });
+            container.innerHTML = filtered.map(w => `
+                <div class="card location">
+                    <div class="card-header">
+                        <span class="card-title">${w.name}</span>
+                        <span class="card-badge badge-location">${w.area}</span>
+                    </div>
+                    <div class="card-row"><span class="card-label">Координаты</span><span class="card-value">${w.lat.toFixed(4)}, ${w.lon.toFixed(4)}</span></div>
+                    <div class="card-actions">
+                        <button class="btn btn-location" onclick="window.open('https://yandex.ru/maps/?pt=${w.lon},${w.lat}&z=15&l=map','_blank')">🗺️ Карта</button>
+                        <button class="btn btn-danger" onclick="deleteWellpad(${w.id})">❌</button>
+                    </div>
+                </div>`).join('');
+        }
+
+        function renderFreeByTime() {
+            const hours = parseInt(document.getElementById('freeByTime')?.value) || 1;
+            const container = document.getElementById('freeByTimeCards');
+            const now = new Date();
+            const cutoffTime = new Date(now.getTime() + hours * 60 * 60 * 1000);
             
-            let html = '';
-            Object.keys(grouped).forEach(area => {
-                html += `<div class="history-date">📍 ${area}</div>`;
-                html += grouped[area].map(w => `
-                    <div class="card location">
-                        <div class="card-header">
-                            <span class="card-title">${w.name}</span>
-                            <span class="card-badge badge-location">${w.area}</span>
-                        </div>
-                        <div class="card-row">
-                            <span class="card-label">Координаты</span>
-                            <span class="card-value">${w.lat.toFixed(4)}, ${w.lon.toFixed(4)}</span>
-                        </div>
-                        <div class="card-actions">
-                            <button class="btn btn-location" onclick="openWellpadInMap(${w.lat}, ${w.lon})">🗺️ Карта</button>
-                            <button class="btn btn-danger" onclick="deleteWellpad(${w.id})">❌ Удалить</button>
-                        </div>
-                    </div>`).join('');
-            });
+            const freeing = equipment.filter(e => e.endDt <= cutoffTime && e.endDt > now);
             
-            container.innerHTML = html;
-        }
-
-        function openWellpadInMap(lat, lon) {
-            window.open(`https://yandex.ru/maps/?pt=${lon},${lat}&z=15&l=map`, '_blank');
-        }
-
-        function deleteWellpad(id) {
-            if (!confirm('❗ Удалить куст из базы?')) return;
-            wellpads = wellpads.filter(w => w.id !== id);
-            saveData();
-            renderWellpadCards();
-            populateWellpadSelects();
-            showAlert('ℹ️ Куст удалён', 'info');
-        }
-
-        function openWellpadModal() {
-            document.getElementById('wellpadModal').classList.add('show');
-        }
-
-        function closeWellpadModal() {
-            document.getElementById('wellpadModal').classList.remove('show');
-        }
-
-        function openAddWellpadModal() {
-            const modalBody = document.getElementById('addWellpadModalBody');
-            modalBody.innerHTML = `
-                <div class="form-group">
-                    <label>Название куста</label>
-                    <input type="text" id="wellpadName" placeholder="Куст 101">
-                </div>
-                <div class="form-group">
-                    <label>Район</label>
-                    <input type="text" id="wellpadArea" placeholder="ЮП-1">
-                </div>
-                <div class="form-group">
-                    <label>Широта (lat)</label>
-                    <input type="number" id="wellpadLat" step="0.0001" placeholder="61.0850">
-                </div>
-                <div class="form-group">
-                    <label>Долгота (lon)</label>
-                    <input type="number" id="wellpadLon" step="0.0001" placeholder="73.4500">
-                </div>
-            `;
-            document.getElementById('addWellpadModal').classList.add('show');
-        }
-
-        function closeAddWellpadModal() {
-            document.getElementById('addWellpadModal').classList.remove('show');
-        }
-
-        function addWellpad() {
-            const name = document.getElementById('wellpadName')?.value.trim();
-            const area = document.getElementById('wellpadArea')?.value.trim();
-            const lat = parseFloat(document.getElementById('wellpadLat')?.value);
-            const lon = parseFloat(document.getElementById('wellpadLon')?.value);
+            if (freeing.length === 0) {
+                container.innerHTML = '<p style="text-align:center;color:var(--text-secondary);">Нет техники</p>';
+                return;
+            }
             
-            if (!name || !lat || !lon) { showAlert('⚠️ Заполните название и координаты!', 'warning'); return; }
-            
-            wellpads.push({ id: Date.now(), name, area: area || 'Не указан', lat, lon });
-            saveData();
-            closeAddWellpadModal();
-            renderWellpadCards();
-            populateWellpadSelects();
-            showAlert('✅ Куст добавлен', 'success');
+            container.innerHTML = freeing.map(e => {
+                const minutes = Math.floor((e.endDt - now) / 1000 / 60);
+                return `<div class="card ready" style="padding:10px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <div><strong>${TYPE_NAMES[e.type]} №${e.equipNum}</strong><div style="font-size:12px;color:var(--text-secondary);">${e.brigade}</div></div>
+                        <div style="text-align:right;"><div style="font-weight:600;color:#16a085;">${minutes} мин</div><div style="font-size:11px;">${e.end.split(' ')[1]}</div></div>
+                    </div>
+                </div>`;
+            }).join('');
         }
 
+        // ==================== МОДАЛЬНЫЕ ОКНА ====================
         function openAddLocationModal(eid) {
             const item = equipment.find(e => e.id === eid);
             if (!item) return;
             locationEditId = eid;
             
-            const modalBody = document.getElementById('addLocationModalBody');
-            modalBody.innerHTML = `
+            document.getElementById('addLocationModalBody').innerHTML = `
                 <div class="form-group">
                     <label>📍 Куст назначения</label>
                     <select id="locationWellpadTo">
                         <option value="">-- Не указано --</option>
-                        ${wellpads.map(w => `<option value="${w.id}" ${item.wellpadTo && item.wellpadTo.id == w.id ? 'selected' : ''}>${w.name} (${w.area})</option>`).join('')}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>📍 Откуда (предыдущий куст)</label>
-                    <select id="locationWellpadFrom">
-                        <option value="">-- Не указано --</option>
-                        ${wellpads.map(w => `<option value="${w.id}" ${item.wellpadFrom && item.wellpadFrom.id == w.id ? 'selected' : ''}>${w.name} (${w.area})</option>`).join('')}
+                        ${wellpads.map(w => `<option value="${w.id}" ${item.wellpadTo && item.wellpadTo.id == w.id ? 'selected' : ''}>${w.name}</option>`).join('')}
                     </select>
                 </div>
                 <div class="form-group">
                     <label>📋 Технологическая операция</label>
-                    <input type="text" id="locationWorkType" value="${item.workType || ''}" placeholder="Промывка 20м³ Р/Р 1.01">
+                    <input type="text" id="locationWorkType" value="${item.workType || ''}" placeholder="Промывка 20м³">
                 </div>
             `;
             document.getElementById('addLocationModal').classList.add('show');
@@ -2591,11 +1706,9 @@
             if (!item) return;
             
             const wellpadToId = document.getElementById('locationWellpadTo')?.value;
-            const wellpadFromId = document.getElementById('locationWellpadFrom')?.value;
             const workType = document.getElementById('locationWorkType')?.value.trim();
             
             item.wellpadTo = wellpadToId ? getWellpadById(wellpadToId) : null;
-            item.wellpadFrom = wellpadFromId ? getWellpadById(wellpadFromId) : null;
             item.workType = workType;
             
             stopWaitTimer(item.id);
@@ -2610,20 +1723,10 @@
             if (!item) return;
             editingId = eid;
             
-            const modalBody = document.getElementById('editModalBody');
-            modalBody.innerHTML = `
-                <div class="form-group">
-                    <label>Бригада</label>
-                    <input type="text" id="editBrigade" value="${item.brigade}">
-                </div>
-                <div class="form-group">
-                    <label>Время работы (ч)</label>
-                    <input type="number" id="editWorkHours" value="${item.workHours}" step="0.01">
-                </div>
-                <div class="form-group">
-                    <label>Время пути (ч)</label>
-                    <input type="number" id="editTravelHours" value="${item.travelHours || 0}" step="0.01">
-                </div>
+            document.getElementById('editModalBody').innerHTML = `
+                <div class="form-group"><label>Бригада</label><input type="text" id="editBrigade" value="${item.brigade}"></div>
+                <div class="form-group"><label>Время работы (ч)</label><input type="number" id="editWorkHours" value="${item.workHours}" step="0.01"></div>
+                <div class="form-group"><label>Время пути (ч)</label><input type="number" id="editTravelHours" value="${item.travelHours || 0}" step="0.01"></div>
             `;
             document.getElementById('editModal').classList.add('show');
         }
@@ -2660,7 +1763,14 @@
             if (!confirm('❗ Освободить технику?')) return;
             const item = equipment.find(e => e.id === eid);
             if (item) {
-                archiveAssignment(item, 'Завершено');
+                history.unshift({
+                    ...item,
+                    archivedAt: new Date().toISOString(),
+                    completed: true,
+                    completionReason: 'Завершено',
+                    startDt: item.startDt.toISOString(),
+                    endDt: item.endDt.toISOString()
+                });
                 stopWaitTimer(eid);
             }
             equipment = equipment.filter(e => e.id !== eid);
@@ -2669,157 +1779,9 @@
             showAlert('ℹ️ Освобождён', 'info');
         }
 
-        function archiveAssignment(assignment, reason) {
-            const archiveRecord = {
-                ...assignment,
-                archivedAt: new Date().toISOString(),
-                completed: true,
-                completionReason: reason || 'Завершено'
-            };
-            archiveRecord.startDt = assignment.startDt.toISOString();
-            archiveRecord.endDt = assignment.endDt.toISOString();
-            history.unshift(archiveRecord);
-            cleanOldHistory();
-            saveData();
-        }
-
-        function openHistoryDetailModal(record) {
-            historyDetailData = record;
-            const modalBody = document.getElementById('historyDetailBody');
-            const startDate = new Date(record.startDt);
-            const endDate = new Date(record.endDt);
-            const duration = ((endDate - startDate) / 1000 / 60 / 60).toFixed(1);
-            
-            modalBody.innerHTML = `
-                <div class="card history">
-                    <div class="card-header">
-                        <div>
-                            <span class="type-badge bg-${record.type}">${TYPE_NAMES[record.type]}</span>
-                            <span class="card-title">${record.equipNum}</span>
-                        </div>
-                        <span class="card-badge badge-history">📜 История</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">Бригада</span>
-                        <span class="card-value">${record.brigade}</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">База</span>
-                        <span class="card-value">${record.base}</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">Начало</span>
-                        <span class="card-value">${record.start}</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">Окончание</span>
-                        <span class="card-value">${record.end}</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">Длительность</span>
-                        <span class="card-value">${duration} ч</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">Статус</span>
-                        <span class="card-value">${record.completionReason || 'Завершено'}</span>
-                    </div>
-                </div>
-            `;
-            document.getElementById('historyDetailModal').classList.add('show');
-        }
-
-        function closeHistoryDetailModal() {
-            document.getElementById('historyDetailModal').classList.remove('show');
-            historyDetailData = null;
-        }
-
-        function exportHistory() {
-            const period = document.getElementById('historyPeriod')?.value || '30';
-            let filtered = [...history];
-            if (period !== 'all') {
-                const cutoffDate = new Date();
-                cutoffDate.setDate(cutoffDate.getDate() - parseInt(period));
-                filtered = filtered.filter(h => new Date(h.startDt) >= cutoffDate);
-            }
-            if (filtered.length === 0) { showAlert('⚠️ Нет данных для экспорта', 'warning'); return; }
-            
-            let csv = 'Дата начала;Дата окончания;Техника;№;База;Бригада;Работа;Путь;Всего;Статус\n';
-            filtered.forEach(h => {
-                csv += `${h.start};${h.end};${TYPE_NAMES[h.type]};${h.equipNum};${h.base};${h.brigade};${h.workHours}ч;${h.travelHours || 0}ч;${h.totalHours.toFixed(1)}ч;${h.completionReason || 'Завершено'}\n`;
-            });
-            
-            const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `история_техники_${new Date().toISOString().split('T')[0]}.csv`;
-            link.click();
-            showAlert(`✅ Экспортировано ${filtered.length} записей`, 'success');
-        }
-
-        function openBackupModal() {
-            document.getElementById('backupModal').classList.add('show');
-        }
-
-        function closeBackupModal() {
-            document.getElementById('backupModal').classList.remove('show');
-        }
-
-        function exportBackup() {
-            const backup = {
-                equipment: equipment.map(e => ({...e, startDt: e.startDt.toISOString(), endDt: e.endDt.toISOString()})),
-                database,
-                repairList,
-                history: history.map(h => ({...h, startDt: h.startDt.toISOString(), endDt: h.endDt.toISOString()})),
-                wellpads,
-                exportedAt: new Date().toISOString(),
-                version: 'v11'
-            };
-            
-            const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `backup_pnotransport_${new Date().toISOString().split('T')[0]}.json`;
-            link.click();
-            showAlert('✅ Резервная копия создана', 'success');
-            closeBackupModal();
-        }
-
-        function importBackup(input) {
-            const file = input.files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const backup = JSON.parse(e.target.result);
-                    if (!backup.equipment || !backup.database) { showAlert('⚠️ Неверный формат файла', 'warning'); return; }
-                    if (!confirm('❗ Это заменит все текущие данные. Продолжить?')) { input.value = ''; return; }
-                    
-                    equipment = backup.equipment.map(e => ({...e, startDt: new Date(e.startDt), endDt: new Date(e.endDt)}));
-                    database = backup.database;
-                    repairList = backup.repairList || [];
-                    history = backup.history.map(h => ({...h, startDt: new Date(h.startDt), endDt: new Date(h.endDt)}));
-                    if (backup.wellpads) wellpads = backup.wellpads;
-                    notifiedEquipment = [];
-                    waitTimers = [];
-                    
-                    saveData();
-                    renderAll();
-                    showAlert('✅ Данные восстановлены', 'success');
-                    closeBackupModal();
-                } catch (err) {
-                    showAlert('⚠️ Ошибка импорта', 'warning');
-                }
-            };
-            reader.readAsText(file);
-            input.value = '';
-        }
-
         function openAddDbModal() {
-            const modalBody = document.getElementById('addDbModalBody');
-            modalBody.innerHTML = `
-                <div class="form-group">
-                    <label>Тип</label>
+            document.getElementById('addDbModalBody').innerHTML = `
+                <div class="form-group"><label>Тип</label>
                     <select id="dbType">
                         <option value="avtokran">🏗️ Автокран</option>
                         <option value="polupricep">🚛 Полуприцеп</option>
@@ -2830,75 +1792,41 @@
                         <option value="amkador">🚜 Амкодор</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>№ Техники</label>
-                    <input type="text" id="dbNum" placeholder="369">
-                </div>
-                <div class="form-group">
-                    <label>База</label>
+                <div class="form-group"><label>№ Техники</label><input type="text" id="dbNum" placeholder="369"></div>
+                <div class="form-group"><label>База</label>
                     <select id="dbBase">
                         <option value="БСО-1">БСО-1</option>
                         <option value="БСО-2">БСО-2</option>
                         <option value="КП-135">КП-135</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>Подрядчик</label>
-                    <select id="dbContractor">
-                        <option value="ours">Наша</option>
-                        <option value="pno">ПНО</option>
-                        <option value="fdv">ФДВ</option>
-                        <option value="onr">ОНР</option>
-                        <option value="eprs">ЕПРС</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Режим</label>
-                    <select id="dbShiftType">
-                        <option value="full">День+Ночь</option>
-                        <option value="day">Только день</option>
-                        <option value="night">Только ночь</option>
-                        <option value="repair">В ремонте</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Телефон день ☀️</label>
-                    <input type="tel" id="dbPhoneDay" placeholder="8-992-222-00-60">
-                </div>
-                <div class="form-group">
-                    <label>Телефон ночь 🌙</label>
-                    <input type="tel" id="dbPhoneNight" placeholder="8-992-222-00-61">
-                </div>
-                <div class="form-group">
-                    <label>Комментарий</label>
-                    <textarea id="dbComment" rows="2" placeholder="Особенности..."></textarea>
-                </div>
+                <div class="form-group"><label>Телефон</label><input type="tel" id="dbPhoneDay" placeholder="8-992-222-00-60"></div>
             `;
             document.getElementById('addDbModal').classList.add('show');
         }
 
-        function closeAddDbModal() {
-            document.getElementById('addDbModal').classList.remove('show');
-        }
+        function closeAddDbModal() { document.getElementById('addDbModal').classList.remove('show'); }
 
         function addToDatabase() {
             const type = document.getElementById('dbType').value;
             const num = document.getElementById('dbNum').value.trim();
             const base = document.getElementById('dbBase').value;
-            const contractor = document.getElementById('dbContractor').value;
             const phoneDay = document.getElementById('dbPhoneDay').value.trim();
-            const phoneNight = document.getElementById('dbPhoneNight').value.trim();
-            const shiftType = document.getElementById('dbShiftType').value;
-            const comment = document.getElementById('dbComment').value.trim();
             
             if (!num) { showAlert('⚠️ Введите номер!', 'warning'); return; }
             
-            const added = addToDatabaseDirect(type, num, base, contractor, phoneDay, phoneNight || phoneDay, shiftType, comment);
+            database.push({
+                id: Date.now(),
+                type, num, base,
+                phoneDay,
+                phoneNight: phoneDay,
+                shiftType: 'full',
+                contractor: 'ours'
+            });
+            saveData();
             closeAddDbModal();
             renderAll();
-            
-            if (added) showAlert('✅ Добавлено', 'success');
-            else showAlert('⚠️ Такая техника уже есть', 'warning');
+            showAlert('✅ Добавлено', 'success');
         }
 
         function deleteFromDatabase(id) {
@@ -2908,176 +1836,177 @@
             renderAll();
         }
 
-        function openDbEditModal(id) {
-            const item = database.find(d => d.id === id);
-            if (!item) return;
-            dbEditId = id;
-            
-            const modalBody = document.getElementById('dbEditModalBody');
-            modalBody.innerHTML = `
-                <div class="form-group">
-                    <label>Телефон день ☀️</label>
-                    <input type="tel" id="editPhoneDay" value="${item.phoneDay}">
-                </div>
-                <div class="form-group">
-                    <label>Телефон ночь 🌙</label>
-                    <input type="tel" id="editPhoneNight" value="${item.phoneNight || item.phoneDay}">
-                </div>
-                <div class="form-group">
-                    <label>Режим</label>
-                    <select id="editShiftType">
-                        <option value="full" ${item.shiftType === 'full' ? 'selected' : ''}>День+Ночь</option>
-                        <option value="day" ${item.shiftType === 'day' ? 'selected' : ''}>Только день</option>
-                        <option value="night" ${item.shiftType === 'night' ? 'selected' : ''}>Только ночь</option>
-                        <option value="repair" ${item.shiftType === 'repair' ? 'selected' : ''}>В ремонте</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Комментарий</label>
-                    <textarea id="editComment" rows="2">${item.comment || ''}</textarea>
-                </div>
+        function openAddWellpadModal() {
+            document.getElementById('addWellpadModalBody').innerHTML = `
+                <div class="form-group"><label>Название куста</label><input type="text" id="wellpadName" placeholder="Куст 101"></div>
+                <div class="form-group"><label>Район</label><input type="text" id="wellpadArea" placeholder="ЮП-1"></div>
+                <div class="form-group"><label>Широта (lat)</label><input type="number" id="wellpadLat" step="0.0001" placeholder="61.0850"></div>
+                <div class="form-group"><label>Долгота (lon)</label><input type="number" id="wellpadLon" step="0.0001" placeholder="73.4500"></div>
             `;
-            document.getElementById('dbEditModal').classList.add('show');
+            document.getElementById('addWellpadModal').classList.add('show');
         }
 
-        function closeDbEditModal() {
-            document.getElementById('dbEditModal').classList.remove('show');
-            dbEditId = null;
-        }
+        function closeAddWellpadModal() { document.getElementById('addWellpadModal').classList.remove('show'); }
 
-        function saveDbEdit() {
-            const item = database.find(d => d.id === dbEditId);
-            if (!item) return;
+        function addWellpad() {
+            const name = document.getElementById('wellpadName')?.value.trim();
+            const area = document.getElementById('wellpadArea')?.value.trim();
+            const lat = parseFloat(document.getElementById('wellpadLat')?.value);
+            const lon = parseFloat(document.getElementById('wellpadLon')?.value);
             
-            item.phoneDay = document.getElementById('editPhoneDay').value.trim();
-            item.phoneNight = document.getElementById('editPhoneNight').value.trim();
-            item.shiftType = document.getElementById('editShiftType').value;
-            item.comment = document.getElementById('editComment').value.trim();
+            if (!name || !lat || !lon) { showAlert('⚠️ Заполните название и координаты!', 'warning'); return; }
             
-            if (item.shiftType === 'repair') {
-                const exists = repairList.find(r => r.type === item.type && r.num === item.num);
-                if (!exists) {
-                    repairList.push({
-                        id: Date.now(),
-                        type: item.type,
-                        num: item.num,
-                        base: item.base,
-                        phoneDay: item.phoneDay,
-                        when: new Date().toLocaleString('ru-RU'),
-                        what: 'Переведён вручную',
-                        comment: item.comment
-                    });
-                }
-                equipment = equipment.filter(e => !(e.type === item.type && e.equipNum === item.num));
-            }
-            
+            wellpads.push({ id: Date.now(), name, area: area || 'Не указан', lat, lon });
             saveData();
-            closeDbEditModal();
-            renderAll();
-            showAlert('✅ Сохранено', 'success');
+            closeAddWellpadModal();
+            renderWellpadCards();
+            populateWellpadSelects();
+            showAlert('✅ Куст добавлен', 'success');
         }
 
-        function openRepairFromCall() {
-            if (!callData) return;
-            repairId = { type: callData.type, num: callData.num, base: callData.base, phoneDay: callData.driverPhone };
-            
-            const modalBody = document.getElementById('repairModalBody');
-            modalBody.innerHTML = `
-                <div class="form-group">
-                    <label>Что сломалось</label>
-                    <input type="text" id="repairWhat" placeholder="Двигатель...">
-                </div>
-                <div class="form-group">
-                    <label>Комментарий</label>
-                    <textarea id="repairComment" rows="2" placeholder="Подробности..."></textarea>
+        function deleteWellpad(id) {
+            if (!confirm('❗ Удалить куст?')) return;
+            wellpads = wellpads.filter(w => w.id !== id);
+            saveData();
+            renderWellpadCards();
+            showAlert('ℹ️ Куст удалён', 'info');
+        }
+
+        function openWellpadModal() { document.getElementById('wellpadModal').classList.add('show'); }
+        function closeWellpadModal() { document.getElementById('wellpadModal').classList.remove('show'); }
+
+        function openBackupModal() { document.getElementById('backupModal').classList.add('show'); }
+        function closeBackupModal() { document.getElementById('backupModal').classList.remove('show'); }
+
+        function exportBackup() {
+            const backup = {
+                equipment: equipment.map(e => ({...e, startDt: e.startDt.toISOString(), endDt: e.endDt.toISOString()})),
+                database,
+                repairList,
+                history: history.map(h => ({...h, startDt: h.startDt.toISOString(), endDt: h.endDt.toISOString()})),
+                wellpads,
+                exportedAt: new Date().toISOString()
+            };
+            const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `backup_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            showAlert('✅ Резервная копия создана', 'success');
+            closeBackupModal();
+        }
+
+        function importBackup(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const backup = JSON.parse(e.target.result);
+                    if (!backup.equipment || !backup.database) { showAlert('⚠️ Неверный формат', 'warning'); return; }
+                    if (!confirm('❗ Это заменит все данные. Продолжить?')) { input.value = ''; return; }
+                    
+                    equipment = backup.equipment.map(e => ({...e, startDt: new Date(e.startDt), endDt: new Date(e.endDt)}));
+                    database = backup.database;
+                    repairList = backup.repairList || [];
+                    history = backup.history.map(h => ({...h, startDt: new Date(h.startDt), endDt: new Date(h.endDt)}));
+                    if (backup.wellpads) wellpads = backup.wellpads;
+                    
+                    saveData();
+                    renderAll();
+                    showAlert('✅ Данные восстановлены', 'success');
+                    closeBackupModal();
+                } catch (err) { showAlert('⚠️ Ошибка импорта', 'warning'); }
+            };
+            reader.readAsText(file);
+            input.value = '';
+        }
+
+        function openHistoryDetailModal(record) {
+            document.getElementById('historyDetailBody').innerHTML = `
+                <div class="card history">
+                    <div class="card-header">
+                        <div>
+                            <span class="type-badge bg-${record.type}">${TYPE_NAMES[record.type]}</span>
+                            <span class="card-title">${record.equipNum}</span>
+                        </div>
+                    </div>
+                    <div class="card-row"><span class="card-label">Бригада</span><span class="card-value">${record.brigade}</span></div>
+                    <div class="card-row"><span class="card-label">Начало</span><span class="card-value">${record.start}</span></div>
+                    <div class="card-row"><span class="card-label">Окончание</span><span class="card-value">${record.end}</span></div>
+                    <div class="card-row"><span class="card-label">Время</span><span class="card-value">${record.totalHours.toFixed(1)}ч</span></div>
+                    <div class="card-row"><span class="card-label">Статус</span><span class="card-value">${record.completionReason || 'Завершено'}</span></div>
                 </div>
             `;
-            document.getElementById('repairModal').classList.add('show');
-            closeCallModal();
+            document.getElementById('historyDetailModal').classList.add('show');
         }
 
-        function closeRepairModal() {
-            document.getElementById('repairModal').classList.remove('show');
-            repairId = null;
-        }
+        function closeHistoryDetailModal() { document.getElementById('historyDetailModal').classList.remove('show'); }
 
-        function saveRepair() {
-            if (!repairId) return;
+        function exportHistory() {
+            let filtered = [...history];
+            const cutoffDate = new Date();
+            cutoffDate.setDate(cutoffDate.getDate() - 30);
+            filtered = filtered.filter(h => new Date(h.startDt) >= cutoffDate);
             
-            const repairWhat = document.getElementById('repairWhat')?.value.trim();
-            const repairComment = document.getElementById('repairComment')?.value.trim();
+            if (filtered.length === 0) { showAlert('⚠️ Нет данных', 'warning'); return; }
             
-            if (!repairWhat) { showAlert('⚠️ Укажите что сломалось!', 'warning'); return; }
-            
-            const itemToArchive = equipment.find(e => e.type === repairId.type && e.equipNum === repairId.num);
-            if (itemToArchive) archiveAssignment(itemToArchive, 'Ремонт');
-            equipment = equipment.filter(e => !(e.type === repairId.type && e.equipNum === repairId.num));
-            
-            repairList.push({
-                id: Date.now(),
-                type: repairId.type,
-                num: repairId.num,
-                base: repairId.base,
-                phoneDay: repairId.phoneDay,
-                when: new Date().toLocaleString('ru-RU'),
-                what: repairWhat,
-                comment: repairComment
+            let csv = 'Дата;Техника;№;Бригада;Время;Статус\n';
+            filtered.forEach(h => {
+                csv += `${h.start};${TYPE_NAMES[h.type]};${h.equipNum};${h.brigade};${h.totalHours.toFixed(1)}ч;${h.completionReason}\n`;
             });
             
-            const dbItem = database.find(d => d.type === repairId.type && d.num === repairId.num);
-            if (dbItem) dbItem.shiftType = 'repair';
-            
-            saveData();
-            closeRepairModal();
-            renderAll();
-            showAlert('✅ В ремонт', 'success');
+            const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `история_${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+            showAlert(`✅ Экспортировано ${filtered.length} записей`, 'success');
+        }
+
+        function openSMSFromCall() {
+            if (!callData) return;
+            const message = `Задание: ${TYPE_NAMES[callData.type]} №${callData.num}, бригада ${callData.brigade}`;
+            window.open(`sms:${callData.driverPhone}?body=${encodeURIComponent(message)}`, '_self');
         }
 
         function restoreFromRepair(id) {
-            if (!confirm('❗ Восстановить технику из ремонта?')) return;
-            const item = repairList.find(r => r.id === id);
-            if (item) {
-                const dbItem = database.find(d => d.type === item.type && d.num === item.num);
-                if (dbItem) dbItem.shiftType = 'full';
-            }
+            if (!confirm('❗ Восстановить?')) return;
             repairList = repairList.filter(r => r.id !== id);
             saveData();
             renderAll();
             showAlert('ℹ️ Восстановлен', 'info');
         }
 
-        function openSMSFromCall() {
-            if (!callData) return;
-            const message = `Задание: ${TYPE_NAMES[callData.type]} №${callData.num}, бригада ${callData.brigade}, работа ${callData.workHours}ч + путь ${callData.travelHours}ч`;
-            window.open(`sms:${callData.driverPhone}?body=${encodeURIComponent(message)}`, '_self');
+        function showAlert(message, type) {
+            const container = document.getElementById('alertsContainer');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            container.appendChild(alert);
+            setTimeout(() => alert.remove(), 3000);
         }
 
-        function sendSMSEdit() {
-            const item = equipment.find(e => e.id === editingId);
-            if (!item) return;
-            const phone = getCurrentShift() === 'night' ? (item.phoneNight || item.phoneDay) : (item.phoneDay || item.phoneNight);
-            const message = `Изменение: ${TYPE_NAMES[item.type]} №${item.equipNum}, бригада ${item.brigade}`;
-            window.open(`sms:${phone}?body=${encodeURIComponent(message)}`, '_self');
-        }
+        // ==================== ИНИЦИАЛИЗАЦИЯ ====================
+        window.onload = function() {
+            loadTheme();
+            loadData();
+            
+            if (database.length === 0) {
+                database.push(
+                    { id: 1, type: 'avtokran', num: '369', base: 'БСО-1', phoneDay: '8-992-222-00-60', phoneNight: '8-992-222-00-60', shiftType: 'full', contractor: 'ours' },
+                    { id: 2, type: 'avtokran', num: '307', base: 'БСО-1', phoneDay: '8-992-222-00-61', phoneNight: '8-992-222-00-61', shiftType: 'full', contractor: 'ours' },
+                    { id: 3, type: 'ca320', num: '545', base: 'БСО-1', phoneDay: '8-992-222-00-62', phoneNight: '8-992-222-00-62', shiftType: 'full', contractor: 'ours' }
+                );
+                saveData();
+            }
+            
+            renderAll();
+            setInterval(renderAll, CONFIG.REFRESH_INTERVAL);
+        };
 
-        function sendSMSFromDb() {
-            const item = database.find(d => d.id === dbEditId);
-            if (!item) return;
-            const phone = getCurrentShift() === 'night' ? (item.phoneNight || item.phoneDay) : (item.phoneDay || item.phoneNight);
-            const message = `${TYPE_NAMES[item.type]} №${item.num}, база ${item.base}`;
-            window.open(`sms:${phone}?body=${encodeURIComponent(message)}`, '_self');
-        }
-
-        function sendSMSFromHistory() {
-            if (!historyDetailData) return;
-            const phone = historyDetailData.phoneDay || historyDetailData.phoneNight;
-            if (!phone) { showAlert('⚠️ Нет телефона для SMS', 'warning'); return; }
-            const message = `История: ${TYPE_NAMES[historyDetailData.type]} №${historyDetailData.equipNum}, бригада ${historyDetailData.brigade}`;
-            window.open(`sms:${phone}?body=${encodeURIComponent(message)}`, '_self');
-        }
-
-        window.onerror = function(message, source, lineno, colno, error) {
-            console.error('Ошибка:', message, 'в', source, 'строка', lineno);
+        window.onerror = function(message, source, lineno) {
+            console.error('Ошибка:', message, 'строка:', lineno);
             return true;
         };
     </script>
