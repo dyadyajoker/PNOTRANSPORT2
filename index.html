@@ -5,15 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>🚛 Трекер техники - PNOTRANSPORT</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-            background: #f5f6fa; 
-            padding-bottom: 80px;
+        /* ==================== ПЕРЕМЕННЫЕ ТЕМ ==================== */
+        :root {
+            --bg-primary: #f5f6fa;
+            --bg-secondary: #ffffff;
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --border-color: #ddd;
+            --shadow: rgba(0,0,0,0.08);
+            --gradient-header: linear-gradient(135deg, #2c3e50, #3498db);
+            --gradient-shift: linear-gradient(135deg, #f39c12, #e67e22);
+            --gradient-quick: linear-gradient(135deg, #27ae60, #2ecc71);
+            --gradient-repair: linear-gradient(135deg, #e67e22, #d35400);
+            --gradient-history: linear-gradient(135deg, #17a2b8, #138496);
+            --gradient-status: #2c3e50;
         }
-        
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --text-primary: #eaeaea;
+            --text-secondary: #a0a0a0;
+            --border-color: #333;
+            --shadow: rgba(0,0,0,0.3);
+            --gradient-header: linear-gradient(135deg, #1a1a2e, #16213e);
+            --gradient-shift: linear-gradient(135deg, #c0392b, #e67e22);
+            --gradient-quick: linear-gradient(135deg, #1e8449, #27ae60);
+            --gradient-repair: linear-gradient(135deg, #d35400, #a04000);
+            --gradient-history: linear-gradient(135deg, #148f77, #1e8449);
+            --gradient-status: #16213e;
+        }
+
+        /* ==================== БАЗОВЫЕ СТИЛИ ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            padding-bottom: 140px;
+            transition: all 0.3s ease;
+        }
+
+        /* ==================== ШАПКА ==================== */
         .header {
-            background: linear-gradient(135deg, #2c3e50, #3498db);
+            background: var(--gradient-header);
             color: white;
             padding: 15px;
             text-align: center;
@@ -21,11 +62,45 @@
             top: 0;
             z-index: 100;
         }
-        .header h1 { font-size: 18px; margin-bottom: 5px; }
-        .header p { opacity: 0.8; font-size: 12px; }
-        
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .header h1 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            opacity: 0.8;
+            font-size: 12px;
+        }
+
+        .current-time {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 13px;
+        }
+
+        .theme-toggle {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        /* ==================== ИНФОРМАЦИЯ О СМЕНЕ ==================== */
         .shift-info {
-            background: linear-gradient(135deg, #f39c12, #e67e22);
+            background: var(--gradient-shift);
             color: white;
             padding: 10px 15px;
             text-align: center;
@@ -36,73 +111,141 @@
             gap: 10px;
             flex-wrap: wrap;
         }
-        
-        /* Навигация снизу */
+
+        /* ==================== НАВИГАЦИЯ ==================== */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: white;
+            background: var(--bg-secondary);
             display: flex;
             justify-content: space-around;
             padding: 8px 5px;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 -2px 10px var(--shadow);
             z-index: 1000;
+            border-top: 1px solid var(--border-color);
         }
+
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 5px 10px;
+            padding: 5px 8px;
             border-radius: 8px;
-            font-size: 10px;
-            color: #7f8c8d;
+            font-size: 9px;
+            color: var(--text-secondary);
             background: none;
             border: none;
             cursor: pointer;
-            min-width: 60px;
+            min-width: 55px;
+            transition: all 0.2s ease;
         }
+
         .nav-item.active {
             color: #3498db;
-            background: #ebf5fb;
+            background: rgba(52, 152, 219, 0.1);
         }
-        .nav-item .icon { font-size: 20px; margin-bottom: 3px; }
-        
+
+        .nav-item .icon {
+            font-size: 18px;
+            margin-bottom: 2px;
+        }
+
+        .nav-dropdown {
+            position: relative;
+        }
+
+        .nav-dropdown-menu {
+            display: none;
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px var(--shadow);
+            padding: 10px;
+            min-width: 180px;
+            z-index: 1001;
+            border: 1px solid var(--border-color);
+        }
+
+        .nav-dropdown-menu.show {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .nav-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .nav-dropdown-item:hover {
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        /* ==================== СЕКЦИИ ==================== */
         .section {
             display: none;
             padding: 15px;
             max-width: 100%;
         }
-        .section.active { display: block; }
-        
-        /* Карточки */
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        /* ==================== КАРТОЧКИ ==================== */
         .card {
-            background: white;
+            background: var(--bg-secondary);
             border-radius: 12px;
             padding: 15px;
             margin-bottom: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 8px var(--shadow);
             border-left: 4px solid #3498db;
+            transition: all 0.2s ease;
         }
+
         .card.working { border-left-color: #e74c3c; }
         .card.ready { border-left-color: #27ae60; }
         .card.soon { border-left-color: #f39c12; }
         .card.repair { border-left-color: #e67e22; }
         .card.free { border-left-color: #1abc9c; }
         .card.history { border-left-color: #9b59b6; }
-        
+        .card.dashboard { border-left-color: #8e44ad; }
+
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
         }
+
         .card-title {
             font-size: 16px;
             font-weight: 600;
-            color: #2c3e50;
+            color: var(--text-primary);
         }
+
         .card-badge {
             padding: 4px 10px;
             border-radius: 12px;
@@ -110,30 +253,46 @@
             font-weight: 600;
             color: white;
         }
+
         .badge-working { background: #e74c3c; }
         .badge-ready { background: #27ae60; }
         .badge-soon { background: #f39c12; }
         .badge-repair { background: #e67e22; }
         .badge-free { background: #1abc9c; }
         .badge-history { background: #9b59b6; }
-        
+        .badge-dashboard { background: #8e44ad; }
+
         .card-row {
             display: flex;
             justify-content: space-between;
             padding: 6px 0;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid var(--border-color);
             font-size: 13px;
         }
-        .card-row:last-child { border-bottom: none; }
-        .card-label { color: #7f8c8d; }
-        .card-value { color: #2c3e50; font-weight: 500; text-align: right; word-break: break-word; }
-        
+
+        .card-row:last-child {
+            border-bottom: none;
+        }
+
+        .card-label {
+            color: var(--text-secondary);
+        }
+
+        .card-value {
+            color: var(--text-primary);
+            font-weight: 500;
+            text-align: right;
+            word-break: break-word;
+        }
+
         .card-actions {
             display: flex;
             gap: 8px;
             margin-top: 12px;
             flex-wrap: wrap;
         }
+
+        /* ==================== КНОПКИ ==================== */
         .btn {
             padding: 10px 16px;
             border: none;
@@ -143,51 +302,76 @@
             cursor: pointer;
             flex: 1;
             min-width: 80px;
+            transition: opacity 0.2s ease;
         }
+
+        .btn:hover { opacity: 0.9; }
         .btn-primary { background: #3498db; color: white; }
         .btn-success { background: #27ae60; color: white; }
         .btn-warning { background: #f39c12; color: white; }
         .btn-danger { background: #e74c3c; color: white; }
         .btn-secondary { background: #95a5a6; color: white; }
         .btn-info { background: #17a2b8; color: white; }
-        
-        /* Формы */
+
+        /* ==================== ФОРМЫ ==================== */
         .form-group {
             margin-bottom: 15px;
         }
+
         .form-group label {
             display: block;
             font-size: 13px;
             font-weight: 600;
-            color: #2c3e50;
+            color: var(--text-primary);
             margin-bottom: 6px;
         }
-        .form-group input, .form-group select, .form-group textarea {
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
             width: 100%;
             padding: 12px 15px;
-            border: 2px solid #ddd;
+            border: 2px solid var(--border-color);
             border-radius: 8px;
             font-size: 15px;
-            background: white;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
         }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
             outline: none;
             border-color: #3498db;
         }
-        
-        /* Быстрое назначение */
+
+        /* ==================== БЫСТРОЕ НАЗНАЧЕНИЕ ==================== */
         .quick-assign {
-            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            background: var(--gradient-quick);
             color: white;
             padding: 15px;
             border-radius: 12px;
             margin-bottom: 15px;
         }
-        .quick-assign h3 { font-size: 16px; margin-bottom: 12px; }
-        
-        /* Статус бар */
+
+        .quick-assign h3 {
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        .quick-assign label {
+            color: rgba(255,255,255,0.9);
+        }
+
+        .quick-assign input,
+        .quick-assign select {
+            background: white;
+            color: #2c3e50;
+        }
+
+        /* ==================== СТАТУС БАР ==================== */
         .status-bar {
-            background: #2c3e50;
+            background: var(--gradient-status);
             color: white;
             padding: 12px 15px;
             display: flex;
@@ -196,15 +380,22 @@
             gap: 10px;
             font-size: 12px;
             position: fixed;
-            bottom: 60px;
+            bottom: 70px;
             left: 0;
             right: 0;
             z-index: 999;
         }
-        .stat-item { text-align: center; }
-        .stat-item strong { display: block; font-size: 16px; }
-        
-        /* Модальные окна */
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-item strong {
+            display: block;
+            font-size: 16px;
+        }
+
+        /* ==================== МОДАЛЬНЫЕ ОКНА ==================== */
         .modal {
             display: none;
             position: fixed;
@@ -217,9 +408,13 @@
             justify-content: center;
             align-items: flex-end;
         }
-        .modal.show { display: flex; }
+
+        .modal.show {
+            display: flex;
+        }
+
         .modal-content {
-            background: white;
+            background: var(--bg-secondary);
             padding: 20px;
             border-radius: 20px 20px 0 0;
             width: 100%;
@@ -227,34 +422,38 @@
             overflow-y: auto;
             animation: slideUp 0.3s ease;
         }
+
         @keyframes slideUp {
             from { transform: translateY(100%); }
             to { transform: translateY(0); }
         }
+
         .modal-header {
             font-size: 18px;
             font-weight: 600;
             margin-bottom: 20px;
-            color: #2c3e50;
+            color: var(--text-primary);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+
         .modal-close {
             background: none;
             border: none;
             font-size: 24px;
-            color: #7f8c8d;
+            color: var(--text-secondary);
             cursor: pointer;
         }
+
         .modal-footer {
             margin-top: 20px;
             display: flex;
             gap: 10px;
             flex-direction: column;
         }
-        
-        /* Уведомления */
+
+        /* ==================== УВЕДОМЛЕНИЯ ==================== */
         .alert {
             padding: 12px 15px;
             border-radius: 8px;
@@ -262,39 +461,41 @@
             font-size: 13px;
             font-weight: 600;
             animation: fadeIn 0.3s ease;
+            position: fixed;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3000;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+
         .alert-success { background: #d4edda; color: #155724; }
         .alert-warning { background: #fff3cd; color: #856404; }
         .alert-info { background: #d1ecf1; color: #0c5460; }
-        
+
+        /* ==================== ПУСТОЕ СОСТОЯНИЕ ==================== */
         .empty-state {
             text-align: center;
             padding: 40px 20px;
-            color: #95a5a6;
+            color: var(--text-secondary);
         }
-        .empty-state .icon { font-size: 48px; margin-bottom: 15px; }
-        
-        .current-time {
-            background: rgba(255,255,255,0.2);
-            padding: 4px 10px;
-            border-radius: 5px;
-            font-family: monospace;
-            font-size: 13px;
+
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
         }
-        
+
+        /* ==================== ПОИСК И ФИЛЬТРЫ ==================== */
         .search-box {
             width: 100%;
             padding: 12px 15px;
-            border: 2px solid #ddd;
+            border: 2px solid var(--border-color);
             border-radius: 8px;
             font-size: 15px;
             margin-bottom: 15px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
         }
-        
+
         .filter-row {
             display: flex;
             gap: 10px;
@@ -302,22 +503,19 @@
             overflow-x: auto;
             padding-bottom: 5px;
         }
+
         .filter-row select {
             padding: 10px 12px;
-            border: 2px solid #ddd;
+            border: 2px solid var(--border-color);
             border-radius: 8px;
             font-size: 13px;
             white-space: nowrap;
             flex-shrink: 0;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
         }
-        
-        .phone-link {
-            color: #27ae60;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 16px;
-        }
-        
+
+        /* ==================== БАДЖИ ==================== */
         .type-badge {
             display: inline-block;
             padding: 3px 8px;
@@ -327,6 +525,7 @@
             color: white;
             margin-right: 5px;
         }
+
         .bg-avtokran { background: #e74c3c; }
         .bg-polupricep { background: #3498db; }
         .bg-tyagach { background: #9b59b6; }
@@ -334,7 +533,7 @@
         .bg-ca320 { background: #1abc9c; }
         .bg-akn { background: #e67e22; }
         .bg-amkador { background: #16a085; }
-        
+
         .base-badge {
             display: inline-block;
             padding: 3px 8px;
@@ -344,28 +543,32 @@
             color: white;
             background: #2c3e50;
         }
-        
+
+        /* ==================== ЧЕКБОКСЫ ==================== */
         .checkbox-group {
             display: flex;
             align-items: center;
             gap: 10px;
             padding: 12px;
-            background: #f8f9fa;
+            background: var(--bg-primary);
             border-radius: 8px;
             margin: 10px 0;
         }
+
         .checkbox-group input[type="checkbox"] {
             width: 20px;
             height: 20px;
         }
+
         .checkbox-group label {
             font-size: 14px;
             font-weight: 500;
+            color: var(--text-primary);
         }
-        
-        /* История - даты */
+
+        /* ==================== ИСТОРИЯ ==================== */
         .history-date {
-            background: #2c3e50;
+            background: var(--gradient-status);
             color: white;
             padding: 10px 15px;
             border-radius: 8px;
@@ -373,61 +576,242 @@
             font-size: 14px;
             font-weight: 600;
         }
-        
+
         .export-btn {
-            background: linear-gradient(135deg, #17a2b8, #138496);
+            background: var(--gradient-history);
             color: white;
             padding: 15px;
             border-radius: 12px;
             margin-bottom: 15px;
             text-align: center;
             font-weight: 600;
+            cursor: pointer;
         }
-        
+
+        /* ==================== РЕМОНТ ==================== */
         .repair-stats {
-            background: linear-gradient(135deg, #e67e22, #d35400);
+            background: var(--gradient-repair);
             color: white;
             padding: 15px;
             border-radius: 12px;
             margin-bottom: 15px;
             text-align: center;
         }
-        .repair-stats h3 { font-size: 16px; margin-bottom: 10px; }
+
+        .repair-stats h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
         .repair-stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 10px;
         }
+
         .repair-stat-item {
             background: rgba(255,255,255,0.2);
             padding: 10px;
             border-radius: 8px;
         }
-        .repair-stat-item strong { display: block; font-size: 20px; }
-        .repair-stat-item span { font-size: 11px; opacity: 0.9; }
+
+        .repair-stat-item strong {
+            display: block;
+            font-size: 20px;
+        }
+
+        .repair-stat-item span {
+            font-size: 11px;
+            opacity: 0.9;
+        }
+
+        /* ==================== ДАШБОРД ==================== */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+
+        .dashboard-card .icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .dashboard-card .value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .dashboard-card .label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .dashboard-chart {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+
+        .dashboard-chart h3 {
+            font-size: 14px;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .chart-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .chart-bar .label {
+            width: 80px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .chart-bar .bar {
+            flex: 1;
+            height: 20px;
+            background: #ecf0f1;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .chart-bar .fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .chart-bar .value {
+            width: 40px;
+            text-align: right;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* ==================== СМЕНА ВОДИТЕЛЯ ==================== */
+        .shift-driver-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+            margin-left: 5px;
+        }
+
+        .shift-day { background: #f39c12; color: white; }
+        .shift-night { background: #2c3e50; color: white; }
+
+        /* ==================== ТЕЛЕФОН ==================== */
+        .phone-link {
+            color: #27ae60;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        /* ==================== АДАПТИВНОСТЬ ==================== */
+        @media (max-width: 480px) {
+            .header h1 { font-size: 16px; }
+            .card-title { font-size: 14px; }
+            .btn { font-size: 12px; padding: 8px 12px; }
+            .status-bar { font-size: 10px; bottom: 125px; }
+            .bottom-nav { padding: 5px 3px; }
+            .nav-item { font-size: 8px; }
+            .nav-item .icon { font-size: 16px; }
+            .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* ==================== УВЕДОМЛЕНИЯ КОНТЕЙНЕР ==================== */
+        #alertsContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 3000;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>🏗️ PNOTRANSPORT</h1>
+    <!-- Шапка -->
+    <header class="header">
+        <div class="header-top">
+            <h1>🏗️ PNOTRANSPORT</h1>
+            <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">🌙</button>
+        </div>
         <p>Трекер техники | <span id="currentTime" class="current-time"></span></p>
-    </div>
-    
+    </header>
+
+    <!-- Информация о смене -->
     <div class="shift-info">
         <span>🕐 Пересменка: 07-08 | 19-20</span>
         <span id="currentShift"></span>
+        <span id="currentShiftBadge"></span>
     </div>
-    
+
+    <!-- Контейнер уведомлений -->
     <div id="alertsContainer"></div>
-    
+
+    <!-- Секция: Дашборд -->
+    <section id="section-dashboard" class="section">
+        <h2>📊 Дашборд</h2>
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <div class="icon">🔴</div>
+                <div class="value" id="dashInWork">0</div>
+                <div class="label">В работе</div>
+            </div>
+            <div class="dashboard-card">
+                <div class="icon">🟢</div>
+                <div class="value" id="dashFree">0</div>
+                <div class="label">Свободно</div>
+            </div>
+            <div class="dashboard-card">
+                <div class="icon">🔧</div>
+                <div class="value" id="dashRepair">0</div>
+                <div class="label">В ремонте</div>
+            </div>
+            <div class="dashboard-card">
+                <div class="icon">📜</div>
+                <div class="value" id="dashHistory">0</div>
+                <div class="label">За 30 дней</div>
+            </div>
+        </div>
+        <div class="dashboard-chart">
+            <h3>📈 Техника по типам</h3>
+            <div id="typeChart"></div>
+        </div>
+        <div class="dashboard-chart">
+            <h3>🏢 Техника по базам</h3>
+            <div id="baseChart"></div>
+        </div>
+    </section>
+
     <!-- Секция: Быстрое назначение -->
-    <div id="section-quick" class="section active">
+    <section id="section-quick" class="section">
         <div class="quick-assign">
-            <h3>⚡ Быстрое назначение</h3>
-            
+            <h3>⚡ Быстрое назначение <span id="currentShiftBadgeQuick"></span></h3>
             <div class="form-group">
-                <label style="color: rgba(255,255,255,0.9);">Тип техники</label>
-                <select id="quickType" onchange="filterQuickEquipment()" style="background: white; color: #2c3e50;">
+                <label>Тип техники</label>
+                <select id="quickType" onchange="filterQuickEquipment()">
                     <option value="">Все типы</option>
                     <option value="avtokran">🏗️ Автокран</option>
                     <option value="polupricep">🚛 Полуприцеп</option>
@@ -438,10 +822,9 @@
                     <option value="amkador">🚜 Амкодор</option>
                 </select>
             </div>
-            
             <div class="form-group">
-                <label style="color: rgba(255,255,255,0.9);">База</label>
-                <select id="quickBase" onchange="filterQuickEquipment()" style="background: white; color: #2c3e50;">
+                <label>База</label>
+                <select id="quickBase" onchange="filterQuickEquipment()">
                     <option value="">Все базы</option>
                     <option value="БСО-1">БСО-1</option>
                     <option value="БСО-2">БСО-2</option>
@@ -449,35 +832,33 @@
                 </select>
             </div>
             <div class="form-group">
-                <label style="color: rgba(255,255,255,0.9);">Техника</label>
-                <select id="quickEquipment" style="background: white; color: #2c3e50;">
+                <label>Техника</label>
+                <select id="quickEquipment">
                     <option value="">-- Выберите --</option>
                 </select>
             </div>
             <div class="form-group">
-                <label style="color: rgba(255,255,255,0.9);">Бригада</label>
-                <input type="text" id="quickBrigade" placeholder="бр12" style="background: white; color: #2c3e50;">
+                <label>Бригада</label>
+                <input type="text" id="quickBrigade" placeholder="бр 12">
             </div>
             <div class="form-group">
-                <label style="color: rgba(255,255,255,0.9);">Время работы (ч)</label>
-                <input type="number" id="quickWorkHours" value="4" step="0.01" style="background: white; color: #2c3e50;">
+                <label>Время работы (ч)</label>
+                <input type="number" id="quickWorkHours" value="4" step="0.01">
             </div>
             <div class="form-group">
-                <label style="color: rgba(255,255,255,0.9);">Время пути (ч)</label>
-                <input type="number" id="quickTravelHours" value="0" step="0.01" style="background: white; color: #2c3e50;">
+                <label>Время пути (ч)</label>
+                <input type="number" id="quickTravelHours" value="0" step="0.01">
             </div>
-            <button class="btn btn-success" onclick="quickAssign()" style="width: 100%;">📞 Назначить и звонить</button>
+            <button class="btn btn-success" onclick="quickAssign()" style="width: 100%;">
+                📞 Назначить и звонить
+            </button>
         </div>
-        
-        <div id="quickStats"></div>
-    </div>
-    
+    </section>
+
     <!-- Секция: В работе -->
-    <div id="section-active" class="section">
-        <h2 style="font-size: 18px; margin-bottom: 15px; color: #2c3e50;">🔴 В работе</h2>
-        
+    <section id="section-active" class="section">
+        <h2>🔴 В работе</h2>
         <input type="text" class="search-box" id="searchActive" placeholder="🔍 Поиск по бригаде..." oninput="renderActiveCards()">
-        
         <div class="filter-row">
             <select id="filterType" onchange="renderActiveCards()">
                 <option value="all">Все типы</option>
@@ -496,38 +877,39 @@
                 <option value="ready">Готово</option>
             </select>
         </div>
-        
         <div id="activeCards"></div>
         <div id="activeEmpty" class="empty-state">
             <div class="icon">📋</div>
             <p>Нет техники в работе</p>
         </div>
-    </div>
-    
-    <!-- Секция: Готовы -->
-    <div id="section-ready" class="section">
-        <h2 style="font-size: 18px; margin-bottom: 15px; color: #2c3e50;">🟡 Готовы к назначению</h2>
-        <div id="readyCards"></div>
-        <div id="readyEmpty" class="empty-state">
-            <div class="icon">✅</div>
-            <p>Нет техники для назначения</p>
-        </div>
-    </div>
-    
+    </section>
+
     <!-- Секция: Свободная -->
-    <div id="section-free" class="section">
-        <h2 style="font-size: 18px; margin-bottom: 15px; color: #2c3e50;">🟢 Свободная</h2>
+    <section id="section-free" class="section">
+        <h2>🟢 Свободная техника</h2>
+        <input type="text" class="search-box" id="searchFree" placeholder="🔍 Поиск..." oninput="renderFreeCards()">
+        <div class="filter-row">
+            <select id="filterFreeType" onchange="renderFreeCards()">
+                <option value="all">Все типы</option>
+                <option value="avtokran">Автокран</option>
+                <option value="polupricep">Полуприцеп</option>
+                <option value="tyagach">Тягач</option>
+                <option value="ppu">ППУ</option>
+                <option value="ca320">ЦА-320</option>
+                <option value="akn">АКН</option>
+                <option value="amkador">Амкодор</option>
+            </select>
+        </div>
         <div id="freeCards"></div>
         <div id="freeEmpty" class="empty-state">
             <div class="icon">✅</div>
             <p>Вся техника занята</p>
         </div>
-    </div>
-    
+    </section>
+
     <!-- Секция: Ремонт -->
-    <div id="section-repair" class="section">
-        <h2 style="font-size: 18px; margin-bottom: 15px; color: #2c3e50;">🔧 В ремонте</h2>
-        
+    <section id="section-repair" class="section">
+        <h2>🔧 В ремонте</h2>
         <div class="repair-stats">
             <h3>📊 Статистика ремонта</h3>
             <div class="repair-stats-grid">
@@ -541,22 +923,19 @@
                 </div>
             </div>
         </div>
-        
         <div id="repairCards"></div>
         <div id="repairEmpty" class="empty-state">
             <div class="icon">✅</div>
             <p>Вся техника исправна</p>
         </div>
-    </div>
-    
+    </section>
+
     <!-- Секция: История -->
-    <div id="section-history" class="section">
-        <h2 style="font-size: 18px; margin-bottom: 15px; color: #2c3e50;">📜 История движений</h2>
-        
+    <section id="section-history" class="section">
+        <h2>📜 История движений</h2>
         <div class="export-btn" onclick="exportHistory()">
             📤 Экспорт истории за 30 дней
         </div>
-        
         <div class="filter-row">
             <select id="historyPeriod" onchange="renderHistoryCards()">
                 <option value="7">За 7 дней</option>
@@ -576,24 +955,21 @@
                 <option value="amkador">Амкодор</option>
             </select>
         </div>
-        
         <input type="text" class="search-box" id="searchHistory" placeholder="🔍 Поиск по бригаде или № техники..." oninput="renderHistoryCards()">
-        
         <div id="historyCards"></div>
         <div id="historyEmpty" class="empty-state">
             <div class="icon">📜</div>
             <p>История пуста</p>
         </div>
-    </div>
-    
+    </section>
+
     <!-- Секция: База -->
-    <div id="section-database" class="section">
-        <h2 style="font-size: 18px; margin-bottom: 15px; color: #2c3e50;">📚 База техники</h2>
-        
-        <button class="btn btn-primary" onclick="openAddDbModal()" style="width: 100%; margin-bottom: 15px;">➕ Добавить технику</button>
-        
+    <section id="section-database" class="section">
+        <h2>📚 База техники</h2>
+        <button class="btn btn-primary" onclick="openAddDbModal()" style="width: 100%; margin-bottom: 15px;">
+            ➕ Добавить технику
+        </button>
         <input type="text" class="search-box" id="searchDb" placeholder="🔍 Поиск..." oninput="renderDatabaseCards()">
-        
         <div class="filter-row">
             <select id="filterDbType" onchange="renderDatabaseCards()">
                 <option value="all">Все типы</option>
@@ -606,41 +982,54 @@
                 <option value="amkador">Амкодор</option>
             </select>
         </div>
-        
         <div id="databaseCards"></div>
         <div id="dbEmpty" class="empty-state">
             <div class="icon">📚</div>
             <p>База пуста</p>
         </div>
-    </div>
-    
+    </section>
+
     <!-- Нижняя навигация -->
     <nav class="bottom-nav">
-        <button class="nav-item active" onclick="showSection('quick')">
+        <button class="nav-item" onclick="showSection('dashboard', event)">
+            <span class="icon">📊</span>
+            <span>Дашборд</span>
+        </button>
+        <button class="nav-item active" onclick="showSection('quick', event)">
             <span class="icon">⚡</span>
             <span>Назначить</span>
         </button>
-        <button class="nav-item" onclick="showSection('active')">
+        <button class="nav-item" onclick="showSection('active', event)">
             <span class="icon">🔴</span>
             <span>В работе</span>
         </button>
-        <button class="nav-item" onclick="showSection('repair')">
-            <span class="icon">🔧</span>
-            <span>Ремонт</span>
+        <button class="nav-item" onclick="showSection('free', event)">
+            <span class="icon">🟢</span>
+            <span>Свободная</span>
         </button>
-        <button class="nav-item" onclick="showSection('history')">
-            <span class="icon">📜</span>
-            <span>История</span>
-        </button>
-        <button class="nav-item" onclick="showSection('database')">
-            <span class="icon">📚</span>
-            <span>База</span>
+        <button class="nav-item nav-dropdown" onclick="toggleDropdown(event)">
+            <span class="icon">📁</span>
+            <span>Ещё</span>
+            <div class="nav-dropdown-menu" id="navDropdown">
+                <div class="nav-dropdown-item" onclick="showSection('repair', event)">
+                    <span>🔧</span>
+                    <span>Ремонт</span>
+                </div>
+                <div class="nav-dropdown-item" onclick="showSection('history', event)">
+                    <span>📜</span>
+                    <span>История</span>
+                </div>
+                <div class="nav-dropdown-item" onclick="showSection('database', event)">
+                    <span>📚</span>
+                    <span>База</span>
+                </div>
+            </div>
         </button>
     </nav>
-    
+
     <!-- Статус бар -->
     <div class="status-bar" id="statusBar"></div>
-    
+
     <!-- Модальные окна -->
     <div id="callModal" class="modal">
         <div class="modal-content">
@@ -652,11 +1041,13 @@
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="closeCallModal()">Закрыть</button>
                 <button class="btn btn-danger" onclick="openRepairFromCall()">🔧 В ремонт</button>
-                <button class="btn btn-success" id="confirmAssignBtn" onclick="confirmQuickAssign()" style="display:none;">✅ Подтвердить</button>
+                <button class="btn btn-success" id="confirmAssignBtn" onclick="confirmQuickAssign()" style="display:none;">
+                    ✅ Подтвердить
+                </button>
             </div>
         </div>
     </div>
-    
+
     <div id="editModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -670,7 +1061,7 @@
             </div>
         </div>
     </div>
-    
+
     <div id="repairModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -684,7 +1075,7 @@
             </div>
         </div>
     </div>
-    
+
     <div id="dbEditModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -698,7 +1089,7 @@
             </div>
         </div>
     </div>
-    
+
     <div id="addDbModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -712,7 +1103,7 @@
             </div>
         </div>
     </div>
-    
+
     <div id="historyDetailModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -727,6 +1118,55 @@
     </div>
 
     <script>
+        // ==================== КОНФИГУРАЦИЯ ====================
+        const CONFIG = {
+            STORAGE_KEYS: {
+                EQUIPMENT: 'equipment_v9',
+                DATABASE: 'equipment_db_v9',
+                REPAIR: 'equipment_repair_v9',
+                HISTORY: 'equipment_history_v9',
+                THEME: 'equipment_theme_v9'
+            },
+            SHIFT: {
+                MORNING_START: 7,
+                MORNING_END: 8,
+                EVENING_START: 19,
+                EVENING_END: 20,
+                DAY_START: 8,
+                DAY_END: 20
+            },
+            HISTORY_RETENTION_DAYS: 90,
+            REFRESH_INTERVAL: 1000,
+            PAUSE_TIMEOUT: 5000
+        };
+
+        const TYPE_NAMES = {
+            'avtokran': 'Автокран',
+            'polupricep': 'Полуприцеп',
+            'tyagach': 'Тягач',
+            'ppu': 'ППУ',
+            'ca320': 'ЦА-320',
+            'akn': 'АКН',
+            'amkador': 'Амкодор'
+        };
+
+        const CONTRACTOR_NAMES = {
+            'ours': 'Наша',
+            'pno': 'ПНО',
+            'fdv': 'ФДВ',
+            'onr': 'ОНР',
+            'eprs': 'ЕПРС'
+        };
+
+        const SHIFT_LABELS = {
+            'full': 'День+Ночь',
+            'day': 'Только день',
+            'night': 'Только ночь',
+            'repair': 'В ремонте'
+        };
+
+        const BASES = ['БСО-1', 'БСО-2', 'КП-135'];
+
         // ==================== ДАННЫЕ ====================
         let equipment = [];
         let database = [];
@@ -737,124 +1177,120 @@
         let repairId = null;
         let dbEditId = null;
         let refreshPaused = false;
-        
-        const SHIFT_CHANGE_MORNING = { start: 7, end: 8 };
-        const SHIFT_CHANGE_EVENING = { start: 19, end: 20 };
-        const HISTORY_RETENTION_DAYS = 90;
-        
-        const typeNames = {
-            'avtokran': 'Автокран',
-            'polupricep': 'Полуприцеп',
-            'tyagach': 'Тягач',
-            'ppu': 'ППУ',
-            'ca320': 'ЦА-320',
-            'akn': 'АКН',
-            'amkador': 'Амкодор'
-        };
-        
-        const contractorNames = {
-            'ours': 'Наша',
-            'pno': 'ПНО',
-            'fdv': 'ФДВ',
-            'onr': 'ОНР',
-            'eprs': 'ЕПРС'
-        };
-        
-        // ==================== ИНИЦИАЛИЗАЦИЯ ====================
-        window.onload = function() {
-            loadData();
-            fixOldData();
-            cleanOldHistory();
-            
-            if (database.length === 0) {
-                addToDatabaseDirect('avtokran', '369', 'БСО-1', 'ours', '8-992-222-00-60', '8-992-222-00-60', 'full', '');
-                addToDatabaseDirect('avtokran', '307', 'БСО-1', 'ours', '8-992-222-00-61', '8-992-222-00-60', 'full', '');
-                addToDatabaseDirect('avtokran', '545', 'БСО-1', 'ours', '8-992-222-00-62', '8-992-222-00-60', 'full', '');
-            }
-            
-            renderAll();
-            setInterval(updateColors, 1000);
-            updateCurrentTime();
-        };
-        
+
+        // ==================== ТЕМА ====================
+        function loadTheme() {
+            const savedTheme = localStorage.getItem(CONFIG.STORAGE_KEYS.THEME);
+            const theme = savedTheme || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+            document.getElementById('themeToggle').textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            document.getElementById('themeToggle').textContent = newTheme === 'dark' ? '☀️' : '🌙';
+            localStorage.setItem(CONFIG.STORAGE_KEYS.THEME, newTheme);
+        }
+
+        // ==================== ЗАГРУЗКА ДАННЫХ ====================
         function loadData() {
-            const savedEquip = localStorage.getItem('equipment_v8');
-            const savedDb = localStorage.getItem('equipment_db_v8');
-            const savedRepair = localStorage.getItem('equipment_repair_v8');
-            const savedHistory = localStorage.getItem('equipment_history_v8');
-            
-            if (savedEquip) {
-                equipment = JSON.parse(savedEquip);
-                equipment.forEach(e => {
-                    e.startDt = new Date(e.startDt);
-                    e.endDt = new Date(e.endDt);
-                });
-            }
-            if (savedDb) database = JSON.parse(savedDb);
-            if (savedRepair) repairList = JSON.parse(savedRepair);
-            if (savedHistory) {
-                history = JSON.parse(savedHistory);
-                history.forEach(h => {
-                    h.startDt = new Date(h.startDt);
-                    h.endDt = new Date(h.endDt);
-                });
+            try {
+                const savedEquip = localStorage.getItem(CONFIG.STORAGE_KEYS.EQUIPMENT);
+                const savedDb = localStorage.getItem(CONFIG.STORAGE_KEYS.DATABASE);
+                const savedRepair = localStorage.getItem(CONFIG.STORAGE_KEYS.REPAIR);
+                const savedHistory = localStorage.getItem(CONFIG.STORAGE_KEYS.HISTORY);
+                
+                if (savedEquip) {
+                    equipment = JSON.parse(savedEquip);
+                    equipment.forEach(e => {
+                        e.startDt = new Date(e.startDt);
+                        e.endDt = new Date(e.endDt);
+                    });
+                }
+                
+                if (savedDb) database = JSON.parse(savedDb);
+                if (savedRepair) repairList = JSON.parse(savedRepair);
+                if (savedHistory) {
+                    history = JSON.parse(savedHistory);
+                    history.forEach(h => {
+                        h.startDt = new Date(h.startDt);
+                        h.endDt = new Date(h.endDt);
+                    });
+                }
+            } catch (e) {
+                console.error('Ошибка загрузки данных:', e);
+                showAlert('⚠️ Ошибка загрузки данных', 'warning');
             }
         }
-        
+
+        // ==================== СОХРАНЕНИЕ ДАННЫХ ====================
         function saveData() {
-            localStorage.setItem('equipment_v8', JSON.stringify(equipment));
-            localStorage.setItem('equipment_db_v8', JSON.stringify(database));
-            localStorage.setItem('equipment_repair_v8', JSON.stringify(repairList));
-            localStorage.setItem('equipment_history_v8', JSON.stringify(history));
+            try {
+                localStorage.setItem(CONFIG.STORAGE_KEYS.EQUIPMENT, JSON.stringify(equipment));
+                localStorage.setItem(CONFIG.STORAGE_KEYS.DATABASE, JSON.stringify(database));
+                localStorage.setItem(CONFIG.STORAGE_KEYS.REPAIR, JSON.stringify(repairList));
+                localStorage.setItem(CONFIG.STORAGE_KEYS.HISTORY, JSON.stringify(history));
+            } catch (e) {
+                console.error('Ошибка сохранения данных:', e);
+                showAlert('⚠️ Ошибка сохранения', 'warning');
+            }
         }
-        
+
+        // ==================== ИСПРАВЛЕНИЕ ДАННЫХ ====================
         function fixOldData() {
             let saved = false;
             database.forEach(d => {
                 if (!d.shiftType) { d.shiftType = 'full'; saved = true; }
                 if (!d.comment) { d.comment = ''; saved = true; }
-                if (!d.travelHours) { d.travelHours = 0; saved = true; }
+                if (!d.phoneNight) { d.phoneNight = d.phoneDay; saved = true; }
             });
             if (saved) saveData();
         }
-        
+
+        // ==================== ОЧИСТКА ИСТОРИИ ====================
         function cleanOldHistory() {
             const cutoffDate = new Date();
-            cutoffDate.setDate(cutoffDate.getDate() - HISTORY_RETENTION_DAYS);
-            
+            cutoffDate.setDate(cutoffDate.getDate() - CONFIG.HISTORY_RETENTION_DAYS);
             const originalLength = history.length;
             history = history.filter(h => new Date(h.startDt) >= cutoffDate);
-            
             if (history.length !== originalLength) {
                 saveData();
-                showAlert(`🗑️ Удалено ${originalLength - history.length} старых записей`, 'info');
             }
         }
-        
-        // ==================== НАВИГАЦИЯ ====================
-        function showSection(section) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById(`section-${section}`).classList.add('active');
-            event.currentTarget.classList.add('active');
-            renderAll();
-            window.scrollTo(0, 0);
+
+        // ==================== БИЗНЕС-ЛОГИКА ====================
+        function getCurrentShift() {
+            const hour = new Date().getHours();
+            if (hour >= CONFIG.SHIFT.DAY_START && hour < CONFIG.SHIFT.DAY_END) {
+                return 'day';
+            }
+            return 'night';
         }
-        
-        // ==================== ПРОВЕРКА ДОСТУПНОСТИ ====================
+
+        function getShiftLabel(shift) {
+            return shift === 'day' ? '☀️ Дневная' : '🌙 Ночная';
+        }
+
+        function getDriverPhone(data, shift) {
+            if (shift === 'night') {
+                return data.phoneNight || data.phoneDay;
+            }
+            return data.phoneDay || data.phoneNight;
+        }
+
         function isEquipmentAvailable(shiftType) {
             if (shiftType === 'repair') return false;
-            const now = new Date();
-            const hour = now.getHours();
+            const hour = new Date().getHours();
             if (shiftType === 'day') return hour >= 8 && hour < 20;
             if (shiftType === 'night') return hour >= 20 || hour < 8;
             return true;
         }
-        
+
         function getShiftAvailabilityLabel(shiftType) {
             if (shiftType === 'repair') return '🔧 В ремонте';
-            const now = new Date();
-            const hour = now.getHours();
+            const hour = new Date().getHours();
             if (shiftType === 'day') {
                 return hour >= 8 && hour < 20 ? '☀️ Доступно' : '🌙 Недоступно';
             } else if (shiftType === 'night') {
@@ -862,19 +1298,443 @@
             }
             return '🕐 Всегда';
         }
-        
-        // ==================== БАЗА ТЕХНИКИ ====================
+
+        function isShiftChangeWindow(hour) {
+            if (hour >= CONFIG.SHIFT.MORNING_START && hour < CONFIG.SHIFT.MORNING_END) return true;
+            if (hour >= CONFIG.SHIFT.EVENING_START && hour < CONFIG.SHIFT.EVENING_END) return true;
+            return false;
+        }
+
+        function getShiftChangeLocation(startDt, endDt, defaultLocation) {
+            const endHour = endDt.getHours();
+            const endMinutes = endDt.getMinutes();
+            const endTimeDecimal = endHour + (endMinutes / 60);
+            
+            if (endTimeDecimal < 7) return { location: 'base', text: '🏠 На базе', nextShift: 'дневной' };
+            if (isShiftChangeWindow(endHour)) return { location: 'site', text: '📍 На кусту', nextShift: endHour >= 19 ? 'ночной' : 'дневной' };
+            if (endTimeDecimal >= 8 && endTimeDecimal < 19) return { location: 'base', text: '🏠 На базе', nextShift: 'дневной' };
+            if (endTimeDecimal >= 20) return { location: 'base', text: '🏠 На базе', nextShift: 'ночной' };
+            
+            return { location: defaultLocation || 'base', text: '🏠 На базе', nextShift: 'дневной' };
+        }
+
+        // ==================== БАЗА ДАННЫХ ====================
         function addToDatabaseDirect(type, num, base, contractor, phoneDay, phoneNight, shiftType, comment) {
             const exists = database.find(d => d.type === type && d.num === num);
-            if (exists) return;
+            if (exists) return false;
+            
             database.push({
                 id: Date.now() + Math.random(),
-                type, num, base, contractor, phoneDay, phoneNight, shiftType, comment,
+                type,
+                num,
+                base,
+                contractor,
+                phoneDay,
+                phoneNight: phoneNight || phoneDay,
+                shiftType,
+                comment,
                 added: new Date().toLocaleString('ru-RU')
             });
             saveData();
+            return true;
         }
-        
+
+        // ==================== НАВИГАЦИЯ ====================
+        function showSection(section, event) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            document.getElementById(`section-${section}`).classList.add('active');
+            
+            if (event) {
+                event.currentTarget.classList.add('active');
+            }
+            
+            // Закрыть dropdown
+            document.getElementById('navDropdown').classList.remove('show');
+            
+            renderAll();
+            window.scrollTo(0, 0);
+        }
+
+        function toggleDropdown(event) {
+            event.stopPropagation();
+            const menu = document.getElementById('navDropdown');
+            menu.classList.toggle('show');
+        }
+
+        // Закрытие dropdown при клике вне
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('navDropdown');
+            if (!e.target.closest('.nav-dropdown')) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // ==================== БЫСТРОЕ НАЗНАЧЕНИЕ ====================
+        function updateQuickEquipment() {
+            const typeFilter = document.getElementById('quickType')?.value || '';
+            const baseFilter = document.getElementById('quickBase')?.value || '';
+            const select = document.getElementById('quickEquipment');
+            const now = new Date();
+            const currentValue = select.value;
+            
+            select.innerHTML = '<option value="">-- Выберите --</option>';
+            
+            let available = database.filter(d => {
+                const typeMatch = typeFilter === '' || d.type === typeFilter;
+                const baseMatch = baseFilter === '' || d.base === baseFilter;
+                const notInWork = !equipment.find(e => e.type === d.type && e.equipNum === d.num && now < e.endDt);
+                const notInRepair = !repairList.find(r => r.type === d.type && r.num === d.num);
+                const shiftType = d.shiftType || 'full';
+                const isAvailableByTime = isEquipmentAvailable(shiftType);
+                return typeMatch && baseMatch && notInWork && notInRepair && isAvailableByTime;
+            });
+            
+            available.forEach(d => {
+                const option = document.createElement('option');
+                const shiftType = d.shiftType || 'full';
+                option.value = JSON.stringify(d);
+                const availLabel = getShiftAvailabilityLabel(shiftType);
+                option.textContent = `${TYPE_NAMES[d.type]} №${d.num} - ${availLabel}`;
+                select.appendChild(option);
+            });
+            
+            if (currentValue) select.value = currentValue;
+        }
+
+        function filterQuickEquipment() {
+            refreshPaused = true;
+            updateQuickEquipment();
+            setTimeout(() => { refreshPaused = false; }, CONFIG.PAUSE_TIMEOUT);
+        }
+
+        function quickAssign() {
+            const select = document.getElementById('quickEquipment');
+            const brigade = document.getElementById('quickBrigade')?.value.trim();
+            const workHours = parseFloat(document.getElementById('quickWorkHours')?.value) || 4;
+            const travelHours = parseFloat(document.getElementById('quickTravelHours')?.value) || 0;
+            
+            if (!select.value) {
+                showAlert('⚠️ Выберите технику!', 'warning');
+                return;
+            }
+            if (!brigade) {
+                showAlert('⚠️ Введите бригаду!', 'warning');
+                return;
+            }
+            
+            const data = JSON.parse(select.value);
+            const currentShift = getCurrentShift();
+            const driverPhone = getDriverPhone(data, currentShift);
+            
+            callData = { 
+                ...data, 
+                brigade, 
+                workHours, 
+                travelHours, 
+                currentShift, 
+                driverPhone 
+            };
+            
+            const shiftBadge = currentShift === 'day' 
+                ? '<span class="shift-driver-badge shift-day">☀️ Дневная смена</span>'
+                : '<span class="shift-driver-badge shift-night">🌙 Ночная смена</span>';
+            
+            const modalBody = document.getElementById('callModalBody');
+            modalBody.innerHTML = `
+                <div class="card working">
+                    <div class="card-header">
+                        <span class="card-title">${TYPE_NAMES[data.type]} №${data.num}</span>
+                        <span class="card-badge badge-working">Назначение</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">База</span>
+                        <span class="card-value">${data.base}</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Бригада</span>
+                        <span class="card-value">${brigade}</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Время работы</span>
+                        <span class="card-value">${workHours}ч</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Время пути</span>
+                        <span class="card-value">${travelHours}ч</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">ВСЕГО</span>
+                        <span class="card-value"><strong>${(workHours + travelHours).toFixed(2)}ч</strong></span>
+                    </div>
+                </div>
+                <div class="card repair">
+                    <h4 style="margin-bottom: 10px; font-size: 14px;">📞 Позвоните водителю ${shiftBadge}:</h4>
+                    <p style="text-align: center; font-size: 20px; margin: 15px 0;">
+                        <a href="tel:${driverPhone}" class="phone-link">${driverPhone}</a>
+                    </p>
+                    <p style="text-align: center; font-size: 12px; color: var(--text-secondary);">Нажмите на номер для звонка</p>
+                    <div class="card-row" style="margin-top: 10px;">
+                        <span class="card-label">☀️ День:</span>
+                        <span class="card-value"><a href="tel:${data.phoneDay}" class="phone-link">${data.phoneDay}</a></span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">🌙 Ночь:</span>
+                        <span class="card-value"><a href="tel:${data.phoneNight}" class="phone-link">${data.phoneNight}</a></span>
+                    </div>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="driverConfirmed" onchange="toggleConfirmButton()">
+                    <label for="driverConfirmed">Водитель подтвердил задание</label>
+                </div>
+            `;
+            
+            document.getElementById('callModal').classList.add('show');
+        }
+
+        function toggleConfirmButton() {
+            const confirmed = document.getElementById('driverConfirmed').checked;
+            document.getElementById('confirmAssignBtn').style.display = confirmed ? 'block' : 'none';
+        }
+
+        function confirmQuickAssign() {
+            if (!callData) return;
+            
+            const now = new Date();
+            const totalHours = callData.workHours + callData.travelHours;
+            const endDt = new Date(now.getTime() + totalHours * 60 * 60 * 1000);
+            const shiftInfo = getShiftChangeLocation(now, endDt, 'base');
+            
+            const assignment = {
+                id: Date.now(),
+                type: callData.type,
+                equipNum: callData.num,
+                base: callData.base,
+                contractor: callData.contractor,
+                brigade: callData.brigade,
+                workHours: callData.workHours,
+                travelHours: callData.travelHours,
+                totalHours,
+                start: now.toLocaleString('ru-RU'),
+                startDt: now,
+                end: endDt.toLocaleString('ru-RU'),
+                endDt,
+                status: 'В работе',
+                shiftLocation: shiftInfo.location,
+                shiftText: shiftInfo.text,
+                phoneDay: callData.phoneDay,
+                phoneNight: callData.phoneNight,
+                assignedShift: callData.currentShift,
+                completed: false
+            };
+            
+            equipment.push(assignment);
+            saveData();
+            closeCallModal();
+            renderAll();
+            
+            document.getElementById('quickBrigade').value = '';
+            document.getElementById('quickEquipment').value = '';
+            document.getElementById('quickTravelHours').value = '0';
+            
+            showAlert(`✅ Назначен в ${callData.brigade}`, 'success');
+        }
+
+        function closeCallModal() {
+            document.getElementById('callModal').classList.remove('show');
+            callData = null;
+            document.getElementById('confirmAssignBtn').style.display = 'none';
+        }
+
+        // ==================== РЕДАКТИРОВАНИЕ ====================
+        function openEditModal(eid) {
+            const item = equipment.find(e => e.id === eid);
+            if (!item) return;
+            editingId = eid;
+            
+            const modalBody = document.getElementById('editModalBody');
+            modalBody.innerHTML = `
+                <div class="form-group">
+                    <label>Бригада</label>
+                    <input type="text" id="editBrigade" value="${item.brigade}">
+                </div>
+                <div class="form-group">
+                    <label>Время работы (ч)</label>
+                    <input type="number" id="editWorkHours" value="${item.workHours}" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>Время пути (ч)</label>
+                    <input type="number" id="editTravelHours" value="${item.travelHours || 0}" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>Пересменка</label>
+                    <select id="editShiftLocation">
+                        <option value="base" ${item.shiftLocation === 'base' ? 'selected' : ''}>🏠 На базе</option>
+                        <option value="site" ${item.shiftLocation === 'site' ? 'selected' : ''}>📍 На кусту</option>
+                    </select>
+                </div>
+            `;
+            
+            document.getElementById('editModal').classList.add('show');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('show');
+            editingId = null;
+        }
+
+        function saveEdit() {
+            const item = equipment.find(e => e.id === editingId);
+            if (!item) return;
+            
+            const newBrigade = document.getElementById('editBrigade')?.value.trim();
+            const newWorkHours = parseFloat(document.getElementById('editWorkHours')?.value) || 4;
+            const newTravelHours = parseFloat(document.getElementById('editTravelHours')?.value) || 0;
+            const shiftLocation = document.getElementById('editShiftLocation')?.value || 'base';
+            
+            if (!newBrigade) {
+                showAlert('⚠️ Введите бригаду!', 'warning');
+                return;
+            }
+            
+            item.brigade = newBrigade;
+            item.workHours = newWorkHours;
+            item.travelHours = newTravelHours;
+            item.totalHours = newWorkHours + newTravelHours;
+            item.endDt = new Date(item.startDt.getTime() + item.totalHours * 60 * 60 * 1000);
+            item.end = item.endDt.toLocaleString('ru-RU');
+            item.shiftLocation = shiftLocation;
+            item.shiftText = shiftLocation === 'base' ? '🏠 На базе' : '📍 На кусту';
+            item.shiftManual = true;
+            
+            saveData();
+            closeEditModal();
+            renderAll();
+            showAlert('✅ Сохранено', 'success');
+        }
+
+        // ==================== РЕМОНТ ====================
+        function openRepairFromCall() {
+            if (!callData) return;
+            repairId = { 
+                type: callData.type, 
+                num: callData.num, 
+                base: callData.base, 
+                phoneDay: callData.driverPhone 
+            };
+            
+            const modalBody = document.getElementById('repairModalBody');
+            modalBody.innerHTML = `
+                <div class="form-group">
+                    <label>Что сломалось</label>
+                    <input type="text" id="repairWhat" placeholder="Двигатель...">
+                </div>
+                <div class="form-group">
+                    <label>Комментарий</label>
+                    <textarea id="repairComment" rows="2" placeholder="Подробности..."></textarea>
+                </div>
+            `;
+            
+            document.getElementById('repairModal').classList.add('show');
+            closeCallModal();
+        }
+
+        function closeRepairModal() {
+            document.getElementById('repairModal').classList.remove('show');
+            repairId = null;
+        }
+
+        function saveRepair() {
+            if (!repairId) return;
+            
+            const repairWhat = document.getElementById('repairWhat')?.value.trim();
+            const repairComment = document.getElementById('repairComment')?.value.trim();
+            
+            if (!repairWhat) {
+                showAlert('⚠️ Укажите что сломалось!', 'warning');
+                return;
+            }
+            
+            // Архивируем текущее назначение
+            const itemToArchive = equipment.find(e => e.type === repairId.type && e.equipNum === repairId.num);
+            if (itemToArchive) {
+                archiveAssignment(itemToArchive, 'Ремонт');
+            }
+            
+            // Удаляем из активной техники
+            equipment = equipment.filter(e => !(e.type === repairId.type && e.equipNum === repairId.num));
+            
+            // Добавляем в ремонт
+            repairList.push({
+                id: Date.now(),
+                type: repairId.type,
+                num: repairId.num,
+                base: repairId.base,
+                phoneDay: repairId.phoneDay,
+                when: new Date().toLocaleString('ru-RU'),
+                what: repairWhat,
+                comment: repairComment
+            });
+            
+            // Обновляем статус в базе
+            const dbItem = database.find(d => d.type === repairId.type && d.num === repairId.num);
+            if (dbItem) {
+                dbItem.shiftType = 'repair';
+            }
+            
+            saveData();
+            closeRepairModal();
+            renderAll();
+            showAlert('✅ В ремонт', 'success');
+        }
+
+        function restoreFromRepair(id) {
+            if (!confirm('❗ Восстановить технику из ремонта?')) return;
+            
+            const item = repairList.find(r => r.id === id);
+            if (item) {
+                const dbItem = database.find(d => d.type === item.type && d.num === item.num);
+                if (dbItem) {
+                    dbItem.shiftType = 'full';
+                }
+            }
+            
+            repairList = repairList.filter(r => r.id !== id);
+            saveData();
+            renderAll();
+            showAlert('ℹ️ Восстановлен', 'info');
+        }
+
+        // ==================== АРХИВИРОВАНИЕ ====================
+        function archiveAssignment(assignment, reason) {
+            const archiveRecord = {
+                ...assignment,
+                archivedAt: new Date().toISOString(),
+                completed: true,
+                completionReason: reason || 'Завершено'
+            };
+            archiveRecord.startDt = assignment.startDt.toISOString();
+            archiveRecord.endDt = assignment.endDt.toISOString();
+            history.unshift(archiveRecord);
+            cleanOldHistory();
+            saveData();
+        }
+
+        function completeEquipment(eid) {
+            if (!confirm('❗ Освободить технику?')) return;
+            
+            const item = equipment.find(e => e.id === eid);
+            if (item) {
+                archiveAssignment(item, 'Завершено');
+            }
+            equipment = equipment.filter(e => e.id !== eid);
+            saveData();
+            renderAll();
+            showAlert('ℹ️ Освобождён', 'info');
+        }
+
+        // ==================== БАЗА ДАННЫХ ====================
         function openAddDbModal() {
             const modalBody = document.getElementById('addDbModalBody');
             modalBody.innerHTML = `
@@ -922,25 +1782,26 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Телефон день</label>
+                    <label>Телефон день ☀️</label>
                     <input type="tel" id="dbPhoneDay" placeholder="8-992-222-00-60">
                 </div>
                 <div class="form-group">
-                    <label>Телефон ночь</label>
-                    <input type="tel" id="dbPhoneNight" placeholder="8-992-222-00-60">
+                    <label>Телефон ночь 🌙</label>
+                    <input type="tel" id="dbPhoneNight" placeholder="8-992-222-00-61">
                 </div>
                 <div class="form-group">
                     <label>Комментарий</label>
                     <textarea id="dbComment" rows="2" placeholder="Особенности..."></textarea>
                 </div>
             `;
+            
             document.getElementById('addDbModal').classList.add('show');
         }
-        
+
         function closeAddDbModal() {
             document.getElementById('addDbModal').classList.remove('show');
         }
-        
+
         function addToDatabase() {
             const type = document.getElementById('dbType').value;
             const num = document.getElementById('dbNum').value.trim();
@@ -951,36 +1812,43 @@
             const shiftType = document.getElementById('dbShiftType').value;
             const comment = document.getElementById('dbComment').value.trim();
             
-            if (!num) { showAlert('⚠️ Введите номер!', 'warning'); return; }
+            if (!num) {
+                showAlert('⚠️ Введите номер!', 'warning');
+                return;
+            }
             
-            addToDatabaseDirect(type, num, base, contractor, phoneDay, phoneNight, shiftType, comment);
+            const added = addToDatabaseDirect(type, num, base, contractor, phoneDay, phoneNight || phoneDay, shiftType, comment);
             closeAddDbModal();
             renderAll();
-            showAlert('✅ Добавлено', 'success');
+            
+            if (added) {
+                showAlert('✅ Добавлено', 'success');
+            } else {
+                showAlert('⚠️ Такая техника уже есть', 'warning');
+            }
         }
-        
+
         function deleteFromDatabase(id) {
             if (!confirm('❗ Удалить?')) return;
             database = database.filter(d => d.id !== id);
             saveData();
             renderAll();
         }
-        
+
         function openDbEditModal(id) {
             const item = database.find(d => d.id === id);
             if (!item) return;
-            
             dbEditId = id;
-            const modalBody = document.getElementById('dbEditModalBody');
             
+            const modalBody = document.getElementById('dbEditModalBody');
             modalBody.innerHTML = `
                 <div class="form-group">
-                    <label>Телефон день</label>
+                    <label>Телефон день ☀️</label>
                     <input type="tel" id="editPhoneDay" value="${item.phoneDay}">
                 </div>
                 <div class="form-group">
-                    <label>Телефон ночь</label>
-                    <input type="tel" id="editPhoneNight" value="${item.phoneNight}">
+                    <label>Телефон ночь 🌙</label>
+                    <input type="tel" id="editPhoneNight" value="${item.phoneNight || item.phoneDay}">
                 </div>
                 <div class="form-group">
                     <label>Режим</label>
@@ -999,12 +1867,12 @@
             
             document.getElementById('dbEditModal').classList.add('show');
         }
-        
+
         function closeDbEditModal() {
             document.getElementById('dbEditModal').classList.remove('show');
             dbEditId = null;
         }
-        
+
         function saveDbEdit() {
             const item = database.find(d => d.id === dbEditId);
             if (!item) return;
@@ -1036,314 +1904,10 @@
             renderAll();
             showAlert('✅ Сохранено', 'success');
         }
-        
-        function renderDatabaseCards() {
-            const container = document.getElementById('databaseCards');
-            const empty = document.getElementById('dbEmpty');
-            const search = document.getElementById('searchDb')?.value.toLowerCase() || '';
-            const filterType = document.getElementById('filterDbType')?.value || 'all';
-            
-            let filtered = database.filter(d => {
-                const typeMatch = filterType === 'all' || d.type === filterType;
-                const searchMatch = d.num.toLowerCase().includes(search);
-                return typeMatch && searchMatch;
-            });
-            
-            if (filtered.length === 0) { container.innerHTML = ''; empty.style.display = 'block'; return; }
-            empty.style.display = 'none';
-            
-            container.innerHTML = filtered.map(d => {
-                const shiftType = d.shiftType || 'full';
-                const shiftLabels = { 'full': 'День+Ночь', 'day': 'Только день', 'night': 'Только ночь', 'repair': 'В ремонте' };
-                
-                return `
-                <div class="card free">
-                    <div class="card-header">
-                        <div>
-                            <span class="type-badge bg-${d.type}">${typeNames[d.type]}</span>
-                            <span class="card-title">${d.num}</span>
-                        </div>
-                        <span class="card-badge badge-free">${shiftLabels[shiftType]}</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">База</span>
-                        <span class="card-value"><span class="base-badge">${d.base}</span></span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">Подрядчик</span>
-                        <span class="card-value">${contractorNames[d.contractor]}</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">Телефон день</span>
-                        <span class="card-value"><a href="tel:${d.phoneDay}" class="phone-link">${d.phoneDay}</a></span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">Телефон ночь</span>
-                        <span class="card-value"><a href="tel:${d.phoneNight}" class="phone-link">${d.phoneNight}</a></span>
-                    </div>
-                    ${d.comment ? `<div class="card-row"><span class="card-label">Комментарий</span><span class="card-value">${d.comment}</span></div>` : ''}
-                    <div class="card-actions">
-                        <button class="btn btn-primary" onclick="openDbEditModal(${d.id})">✏️ Изменить</button>
-                        <button class="btn btn-danger" onclick="deleteFromDatabase(${d.id})">❌ Удалить</button>
-                    </div>
-                </div>`;
-            }).join('');
-        }
-        
-        // ==================== БЫСТРОЕ НАЗНАЧЕНИЕ ====================
-        function updateQuickEquipment() {
-            const typeFilter = document.getElementById('quickType')?.value || '';
-            const baseFilter = document.getElementById('quickBase')?.value || '';
-            const select = document.getElementById('quickEquipment');
-            const now = new Date();
-            
-            const currentValue = select.value;
-            select.innerHTML = '<option value="">-- Выберите --</option>';
-            
-            let available = database.filter(d => {
-                const typeMatch = typeFilter === '' || d.type === typeFilter;
-                const baseMatch = baseFilter === '' || d.base === baseFilter;
-                const notInWork = !equipment.find(e => e.type === d.type && e.equipNum === d.num && now < e.endDt);
-                const notInRepair = !repairList.find(r => r.type === d.type && r.num === d.num);
-                const shiftType = d.shiftType || 'full';
-                const isAvailableByTime = isEquipmentAvailable(shiftType);
-                return typeMatch && baseMatch && notInWork && notInRepair && isAvailableByTime;
-            });
-            
-            available.forEach(d => {
-                const option = document.createElement('option');
-                const shiftType = d.shiftType || 'full';
-                option.value = JSON.stringify(d);
-                const availLabel = getShiftAvailabilityLabel(shiftType);
-                option.textContent = `${typeNames[d.type]} №${d.num} - ${availLabel}`;
-                select.appendChild(option);
-            });
-            
-            if (currentValue) select.value = currentValue;
-        }
-        
-        function filterQuickEquipment() {
-            refreshPaused = true;
-            updateQuickEquipment();
-            setTimeout(() => { refreshPaused = false; }, 5000);
-        }
-        
-        function quickAssign() {
-            const select = document.getElementById('quickEquipment');
-            const brigade = document.getElementById('quickBrigade')?.value.trim();
-            const workHours = parseFloat(document.getElementById('quickWorkHours')?.value) || 4;
-            const travelHours = parseFloat(document.getElementById('quickTravelHours')?.value) || 0;
-            
-            if (!select.value) { showAlert('⚠️ Выберите технику!', 'warning'); return; }
-            if (!brigade) { showAlert('⚠️ Введите бригаду!', 'warning'); return; }
-            
-            const data = JSON.parse(select.value);
-            callData = { ...data, brigade, workHours, travelHours };
-            
-            const modalBody = document.getElementById('callModalBody');
-            modalBody.innerHTML = `
-                <div class="card working">
-                    <div class="card-header">
-                        <span class="card-title">${typeNames[data.type]} №${data.num}</span>
-                        <span class="card-badge badge-working">Назначение</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">База</span>
-                        <span class="card-value">${data.base}</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">Бригада</span>
-                        <span class="card-value">${brigade}</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">Время работы</span>
-                        <span class="card-value">${workHours}ч</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">Время пути</span>
-                        <span class="card-value">${travelHours}ч</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">ВСЕГО</span>
-                        <span class="card-value"><strong>${(workHours + travelHours).toFixed(2)}ч</strong></span>
-                    </div>
-                </div>
-                <div class="card repair">
-                    <h4 style="margin-bottom: 10px; font-size: 14px;">📞 Позвоните водителю:</h4>
-                    <p style="text-align: center; font-size: 20px; margin: 15px 0;">
-                        <a href="tel:${data.phoneDay}" class="phone-link">${data.phoneDay}</a>
-                    </p>
-                    <p style="text-align: center; font-size: 12px; color: #7f8c8d;">Нажмите на номер для звонка</p>
-                </div>
-                <div class="checkbox-group">
-                    <input type="checkbox" id="driverConfirmed" onchange="toggleConfirmButton()">
-                    <label for="driverConfirmed">Водитель подтвердил задание</label>
-                </div>
-            `;
-            
-            document.getElementById('callModal').classList.add('show');
-        }
-        
-        function toggleConfirmButton() {
-            const confirmed = document.getElementById('driverConfirmed').checked;
-            document.getElementById('confirmAssignBtn').style.display = confirmed ? 'block' : 'none';
-        }
-        
-        function confirmQuickAssign() {
-            if (!callData) return;
-            
-            const now = new Date();
-            const totalHours = callData.workHours + callData.travelHours;
-            const endDt = new Date(now.getTime() + totalHours * 60 * 60 * 1000);
-            const shiftInfo = getShiftChangeLocation(now, endDt, 'base');
-            
-            const assignment = {
-                id: Date.now(),
-                type: callData.type,
-                equipNum: callData.num,
-                base: callData.base,
-                contractor: callData.contractor,
-                brigade: callData.brigade,
-                workHours: callData.workHours,
-                travelHours: callData.travelHours,
-                totalHours,
-                start: now.toLocaleString('ru-RU'),
-                startDt: now,
-                end: endDt.toLocaleString('ru-RU'),
-                endDt,
-                status: 'В работе',
-                shiftLocation: shiftInfo.location,
-                shiftText: shiftInfo.text,
-                phoneDay: callData.phoneDay,
-                phoneNight: callData.phoneNight,
-                completed: false
-            };
-            
-            equipment.push(assignment);
-            saveData();
-            closeCallModal();
-            renderAll();
-            
-            document.getElementById('quickBrigade').value = '';
-            document.getElementById('quickEquipment').value = '';
-            document.getElementById('quickTravelHours').value = '0';
-            
-            showAlert(`✅ Назначен в ${callData.brigade}`, 'success');
-        }
-        
-        function closeCallModal() {
-            document.getElementById('callModal').classList.remove('show');
-            callData = null;
-            document.getElementById('confirmAssignBtn').style.display = 'none';
-        }
-        
-        function openRepairFromCall() {
-            if (!callData) return;
-            repairId = { type: callData.type, num: callData.num, base: callData.base, phoneDay: callData.phoneDay };
-            
-            const modalBody = document.getElementById('repairModalBody');
-            modalBody.innerHTML = `
-                <div class="form-group">
-                    <label>Что сломалось</label>
-                    <input type="text" id="repairWhat" placeholder="Двигатель...">
-                </div>
-                <div class="form-group">
-                    <label>Комментарий</label>
-                    <textarea id="repairComment" rows="2" placeholder="Подробности..."></textarea>
-                </div>
-            `;
-            
-            document.getElementById('repairModal').classList.add('show');
-            closeCallModal();
-        }
-        
-        function saveRepair() {
-            if (!repairId) return;
-            
-            const repairWhat = document.getElementById('repairWhat')?.value.trim();
-            const repairComment = document.getElementById('repairComment')?.value.trim();
-            
-            if (!repairWhat) { showAlert('⚠️ Укажите что сломалось!', 'warning'); return; }
-            
-            const itemToArchive = equipment.find(e => e.type === repairId.type && e.equipNum === repairId.num);
-            if (itemToArchive) {
-                archiveAssignment(itemToArchive, 'Ремонт');
-            }
-            
-            equipment = equipment.filter(e => !(e.type === repairId.type && e.equipNum === repairId.num));
-            
-            repairList.push({
-                id: Date.now(),
-                type: repairId.type,
-                num: repairId.num,
-                base: repairId.base,
-                phoneDay: repairId.phoneDay,
-                when: new Date().toLocaleString('ru-RU'),
-                what: repairWhat,
-                comment: repairComment
-            });
-            
-            const dbItem = database.find(d => d.type === repairId.type && d.num === repairId.num);
-            if (dbItem) dbItem.shiftType = 'repair';
-            
-            saveData();
-            closeRepairModal();
-            renderAll();
-            showAlert('✅ В ремонт', 'success');
-        }
-        
-        function closeRepairModal() {
-            document.getElementById('repairModal').classList.remove('show');
-            repairId = null;
-        }
-        
-        function restoreFromRepair(id) {
-            if (!confirm('❗ Восстановить технику из ремонта?')) return;
-            const item = repairList.find(r => r.id === id);
-            if (item) {
-                const dbItem = database.find(d => d.type === item.type && d.num === item.num);
-                if (dbItem) dbItem.shiftType = 'full';
-            }
-            repairList = repairList.filter(r => r.id !== id);
-            saveData();
-            renderAll();
-            showAlert('ℹ️ Восстановлен', 'info');
-        }
-        
+
         // ==================== ИСТОРИЯ ====================
-        function archiveAssignment(assignment, reason) {
-            const archiveRecord = {
-                ...assignment,
-                archivedAt: new Date().toISOString(),
-                completed: true,
-                completionReason: reason || 'Завершено'
-            };
-            
-            archiveRecord.startDt = assignment.startDt.toISOString();
-            archiveRecord.endDt = assignment.endDt.toISOString();
-            
-            history.unshift(archiveRecord);
-            cleanOldHistory();
-            saveData();
-        }
-        
-        function completeEquipment(eid) {
-            if (!confirm('❗ Освободить технику?')) return;
-            
-            const item = equipment.find(e => e.id === eid);
-            if (item) {
-                archiveAssignment(item, 'Завершено');
-            }
-            
-            equipment = equipment.filter(e => e.id !== eid);
-            saveData();
-            renderAll();
-            showAlert('ℹ️ Освобождён', 'info');
-        }
-        
         function openHistoryDetailModal(record) {
             const modalBody = document.getElementById('historyDetailBody');
-            
             const startDate = new Date(record.startDt);
             const endDate = new Date(record.endDt);
             const duration = ((endDate - startDate) / 1000 / 60 / 60).toFixed(1);
@@ -1352,7 +1916,7 @@
                 <div class="card history">
                     <div class="card-header">
                         <div>
-                            <span class="type-badge bg-${record.type}">${typeNames[record.type]}</span>
+                            <span class="type-badge bg-${record.type}">${TYPE_NAMES[record.type]}</span>
                             <span class="card-title">${record.equipNum}</span>
                         </div>
                         <span class="card-badge badge-history">📜 История</span>
@@ -1390,6 +1954,10 @@
                         <span class="card-value">${record.shiftText}</span>
                     </div>
                     <div class="card-row">
+                        <span class="card-label">Смена назначения</span>
+                        <span class="card-value">${record.assignedShift === 'day' ? '☀️ Дневная' : '🌙 Ночная'}</span>
+                    </div>
+                    <div class="card-row">
                         <span class="card-label">Статус</span>
                         <span class="card-value">${record.completionReason || 'Завершено'}</span>
                     </div>
@@ -1402,11 +1970,390 @@
             
             document.getElementById('historyDetailModal').classList.add('show');
         }
-        
+
         function closeHistoryDetailModal() {
             document.getElementById('historyDetailModal').classList.remove('show');
         }
-        
+
+        function exportHistory() {
+            const period = document.getElementById('historyPeriod')?.value || '30';
+            let filtered = [...history];
+            
+            if (period !== 'all') {
+                const cutoffDate = new Date();
+                cutoffDate.setDate(cutoffDate.getDate() - parseInt(period));
+                filtered = filtered.filter(h => new Date(h.startDt) >= cutoffDate);
+            }
+            
+            if (filtered.length === 0) {
+                showAlert('⚠️ Нет данных для экспорта', 'warning');
+                return;
+            }
+            
+            let csv = 'Дата начала;Дата окончания;Техника;№;База;Бригада;Работа;Путь;Всего;Смена;Пересменка;Статус\n';
+            filtered.forEach(h => {
+                const startDate = new Date(h.startDt);
+                const endDate = new Date(h.endDt);
+                const duration = ((endDate - startDate) / 1000 / 60 / 60).toFixed(1);
+                csv += `${h.start};${h.end};${TYPE_NAMES[h.type]};${h.equipNum};${h.base};${h.brigade};${h.workHours}ч;${h.travelHours || 0}ч;${duration}ч;${h.assignedShift === 'day' ? 'Дневная' : 'Ночная'};${h.shiftText};${h.completionReason || 'Завершено'}\n`;
+            });
+            
+            const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `история_техники_${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+            
+            showAlert(`✅ Экспортировано ${filtered.length} записей`, 'success');
+        }
+
+        // ==================== ОТРИСОВКА ====================
+        function updateColors() {
+            if (refreshPaused) return;
+            const now = new Date();
+            
+            equipment.forEach(e => {
+                const timeToEnd = (e.endDt - now) / 1000 / 60;
+                if (!e.manualStatus) {
+                    if (now >= e.endDt) e.status = 'Готов';
+                    else if (timeToEnd <= 60) e.status = 'Скоро';
+                    else e.status = 'В работе';
+                }
+                if (!e.shiftManual) {
+                    const shiftInfo = getShiftChangeLocation(e.startDt, e.endDt, e.base);
+                    e.shiftLocation = shiftInfo.location;
+                    e.shiftText = shiftInfo.text;
+                }
+            });
+            
+            renderAll();
+            updateStatusBar();
+            updateCurrentTime();
+        }
+
+        function updateCurrentTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('currentTime').textContent = `🕐 ${timeStr}`;
+            
+            const currentShift = getCurrentShift();
+            document.getElementById('currentShift').textContent = getShiftLabel(currentShift);
+            document.getElementById('currentShiftBadge').textContent = currentShift === 'day' ? '☀️' : '🌙';
+            document.getElementById('currentShiftBadgeQuick').textContent = currentShift === 'day' ? '☀️' : '🌙';
+        }
+
+        function updateStatusBar() {
+            const now = new Date();
+            const totalInWork = equipment.filter(e => now < e.endDt).length;
+            const totalFree = database.filter(d => {
+                const notInWork = !equipment.find(e => e.type === d.type && e.equipNum === d.num && now < e.endDt);
+                const notInRepair = !repairList.find(r => r.type === d.type && r.num === d.num);
+                const shiftType = d.shiftType || 'full';
+                return notInWork && notInRepair && isEquipmentAvailable(shiftType) && d.contractor === 'ours';
+            }).length;
+            
+            document.getElementById('statusBar').innerHTML = `
+                <div class="stat-item">🔴 <strong>${totalInWork}</strong>В работе</div>
+                <div class="stat-item">🟢 <strong>${totalFree}</strong>Свободно</div>
+                <div class="stat-item">🔧 <strong>${repairList.length}</strong>Ремонт</div>
+                <div class="stat-item">📜 <strong>${history.length}</strong>История</div>
+            `;
+        }
+
+        function renderAll() {
+            renderDashboard();
+            renderActiveCards();
+            renderFreeCards();
+            renderHistoryCards();
+            renderRepairCards();
+            renderDatabaseCards();
+            updateQuickEquipment();
+        }
+
+        // ==================== ДАШБОРД ====================
+        function renderDashboard() {
+            const now = new Date();
+            const inWork = equipment.filter(e => now < e.endDt).length;
+            const free = database.filter(d => {
+                const notInWork = !equipment.find(e => e.type === d.type && e.equipNum === d.num && now < e.endDt);
+                const notInRepair = !repairList.find(r => r.type === d.type && r.num === d.num);
+                const shiftType = d.shiftType || 'full';
+                return notInWork && notInRepair && isEquipmentAvailable(shiftType);
+            }).length;
+            
+            document.getElementById('dashInWork').textContent = inWork;
+            document.getElementById('dashFree').textContent = free;
+            document.getElementById('dashRepair').textContent = repairList.length;
+            
+            const history30 = history.filter(h => {
+                const cutoffDate = new Date();
+                cutoffDate.setDate(cutoffDate.getDate() - 30);
+                return new Date(h.startDt) >= cutoffDate;
+            });
+            document.getElementById('dashHistory').textContent = history30.length;
+            
+            // График по типам
+            const typeCount = {};
+            database.forEach(d => {
+                typeCount[d.type] = (typeCount[d.type] || 0) + 1;
+            });
+            
+            const maxType = Math.max(...Object.values(typeCount), 1);
+            const typeColors = {
+                'avtokran': '#e74c3c',
+                'polupricep': '#3498db',
+                'tyagach': '#9b59b6',
+                'ppu': '#f39c12',
+                'ca320': '#1abc9c',
+                'akn': '#e67e22',
+                'amkador': '#16a085'
+            };
+            
+            let typeHtml = '';
+            Object.keys(typeCount).forEach(type => {
+                const percent = (typeCount[type] / maxType) * 100;
+                typeHtml += `
+                    <div class="chart-bar">
+                        <div class="label">${TYPE_NAMES[type]}</div>
+                        <div class="bar">
+                            <div class="fill" style="width: ${percent}%; background: ${typeColors[type]}"></div>
+                        </div>
+                        <div class="value">${typeCount[type]}</div>
+                    </div>
+                `;
+            });
+            document.getElementById('typeChart').innerHTML = typeHtml || '<p style="color: var(--text-secondary); text-align: center;">Нет данных</p>';
+            
+            // График по базам
+            const baseCount = {};
+            database.forEach(d => {
+                baseCount[d.base] = (baseCount[d.base] || 0) + 1;
+            });
+            
+            const maxBase = Math.max(...Object.values(baseCount), 1);
+            const baseColors = {
+                'БСО-1': '#3498db',
+                'БСО-2': '#27ae60',
+                'КП-135': '#9b59b6'
+            };
+            
+            let baseHtml = '';
+            Object.keys(baseCount).forEach(base => {
+                const percent = (baseCount[base] / maxBase) * 100;
+                baseHtml += `
+                    <div class="chart-bar">
+                        <div class="label">${base}</div>
+                        <div class="bar">
+                            <div class="fill" style="width: ${percent}%; background: ${baseColors[base] || '#95a5a6'}"></div>
+                        </div>
+                        <div class="value">${baseCount[base]}</div>
+                    </div>
+                `;
+            });
+            document.getElementById('baseChart').innerHTML = baseHtml || '<p style="color: var(--text-secondary); text-align: center;">Нет данных</p>';
+        }
+
+        // ==================== В РАБОТЕ ====================
+        function renderActiveCards() {
+            const container = document.getElementById('activeCards');
+            const empty = document.getElementById('activeEmpty');
+            const filterType = document.getElementById('filterType')?.value || 'all';
+            const filterStatus = document.getElementById('filterStatus')?.value || 'all';
+            const search = document.getElementById('searchActive')?.value.toLowerCase() || '';
+            const now = new Date();
+            
+            let filtered = equipment.filter(e => {
+                const timeToEnd = (e.endDt - now) / 1000 / 60;
+                const typeMatch = filterType === 'all' || e.type === filterType;
+                let statusMatch = true;
+                if (filterStatus === 'working') statusMatch = e.status === 'В работе' && timeToEnd > 60;
+                else if (filterStatus === 'soon') statusMatch = e.status === 'Скоро';
+                else if (filterStatus === 'ready') statusMatch = e.status === 'Готов';
+                return typeMatch && statusMatch && e.brigade.toLowerCase().includes(search);
+            });
+            
+            if (filtered.length === 0) {
+                container.innerHTML = '';
+                empty.style.display = 'block';
+                return;
+            }
+            
+            empty.style.display = 'none';
+            
+            container.innerHTML = filtered.map(e => {
+                const timeToEnd = (e.endDt - now) / 1000 / 60;
+                const statusClass = e.status === 'Готов' ? 'ready' : (e.status === 'Скоро' ? 'soon' : 'working');
+                const statusBadge = e.status === 'Готов' ? 'badge-ready' : (e.status === 'Скоро' ? 'badge-soon' : 'badge-working');
+                const statusText = e.status === 'Готов' ? '🟢 Готов' : (e.status === 'Скоро' ? '🟡 Скоро' : '🔴 В работе');
+                const soonBadge = timeToEnd <= 60 && timeToEnd > 0 ? ` ⏰ ${Math.floor(timeToEnd)} мин` : '';
+                
+                return `
+                    <div class="card ${statusClass}">
+                        <div class="card-header">
+                            <div>
+                                <span class="type-badge bg-${e.type}">${TYPE_NAMES[e.type]}</span>
+                                <span class="card-title">${e.equipNum}</span>
+                            </div>
+                            <span class="card-badge ${statusBadge}">${statusText}${soonBadge}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Бригада</span>
+                            <span class="card-value">${e.brigade}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">База</span>
+                            <span class="card-value"><span class="base-badge">${e.base}</span></span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Время</span>
+                            <span class="card-value">${e.totalHours.toFixed(1)}ч (работа: ${e.workHours}ч + путь: ${e.travelHours || 0}ч)</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Окончание</span>
+                            <span class="card-value">${e.end.split(' ')[1]}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Пересменка</span>
+                            <span class="card-value">${e.shiftText}</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-primary" onclick="openEditModal(${e.id})">✏️ Изменить</button>
+                            <button class="btn btn-success" onclick="completeEquipment(${e.id})">✅ Освободить</button>
+                        </div>
+                    </div>`;
+            }).join('');
+        }
+
+        // ==================== СВОБОДНАЯ ====================
+        function renderFreeCards() {
+            const container = document.getElementById('freeCards');
+            const empty = document.getElementById('freeEmpty');
+            const search = document.getElementById('searchFree')?.value.toLowerCase() || '';
+            const filterType = document.getElementById('filterFreeType')?.value || 'all';
+            const now = new Date();
+            
+            let freeTech = database.filter(d => {
+                const typeMatch = filterType === 'all' || d.type === filterType;
+                const searchMatch = d.num.toLowerCase().includes(search);
+                const notInWork = !equipment.find(e => e.type === d.type && e.equipNum === d.num && now < e.endDt);
+                const notInRepair = !repairList.find(r => r.type === d.type && r.num === d.num);
+                const shiftType = d.shiftType || 'full';
+                const isAvailableByTime = isEquipmentAvailable(shiftType);
+                return typeMatch && searchMatch && notInWork && notInRepair && isAvailableByTime;
+            });
+            
+            if (freeTech.length === 0) {
+                container.innerHTML = '';
+                empty.style.display = 'block';
+                return;
+            }
+            
+            empty.style.display = 'none';
+            
+            container.innerHTML = freeTech.map(f => {
+                const shiftType = f.shiftType || 'full';
+                const availLabel = getShiftAvailabilityLabel(shiftType);
+                
+                return `
+                    <div class="card free">
+                        <div class="card-header">
+                            <div>
+                                <span class="type-badge bg-${f.type}">${TYPE_NAMES[f.type]}</span>
+                                <span class="card-title">${f.num}</span>
+                            </div>
+                            <span class="card-badge badge-free">${availLabel}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">База</span>
+                            <span class="card-value"><span class="base-badge">${f.base}</span></span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Телефон</span>
+                            <span class="card-value"><a href="tel:${f.phoneDay}" class="phone-link">${f.phoneDay}</a></span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-success" onclick="quickAssignFromFree('${f.type}', '${f.num}', '${f.base}', '${f.contractor}', '${f.phoneDay}')">
+                                ⚡ Назначить
+                            </button>
+                        </div>
+                    </div>`;
+            }).join('');
+        }
+
+        function quickAssignFromFree(type, num, base, contractor, phoneDay) {
+            refreshPaused = true;
+            document.getElementById('quickBase').value = base;
+            document.getElementById('quickType').value = type;
+            filterQuickEquipment();
+            
+            const select = document.getElementById('quickEquipment');
+            for (let i = 0; i < select.options.length; i++) {
+                if (select.options[i].value.includes(num)) {
+                    select.selectedIndex = i;
+                    break;
+                }
+            }
+            
+            showSection('quick', null);
+            setTimeout(() => { refreshPaused = false; }, CONFIG.PAUSE_TIMEOUT);
+            showAlert('ℹ️ Техника выбрана', 'info');
+        }
+
+        // ==================== РЕМОНТ ====================
+        function renderRepairCards() {
+            const container = document.getElementById('repairCards');
+            const empty = document.getElementById('repairEmpty');
+            const today = new Date().toLocaleDateString('ru-RU');
+            const todayCount = repairList.filter(r => new Date(r.when).toLocaleDateString('ru-RU') === today).length;
+            
+            document.getElementById('totalRepair').textContent = repairList.length;
+            document.getElementById('todayRepair').textContent = todayCount;
+            
+            if (repairList.length === 0) {
+                container.innerHTML = '';
+                empty.style.display = 'block';
+                return;
+            }
+            
+            empty.style.display = 'none';
+            
+            container.innerHTML = repairList.map(r => `
+                <div class="card repair">
+                    <div class="card-header">
+                        <div>
+                            <span class="type-badge bg-${r.type}">${TYPE_NAMES[r.type]}</span>
+                            <span class="card-title">${r.num}</span>
+                        </div>
+                        <span class="card-badge badge-repair">🔧 Ремонт</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">База</span>
+                        <span class="card-value"><span class="base-badge">${r.base}</span></span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Сломалась</span>
+                        <span class="card-value">${r.when}</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Проблема</span>
+                        <span class="card-value">${r.what}</span>
+                    </div>
+                    ${r.comment ? `<div class="card-row"><span class="card-label">Комментарий</span><span class="card-value">${r.comment}</span></div>` : ''}
+                    <div class="card-row">
+                        <span class="card-label">Телефон</span>
+                        <span class="card-value"><a href="tel:${r.phoneDay}" class="phone-link">${r.phoneDay}</a></span>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-success" onclick="restoreFromRepair(${r.id})">✅ Восстановить</button>
+                        <button class="btn btn-danger" onclick="if(confirm('Удалить запись?')){repairList=repairList.filter(x=>x.id!==${r.id});saveData();renderAll();}">
+                            ❌ Удалить
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ==================== ИСТОРИЯ ====================
         function renderHistoryCards() {
             const container = document.getElementById('historyCards');
             const empty = document.getElementById('historyEmpty');
@@ -1433,7 +2380,12 @@
                 );
             }
             
-            if (filtered.length === 0) { container.innerHTML = ''; empty.style.display = 'block'; return; }
+            if (filtered.length === 0) {
+                container.innerHTML = '';
+                empty.style.display = 'block';
+                return;
+            }
+            
             empty.style.display = 'none';
             
             const grouped = {};
@@ -1454,435 +2406,99 @@
                     const startDate = new Date(h.startDt);
                     const endDate = new Date(h.endDt);
                     const duration = ((endDate - startDate) / 1000 / 60 / 60).toFixed(1);
-                    
                     return `
-                    <div class="card history" onclick="openHistoryDetailModal(${JSON.stringify(h).replace(/"/g, '&quot;')})">
-                        <div class="card-header">
-                            <div>
-                                <span class="type-badge bg-${h.type}">${typeNames[h.type]}</span>
-                                <span class="card-title">${h.equipNum}</span>
+                        <div class="card history" onclick="openHistoryDetailModal(${JSON.stringify(h).replace(/"/g, '&quot;')})">
+                            <div class="card-header">
+                                <div>
+                                    <span class="type-badge bg-${h.type}">${TYPE_NAMES[h.type]}</span>
+                                    <span class="card-title">${h.equipNum}</span>
+                                </div>
+                                <span class="card-badge badge-history">${h.completionReason || 'Завершено'}</span>
                             </div>
-                            <span class="card-badge badge-history">${h.completionReason || 'Завершено'}</span>
-                        </div>
-                        <div class="card-row">
-                            <span class="card-label">Бригада</span>
-                            <span class="card-value">${h.brigade}</span>
-                        </div>
-                        <div class="card-row">
-                            <span class="card-label">Время</span>
-                            <span class="card-value">${duration}ч (${h.workHours}ч + ${h.travelHours || 0}ч путь)</span>
-                        </div>
-                        <div class="card-row">
-                            <span class="card-label">Пересменка</span>
-                            <span class="card-value">${h.shiftText}</span>
-                        </div>
-                    </div>`;
+                            <div class="card-row">
+                                <span class="card-label">Бригада</span>
+                                <span class="card-value">${h.brigade}</span>
+                            </div>
+                            <div class="card-row">
+                                <span class="card-label">Время</span>
+                                <span class="card-value">${duration}ч (${h.workHours}ч + ${h.travelHours || 0}ч путь)</span>
+                            </div>
+                            <div class="card-row">
+                                <span class="card-label">Пересменка</span>
+                                <span class="card-value">${h.shiftText}</span>
+                            </div>
+                        </div>`;
                 }).join('');
             });
             
             container.innerHTML = html;
         }
-        
-        function exportHistory() {
-            const period = document.getElementById('historyPeriod')?.value || '30';
-            let filtered = [...history];
+
+        // ==================== БАЗА ДАННЫХ ====================
+        function renderDatabaseCards() {
+            const container = document.getElementById('databaseCards');
+            const empty = document.getElementById('dbEmpty');
+            const search = document.getElementById('searchDb')?.value.toLowerCase() || '';
+            const filterType = document.getElementById('filterDbType')?.value || 'all';
             
-            if (period !== 'all') {
-                const cutoffDate = new Date();
-                cutoffDate.setDate(cutoffDate.getDate() - parseInt(period));
-                filtered = filtered.filter(h => new Date(h.startDt) >= cutoffDate);
-            }
+            let filtered = database.filter(d => {
+                const typeMatch = filterType === 'all' || d.type === filterType;
+                const searchMatch = d.num.toLowerCase().includes(search);
+                return typeMatch && searchMatch;
+            });
             
             if (filtered.length === 0) {
-                showAlert('⚠️ Нет данных для экспорта', 'warning');
+                container.innerHTML = '';
+                empty.style.display = 'block';
                 return;
             }
             
-            let csv = 'Дата начала;Дата окончания;Техника;№;База;Бригада;Работа;Путь;Всего;Пересменка;Статус\n';
-            filtered.forEach(h => {
-                const startDate = new Date(h.startDt);
-                const endDate = new Date(h.endDt);
-                const duration = ((endDate - startDate) / 1000 / 60 / 60).toFixed(1);
-                
-                csv += `${h.start};${h.end};${typeNames[h.type]};${h.equipNum};${h.base};${h.brigade};${h.workHours}ч;${h.travelHours || 0}ч;${duration}ч;${h.shiftText};${h.completionReason || 'Завершено'}\n`;
-            });
-            
-            const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `история_техники_${new Date().toISOString().split('T')[0]}.csv`;
-            link.click();
-            
-            showAlert(`✅ Экспортировано ${filtered.length} записей`, 'success');
-        }
-        
-        // ==================== ТЕХНИКА В РАБОТЕ ====================
-        function openEditModal(eid) {
-            const item = equipment.find(e => e.id === eid);
-            if (!item) return;
-            
-            editingId = eid;
-            const modalBody = document.getElementById('editModalBody');
-            
-            modalBody.innerHTML = `
-                <div class="form-group">
-                    <label>Бригада</label>
-                    <input type="text" id="editBrigade" value="${item.brigade}">
-                </div>
-                <div class="form-group">
-                    <label>Время работы (ч)</label>
-                    <input type="number" id="editWorkHours" value="${item.workHours}" step="0.01">
-                </div>
-                <div class="form-group">
-                    <label>Время пути (ч)</label>
-                    <input type="number" id="editTravelHours" value="${item.travelHours || 0}" step="0.01">
-                </div>
-                <div class="form-group">
-                    <label>Пересменка</label>
-                    <select id="editShiftLocation">
-                        <option value="base" ${item.shiftLocation === 'base' ? 'selected' : ''}>🏠 На базе</option>
-                        <option value="site" ${item.shiftLocation === 'site' ? 'selected' : ''}>📍 На кусту</option>
-                    </select>
-                </div>
-            `;
-            
-            document.getElementById('editModal').classList.add('show');
-        }
-        
-        function closeEditModal() {
-            document.getElementById('editModal').classList.remove('show');
-            editingId = null;
-        }
-        
-        function saveEdit() {
-            const item = equipment.find(e => e.id === editingId);
-            if (!item) return;
-            
-            const newBrigade = document.getElementById('editBrigade')?.value.trim();
-            const newWorkHours = parseFloat(document.getElementById('editWorkHours')?.value) || 4;
-            const newTravelHours = parseFloat(document.getElementById('editTravelHours')?.value) || 0;
-            const shiftLocation = document.getElementById('editShiftLocation')?.value || 'base';
-            
-            if (!newBrigade) { showAlert('⚠️ Введите бригаду!', 'warning'); return; }
-            
-            item.brigade = newBrigade;
-            item.workHours = newWorkHours;
-            item.travelHours = newTravelHours;
-            item.totalHours = newWorkHours + newTravelHours;
-            item.endDt = new Date(item.startDt.getTime() + item.totalHours * 60 * 60 * 1000);
-            item.end = item.endDt.toLocaleString('ru-RU');
-            item.shiftLocation = shiftLocation;
-            item.shiftText = shiftLocation === 'base' ? '🏠 На базе' : '📍 На кусту';
-            item.shiftManual = true;
-            
-            saveData();
-            closeEditModal();
-            renderAll();
-            showAlert('✅ Сохранено', 'success');
-        }
-        
-        // ==================== ЛОГИКА ПЕРЕСМЕНКИ ====================
-        function isShiftChangeWindow(hour) {
-            if (hour >= SHIFT_CHANGE_MORNING.start && hour < SHIFT_CHANGE_MORNING.end) return true;
-            if (hour >= SHIFT_CHANGE_EVENING.start && hour < SHIFT_CHANGE_EVENING.end) return true;
-            return false;
-        }
-        
-        function getShiftChangeLocation(startDt, endDt, defaultLocation) {
-            const endHour = endDt.getHours();
-            const endMinutes = endDt.getMinutes();
-            const endTimeDecimal = endHour + (endMinutes / 60);
-            
-            if (endTimeDecimal < 7) return { location: 'base', text: '🏠 На базе', nextShift: 'дневной' };
-            if (isShiftChangeWindow(endHour)) return { location: 'site', text: '📍 На кусту', nextShift: endHour >= 19 ? 'ночной' : 'дневной' };
-            if (endTimeDecimal >= 8 && endTimeDecimal < 19) return { location: 'base', text: '🏠 На базе', nextShift: 'дневной' };
-            if (endTimeDecimal >= 20) return { location: 'base', text: '🏠 На базе', nextShift: 'ночной' };
-            
-            return { location: defaultLocation || 'base', text: '🏠 На базе', nextShift: 'дневной' };
-        }
-        
-        // ==================== ОБНОВЛЕНИЕ ====================
-        function updateColors() {
-            if (refreshPaused) return;
-            
-            const now = new Date();
-            
-            equipment.forEach(e => {
-                const timeToEnd = (e.endDt - now) / 1000 / 60;
-                
-                if (!e.manualStatus) {
-                    if (now >= e.endDt) e.status = 'Готов';
-                    else if (timeToEnd <= 60) e.status = 'Скоро';
-                    else e.status = 'В работе';
-                }
-                
-                if (!e.shiftManual) {
-                    const shiftInfo = getShiftChangeLocation(e.startDt, e.endDt, e.base);
-                    e.shiftLocation = shiftInfo.location;
-                    e.shiftText = shiftInfo.text;
-                }
-            });
-            
-            renderAll();
-            updateStatusBar();
-            updateCurrentTime();
-        }
-        
-        function updateCurrentTime() {
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-            document.getElementById('currentTime').textContent = `🕐 ${timeStr}`;
-            
-            const hour = now.getHours();
-            document.getElementById('currentShift').textContent = hour >= 8 && hour < 20 ? '☀️ Дневная' : '🌙 Ночная';
-        }
-        
-        // ==================== ОТРИСОВКА ====================
-        function renderAll() {
-            renderActiveCards();
-            renderReadyCards();
-            renderFreeCards();
-            renderHistoryCards();
-            renderRepairCards();
-            renderDatabaseCards();
-            updateQuickEquipment();
-        }
-        
-        function renderActiveCards() {
-            const container = document.getElementById('activeCards');
-            const empty = document.getElementById('activeEmpty');
-            const filterType = document.getElementById('filterType')?.value || 'all';
-            const filterStatus = document.getElementById('filterStatus')?.value || 'all';
-            const search = document.getElementById('searchActive')?.value.toLowerCase() || '';
-            const now = new Date();
-            
-            let filtered = equipment.filter(e => {
-                const timeToEnd = (e.endDt - now) / 1000 / 60;
-                const typeMatch = filterType === 'all' || e.type === filterType;
-                
-                let statusMatch = true;
-                if (filterStatus === 'working') statusMatch = e.status === 'В работе' && timeToEnd > 60;
-                else if (filterStatus === 'soon') statusMatch = e.status === 'Скоро';
-                else if (filterStatus === 'ready') statusMatch = e.status === 'Готов';
-                
-                return typeMatch && statusMatch && e.brigade.toLowerCase().includes(search);
-            });
-            
-            if (filtered.length === 0) { container.innerHTML = ''; empty.style.display = 'block'; return; }
             empty.style.display = 'none';
             
-            container.innerHTML = filtered.map(e => {
-                const timeToEnd = (e.endDt - now) / 1000 / 60;
-                const statusClass = e.status === 'Готов' ? 'ready' : (e.status === 'Скоро' ? 'soon' : 'working');
-                const statusBadge = e.status === 'Готов' ? 'badge-ready' : (e.status === 'Скоро' ? 'badge-soon' : 'badge-working');
-                const statusText = e.status === 'Готов' ? '🟢 Готов' : (e.status === 'Скоро' ? '🟡 Скоро' : '🔴 В работе');
-                const soonBadge = timeToEnd <= 60 && timeToEnd > 0 ? ` ⏰ ${Math.floor(timeToEnd)} мин` : '';
-                
-                return `
-                <div class="card ${statusClass}">
-                    <div class="card-header">
-                        <div>
-                            <span class="type-badge bg-${e.type}">${typeNames[e.type]}</span>
-                            <span class="card-title">${e.equipNum}</span>
-                        </div>
-                        <span class="card-badge ${statusBadge}">${statusText}${soonBadge}</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">Бригада</span>
-                        <span class="card-value">${e.brigade}</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">База</span>
-                        <span class="card-value"><span class="base-badge">${e.base}</span></span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">Время</span>
-                        <span class="card-value">${e.totalHours.toFixed(1)}ч (работа: ${e.workHours}ч + путь: ${e.travelHours || 0}ч)</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">Окончание</span>
-                        <span class="card-value">${e.end.split(' ')[1]}</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">Пересменка</span>
-                        <span class="card-value">${e.shiftText}</span>
-                    </div>
-                    <div class="card-actions">
-                        <button class="btn btn-primary" onclick="openEditModal(${e.id})">✏️ Изменить</button>
-                        <button class="btn btn-success" onclick="completeEquipment(${e.id})">✅ Освободить</button>
-                    </div>
-                </div>`;
-            }).join('');
-        }
-        
-        function renderReadyCards() {
-            const container = document.getElementById('readyCards');
-            const empty = document.getElementById('readyEmpty');
-            const now = new Date();
-            
-            const ready = equipment.filter(e => e.status === 'Готов' || e.status === 'Скоро');
-            
-            if (ready.length === 0) { container.innerHTML = ''; empty.style.display = 'block'; return; }
-            empty.style.display = 'none';
-            
-            container.innerHTML = ready.map(e => {
-                const timeToEnd = (e.endDt - now) / 1000 / 60;
-                const statusBadge = e.status === 'Готов' ? 'badge-ready' : 'badge-soon';
-                const statusText = e.status === 'Готов' ? '🟢 Готов' : `🟡 ${Math.floor(timeToEnd)} мин`;
-                
-                return `
-                <div class="card ready">
-                    <div class="card-header">
-                        <div>
-                            <span class="type-badge bg-${e.type}">${typeNames[e.type]}</span>
-                            <span class="card-title">${e.equipNum}</span>
-                        </div>
-                        <span class="card-badge ${statusBadge}">${statusText}</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">Бригада</span>
-                        <span class="card-value">${e.brigade}</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">База</span>
-                        <span class="card-value"><span class="base-badge">${e.base}</span></span>
-                    </div>
-                    <div class="card-actions">
-                        <button class="btn btn-primary" onclick="openEditModal(${e.id})">✏️ Изменить</button>
-                        <button class="btn btn-success" onclick="completeEquipment(${e.id})">✅ Освободить</button>
-                    </div>
-                </div>`;
-            }).join('');
-        }
-        
-        function renderFreeCards() {
-            const container = document.getElementById('freeCards');
-            const empty = document.getElementById('freeEmpty');
-            const now = new Date();
-            
-            let freeTech = database.filter(d => {
-                const notInWork = !equipment.find(e => e.type === d.type && e.equipNum === d.num && now < e.endDt);
-                const notInRepair = !repairList.find(r => r.type === d.type && r.num === d.num);
+            container.innerHTML = filtered.map(d => {
                 const shiftType = d.shiftType || 'full';
-                const isAvailableByTime = isEquipmentAvailable(shiftType);
-                return notInWork && notInRepair && isAvailableByTime && d.contractor === 'ours';
-            });
-            
-            if (freeTech.length === 0) { container.innerHTML = ''; empty.style.display = 'block'; return; }
-            empty.style.display = 'none';
-            
-            container.innerHTML = freeTech.map(f => {
-                const shiftType = f.shiftType || 'full';
-                const availLabel = getShiftAvailabilityLabel(shiftType);
+                const shiftLabels = { 
+                    'full': 'День+Ночь', 
+                    'day': 'Только день', 
+                    'night': 'Только ночь', 
+                    'repair': 'В ремонте' 
+                };
                 
                 return `
-                <div class="card free">
-                    <div class="card-header">
-                        <div>
-                            <span class="type-badge bg-${f.type}">${typeNames[f.type]}</span>
-                            <span class="card-title">${f.num}</span>
+                    <div class="card free">
+                        <div class="card-header">
+                            <div>
+                                <span class="type-badge bg-${d.type}">${TYPE_NAMES[d.type]}</span>
+                                <span class="card-title">${d.num}</span>
+                            </div>
+                            <span class="card-badge badge-free">${shiftLabels[shiftType]}</span>
                         </div>
-                        <span class="card-badge badge-free">${availLabel}</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">База</span>
-                        <span class="card-value"><span class="base-badge">${f.base}</span></span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">Телефон</span>
-                        <span class="card-value"><a href="tel:${f.phoneDay}" class="phone-link">${f.phoneDay}</a></span>
-                    </div>
-                    <div class="card-actions">
-                        <button class="btn btn-success" onclick="quickAssignFromFree('${f.type}', '${f.num}', '${f.base}', '${f.contractor}', '${f.phoneDay}')">⚡ Назначить</button>
-                    </div>
-                </div>`;
+                        <div class="card-row">
+                            <span class="card-label">База</span>
+                            <span class="card-value"><span class="base-badge">${d.base}</span></span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Подрядчик</span>
+                            <span class="card-value">${CONTRACTOR_NAMES[d.contractor]}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Телефон день ☀️</span>
+                            <span class="card-value"><a href="tel:${d.phoneDay}" class="phone-link">${d.phoneDay}</a></span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Телефон ночь 🌙</span>
+                            <span class="card-value"><a href="tel:${d.phoneNight}" class="phone-link">${d.phoneNight}</a></span>
+                        </div>
+                        ${d.comment ? `<div class="card-row"><span class="card-label">Комментарий</span><span class="card-value">${d.comment}</span></div>` : ''}
+                        <div class="card-actions">
+                            <button class="btn btn-primary" onclick="openDbEditModal(${d.id})">✏️ Изменить</button>
+                            <button class="btn btn-danger" onclick="deleteFromDatabase(${d.id})">❌ Удалить</button>
+                        </div>
+                    </div>`;
             }).join('');
         }
-        
-        function quickAssignFromFree(type, num, base, contractor, phoneDay) {
-            refreshPaused = true;
-            document.getElementById('quickBase').value = base;
-            document.getElementById('quickType').value = type;
-            filterQuickEquipment();
-            
-            const select = document.getElementById('quickEquipment');
-            for (let i = 0; i < select.options.length; i++) {
-                if (select.options[i].value.includes(num)) {
-                    select.selectedIndex = i;
-                    break;
-                }
-            }
-            
-            showSection('quick');
-            setTimeout(() => { refreshPaused = false; }, 5000);
-            showAlert('ℹ️ Техника выбрана', 'info');
-        }
-        
-        function renderRepairCards() {
-            const container = document.getElementById('repairCards');
-            const empty = document.getElementById('repairEmpty');
-            
-            // Обновляем статистику
-            const today = new Date().toLocaleDateString('ru-RU');
-            const todayCount = repairList.filter(r => new Date(r.when).toLocaleDateString('ru-RU') === today).length;
-            document.getElementById('totalRepair').textContent = repairList.length;
-            document.getElementById('todayRepair').textContent = todayCount;
-            
-            if (repairList.length === 0) { container.innerHTML = ''; empty.style.display = 'block'; return; }
-            empty.style.display = 'none';
-            
-            container.innerHTML = repairList.map(r => `
-                <div class="card repair">
-                    <div class="card-header">
-                        <div>
-                            <span class="type-badge bg-${r.type}">${typeNames[r.type]}</span>
-                            <span class="card-title">${r.num}</span>
-                        </div>
-                        <span class="card-badge badge-repair">🔧 Ремонт</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">База</span>
-                        <span class="card-value"><span class="base-badge">${r.base}</span></span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">Сломалась</span>
-                        <span class="card-value">${r.when}</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">Проблема</span>
-                        <span class="card-value">${r.what}</span>
-                    </div>
-                    ${r.comment ? `<div class="card-row"><span class="card-label">Комментарий</span><span class="card-value">${r.comment}</span></div>` : ''}
-                    <div class="card-row">
-                        <span class="card-label">Телефон</span>
-                        <span class="card-value"><a href="tel:${r.phoneDay}" class="phone-link">${r.phoneDay}</a></span>
-                    </div>
-                    <div class="card-actions">
-                        <button class="btn btn-success" onclick="restoreFromRepair(${r.id})">✅ Восстановить</button>
-                        <button class="btn btn-danger" onclick="if(confirm('Удалить запись?')){repairList=repairList.filter(x=>x.id!==${r.id});saveData();renderAll();}">❌ Удалить</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-        
-        function updateStatusBar() {
-            const now = new Date();
-            const totalInWork = equipment.filter(e => now < e.endDt).length;
-            const totalFree = database.filter(d => {
-                const notInWork = !equipment.find(e => e.type === d.type && e.equipNum === d.num && now < e.endDt);
-                const notInRepair = !repairList.find(r => r.type === d.type && r.num === d.num);
-                const shiftType = d.shiftType || 'full';
-                return notInWork && notInRepair && isEquipmentAvailable(shiftType) && d.contractor === 'ours';
-            }).length;
-            
-            document.getElementById('statusBar').innerHTML = `
-                <div class="stat-item">🔴<strong>${totalInWork}</strong>В работе</div>
-                <div class="stat-item">🟢<strong>${totalFree}</strong>Свободно</div>
-                <div class="stat-item">🔧<strong>${repairList.length}</strong>Ремонт</div>
-                <div class="stat-item">📜<strong>${history.length}</strong>История</div>
-            `;
-        }
-        
+
+        // ==================== УВЕДОМЛЕНИЯ ====================
         function showAlert(message, type) {
             const container = document.getElementById('alertsContainer');
             const alert = document.createElement('div');
@@ -1891,6 +2507,30 @@
             container.appendChild(alert);
             setTimeout(() => alert.remove(), 3000);
         }
+
+        // ==================== ИНИЦИАЛИЗАЦИЯ ====================
+        window.onload = function() {
+            loadTheme();
+            loadData();
+            fixOldData();
+            cleanOldHistory();
+            
+            if (database.length === 0) {
+                addToDatabaseDirect('avtokran', '369', 'БСО-1', 'ours', '8-992-222-00-60', '8-992-222-00-61', 'full', '');
+                addToDatabaseDirect('avtokran', '307', 'БСО-1', 'ours', '8-992-222-00-61', '8-992-222-00-62', 'full', '');
+                addToDatabaseDirect('avtokran', '545', 'БСО-1', 'ours', '8-992-222-00-62', '8-992-222-00-63', 'full', '');
+            }
+            
+            renderAll();
+            setInterval(updateColors, CONFIG.REFRESH_INTERVAL);
+            updateCurrentTime();
+        };
+
+        // ==================== ОБРАБОТКА ОШИБОК ====================
+        window.onerror = function(message, source, lineno, colno, error) {
+            console.error('Ошибка:', message, 'в', source, 'строка', lineno);
+            return true;
+        };
     </script>
 </body>
 </html>
