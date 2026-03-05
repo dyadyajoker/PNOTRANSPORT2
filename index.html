@@ -88,6 +88,21 @@
             font-size: 13px;
         }
 
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .header-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
         .theme-toggle {
             background: rgba(255,255,255,0.2);
             border: none;
@@ -96,6 +111,85 @@
             border-radius: 8px;
             font-size: 18px;
             cursor: pointer;
+        }
+
+        /* ==================== ГЛОБАЛЬНЫЙ ПОИСК ==================== */
+        .global-search-container {
+            padding: 10px 15px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 70px;
+            z-index: 99;
+        }
+
+        .global-search {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 15px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .global-search-results {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+
+        .global-search-results.show {
+            display: block;
+        }
+
+        .search-result-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-item:hover {
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        .search-result-info {
+            flex: 1;
+        }
+
+        .search-result-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .search-result-subtitle {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .search-result-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            color: white;
         }
 
         /* ==================== ИНФОРМАЦИЯ О СМЕНЕ ==================== */
@@ -312,6 +406,7 @@
         .btn-danger { background: #e74c3c; color: white; }
         .btn-secondary { background: #95a5a6; color: white; }
         .btn-info { background: #17a2b8; color: white; }
+        .btn-sms { background: #9b59b6; color: white; }
 
         /* ==================== ФОРМЫ ==================== */
         .form-group {
@@ -588,6 +683,17 @@
             cursor: pointer;
         }
 
+        .backup-btn {
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
         /* ==================== РЕМОНТ ==================== */
         .repair-stats {
             background: var(--gradient-repair);
@@ -748,6 +854,11 @@
             z-index: 3000;
             pointer-events: none;
         }
+
+        /* ==================== СКРЫТЫЙ INPUT ДЛЯ ЗАГРУЗКИ ==================== */
+        #backupInput {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -755,10 +866,19 @@
     <header class="header">
         <div class="header-top">
             <h1>🏗️ PNOTRANSPORT</h1>
-            <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">🌙</button>
+            <div class="header-actions">
+                <button class="header-btn" onclick="openBackupModal()" title="Резервное копирование">💾</button>
+                <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">🌙</button>
+            </div>
         </div>
         <p>Трекер техники | <span id="currentTime" class="current-time"></span></p>
     </header>
+
+    <!-- Глобальный поиск -->
+    <div class="global-search-container">
+        <input type="text" class="global-search" id="globalSearch" placeholder="🔍 Поиск по всем вкладкам..." oninput="globalSearch()">
+        <div class="global-search-results" id="searchResults"></div>
+    </div>
 
     <!-- Информация о смене -->
     <div class="shift-info">
@@ -1030,6 +1150,9 @@
     <!-- Статус бар -->
     <div class="status-bar" id="statusBar"></div>
 
+    <!-- Скрытый input для загрузки backup -->
+    <input type="file" id="backupInput" accept=".json" onchange="importBackup(this)">
+
     <!-- Модальные окна -->
     <div id="callModal" class="modal">
         <div class="modal-content">
@@ -1040,6 +1163,7 @@
             <div id="callModalBody"></div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="closeCallModal()">Закрыть</button>
+                <button class="btn btn-sms" onclick="openSMSFromCall()">💬 SMS</button>
                 <button class="btn btn-danger" onclick="openRepairFromCall()">🔧 В ремонт</button>
                 <button class="btn btn-success" id="confirmAssignBtn" onclick="confirmQuickAssign()" style="display:none;">
                     ✅ Подтвердить
@@ -1057,6 +1181,7 @@
             <div id="editModalBody"></div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="closeEditModal()">Отмена</button>
+                <button class="btn btn-sms" onclick="sendSMSEdit()">💬 SMS водителю</button>
                 <button class="btn btn-success" onclick="saveEdit()">💾 Сохранить</button>
             </div>
         </div>
@@ -1085,6 +1210,7 @@
             <div id="dbEditModalBody"></div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="closeDbEditModal()">Отмена</button>
+                <button class="btn btn-sms" onclick="sendSMSFromDb()">💬 SMS водителю</button>
                 <button class="btn btn-success" onclick="saveDbEdit()">💾 Сохранить</button>
             </div>
         </div>
@@ -1113,6 +1239,31 @@
             <div id="historyDetailBody"></div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="closeHistoryDetailModal()">Закрыть</button>
+                <button class="btn btn-sms" onclick="sendSMSFromHistory()">💬 SMS водителю</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="backupModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>💾 Резервное копирование</span>
+                <button class="modal-close" onclick="closeBackupModal()">&times;</button>
+            </div>
+            <div style="padding: 20px 0;">
+                <button class="btn btn-success" onclick="exportBackup()" style="width: 100%; margin-bottom: 10px;">
+                    📤 Экспорт данных (JSON)
+                </button>
+                <button class="btn btn-primary" onclick="document.getElementById('backupInput').click()" style="width: 100%;">
+                    📥 Импорт данных (JSON)
+                </button>
+                <p style="text-align: center; margin-top: 15px; font-size: 12px; color: var(--text-secondary);">
+                    Экспорт сохранит все данные в файл<br>
+                    Импорт восстановит данные из файла
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeBackupModal()">Закрыть</button>
             </div>
         </div>
     </div>
@@ -1125,7 +1276,8 @@
                 DATABASE: 'equipment_db_v9',
                 REPAIR: 'equipment_repair_v9',
                 HISTORY: 'equipment_history_v9',
-                THEME: 'equipment_theme_v9'
+                THEME: 'equipment_theme_v9',
+                NOTIFICATIONS: 'equipment_notifications_v9'
             },
             SHIFT: {
                 MORNING_START: 7,
@@ -1137,7 +1289,8 @@
             },
             HISTORY_RETENTION_DAYS: 90,
             REFRESH_INTERVAL: 1000,
-            PAUSE_TIMEOUT: 5000
+            PAUSE_TIMEOUT: 5000,
+            NOTIFICATION_MINUTES: 30
         };
 
         const TYPE_NAMES = {
@@ -1176,7 +1329,9 @@
         let editingId = null;
         let repairId = null;
         let dbEditId = null;
+        let historyDetailData = null;
         let refreshPaused = false;
+        let notifiedEquipment = [];
 
         // ==================== ТЕМА ====================
         function loadTheme() {
@@ -1201,6 +1356,7 @@
                 const savedDb = localStorage.getItem(CONFIG.STORAGE_KEYS.DATABASE);
                 const savedRepair = localStorage.getItem(CONFIG.STORAGE_KEYS.REPAIR);
                 const savedHistory = localStorage.getItem(CONFIG.STORAGE_KEYS.HISTORY);
+                const savedNotifications = localStorage.getItem(CONFIG.STORAGE_KEYS.NOTIFICATIONS);
                 
                 if (savedEquip) {
                     equipment = JSON.parse(savedEquip);
@@ -1219,6 +1375,9 @@
                         h.endDt = new Date(h.endDt);
                     });
                 }
+                if (savedNotifications) {
+                    notifiedEquipment = JSON.parse(savedNotifications);
+                }
             } catch (e) {
                 console.error('Ошибка загрузки данных:', e);
                 showAlert('⚠️ Ошибка загрузки данных', 'warning');
@@ -1232,6 +1391,7 @@
                 localStorage.setItem(CONFIG.STORAGE_KEYS.DATABASE, JSON.stringify(database));
                 localStorage.setItem(CONFIG.STORAGE_KEYS.REPAIR, JSON.stringify(repairList));
                 localStorage.setItem(CONFIG.STORAGE_KEYS.HISTORY, JSON.stringify(history));
+                localStorage.setItem(CONFIG.STORAGE_KEYS.NOTIFICATIONS, JSON.stringify(notifiedEquipment));
             } catch (e) {
                 console.error('Ошибка сохранения данных:', e);
                 showAlert('⚠️ Ошибка сохранения', 'warning');
@@ -1318,26 +1478,156 @@
             return { location: defaultLocation || 'base', text: '🏠 На базе', nextShift: 'дневной' };
         }
 
-        // ==================== БАЗА ДАННЫХ ====================
-        function addToDatabaseDirect(type, num, base, contractor, phoneDay, phoneNight, shiftType, comment) {
-            const exists = database.find(d => d.type === type && d.num === num);
-            if (exists) return false;
-            
-            database.push({
-                id: Date.now() + Math.random(),
-                type,
-                num,
-                base,
-                contractor,
-                phoneDay,
-                phoneNight: phoneNight || phoneDay,
-                shiftType,
-                comment,
-                added: new Date().toLocaleString('ru-RU')
+        // ==================== УВЕДОМЛЕНИЯ ОБ ОКОНЧАНИИ ====================
+        function checkEndingSoon() {
+            const now = new Date();
+            equipment.forEach(e => {
+                const timeToEnd = (e.endDt - now) / 1000 / 60;
+                const alreadyNotified = notifiedEquipment.includes(e.id);
+                
+                // Уведомление за 30 минут до окончания
+                if (timeToEnd <= CONFIG.NOTIFICATION_MINUTES && timeToEnd > 0 && !alreadyNotified) {
+                    showAlert(`⏰ ${TYPE_NAMES[e.type]} №${e.equipNum} скоро освободится! (${Math.floor(timeToEnd)} мин)`, 'warning');
+                    notifiedEquipment.push(e.id);
+                    saveData();
+                    
+                    // Вибрация (если поддерживается)
+                    if (navigator.vibrate) {
+                        navigator.vibrate([200, 100, 200]);
+                    }
+                }
+                
+                // Сброс уведомления после окончания
+                if (timeToEnd <= 0 && alreadyNotified) {
+                    notifiedEquipment = notifiedEquipment.filter(id => id !== e.id);
+                    saveData();
+                }
             });
-            saveData();
-            return true;
         }
+
+        // ==================== ГЛОБАЛЬНЫЙ ПОИСК ====================
+        function globalSearch() {
+            const query = document.getElementById('globalSearch').value.toLowerCase().trim();
+            const resultsContainer = document.getElementById('searchResults');
+            
+            if (query.length < 2) {
+                resultsContainer.classList.remove('show');
+                resultsContainer.innerHTML = '';
+                return;
+            }
+            
+            const results = [];
+            const now = new Date();
+            
+            // Поиск в активной технике
+            equipment.forEach(e => {
+                if (e.brigade.toLowerCase().includes(query) || e.equipNum.toLowerCase().includes(query)) {
+                    results.push({
+                        type: 'active',
+                        title: `${TYPE_NAMES[e.type]} №${e.equipNum}`,
+                        subtitle: `Бригада: ${e.brigade}`,
+                        badge: 'В работе',
+                        badgeClass: 'badge-working',
+                        data: e
+                    });
+                }
+            });
+            
+            // Поиск в базе
+            database.forEach(d => {
+                if (d.num.toLowerCase().includes(query)) {
+                    const inWork = equipment.find(e => e.type === d.type && e.equipNum === d.num && now < e.endDt);
+                    const inRepair = repairList.find(r => r.type === d.type && r.num === d.num);
+                    let status = 'Свободна';
+                    let badgeClass = 'badge-free';
+                    if (inWork) { status = 'В работе'; badgeClass = 'badge-working'; }
+                    if (inRepair) { status = 'В ремонте'; badgeClass = 'badge-repair'; }
+                    
+                    results.push({
+                        type: 'database',
+                        title: `${TYPE_NAMES[d.type]} №${d.num}`,
+                        subtitle: `База: ${d.base}`,
+                        badge: status,
+                        badgeClass,
+                        data: d
+                    });
+                }
+            });
+            
+            // Поиск в истории
+            history.forEach(h => {
+                if (h.brigade.toLowerCase().includes(query) || h.equipNum.toLowerCase().includes(query)) {
+                    results.push({
+                        type: 'history',
+                        title: `${TYPE_NAMES[h.type]} №${h.equipNum}`,
+                        subtitle: `Бригада: ${h.brigade}`,
+                        badge: 'История',
+                        badgeClass: 'badge-history',
+                        data: h
+                    });
+                }
+            });
+            
+            // Поиск в ремонте
+            repairList.forEach(r => {
+                if (r.num.toLowerCase().includes(query)) {
+                    results.push({
+                        type: 'repair',
+                        title: `${TYPE_NAMES[r.type]} №${r.num}`,
+                        subtitle: `Проблема: ${r.what}`,
+                        badge: 'Ремонт',
+                        badgeClass: 'badge-repair',
+                        data: r
+                    });
+                }
+            });
+            
+            if (results.length === 0) {
+                resultsContainer.innerHTML = '<div class="search-result-item"><div class="search-result-info"><div class="search-result-title">Ничего не найдено</div></div></div>';
+            } else {
+                resultsContainer.innerHTML = results.map(r => `
+                    <div class="search-result-item" onclick="goToSearchResult('${r.type}', ${r.type === 'database' || r.type === 'repair' ? r.data.id : r.data.id})">
+                        <div class="search-result-info">
+                            <div class="search-result-title">${r.title}</div>
+                            <div class="search-result-subtitle">${r.subtitle}</div>
+                        </div>
+                        <span class="search-result-badge ${r.badgeClass}">${r.badge}</span>
+                    </div>
+                `).join('');
+            }
+            
+            resultsContainer.classList.add('show');
+        }
+
+        function goToSearchResult(type, id) {
+            document.getElementById('searchResults').classList.remove('show');
+            document.getElementById('globalSearch').value = '';
+            
+            if (type === 'active') {
+                showSection('active', null);
+                setTimeout(() => {
+                    const card = document.querySelector(`[onclick*="openEditModal(${id})"]`);
+                    if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
+            } else if (type === 'database') {
+                showSection('database', null);
+                setTimeout(() => {
+                    const card = document.querySelector(`[onclick*="openDbEditModal(${id})"]`);
+                    if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
+            } else if (type === 'history') {
+                showSection('history', null);
+            } else if (type === 'repair') {
+                showSection('repair', null);
+            }
+        }
+
+        // Закрытие поиска при клике вне
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.global-search-container')) {
+                document.getElementById('searchResults').classList.remove('show');
+            }
+        });
 
         // ==================== НАВИГАЦИЯ ====================
         function showSection(section, event) {
@@ -1350,8 +1640,8 @@
                 event.currentTarget.classList.add('active');
             }
             
-            // Закрыть dropdown
             document.getElementById('navDropdown').classList.remove('show');
+            document.getElementById('searchResults').classList.remove('show');
             
             renderAll();
             window.scrollTo(0, 0);
@@ -1363,7 +1653,6 @@
             menu.classList.toggle('show');
         }
 
-        // Закрытие dropdown при клике вне
         document.addEventListener('click', function(e) {
             const dropdown = document.getElementById('navDropdown');
             if (!e.target.closest('.nav-dropdown')) {
@@ -1547,6 +1836,45 @@
             document.getElementById('confirmAssignBtn').style.display = 'none';
         }
 
+        // ==================== SMS ФУНКЦИИ ====================
+        function openSMSFromCall() {
+            if (!callData) return;
+            const message = encodeURIComponent(`Задание: ${TYPE_NAMES[callData.type]} №${callData.num}, бригада ${callData.brigade}, работа ${callData.workHours}ч + путь ${callData.travelHours}ч`);
+            window.open(`sms:${callData.driverPhone}?body=${message}`, '_self');
+        }
+
+        function sendSMSEdit() {
+            const item = equipment.find(e => e.id === editingId);
+            if (!item) return;
+            const phone = getCurrentShift() === 'night' ? (item.phoneNight || item.phoneDay) : (item.phoneDay || item.phoneNight);
+            const message = encodeURIComponent(`Изменение: ${TYPE_NAMES[item.type]} №${item.equipNum}, бригада ${item.brigade}`);
+            window.open(`sms:${phone}?body=${message}`, '_self');
+        }
+
+        function sendSMSFromDb() {
+            const item = database.find(d => d.id === dbEditId);
+            if (!item) return;
+            const phone = getCurrentShift() === 'night' ? (item.phoneNight || item.phoneDay) : (item.phoneDay || item.phoneNight);
+            const message = encodeURIComponent(`${TYPE_NAMES[item.type]} №${item.num}, база ${item.base}`);
+            window.open(`sms:${phone}?body=${message}`, '_self');
+        }
+
+        function sendSMSFromHistory() {
+            if (!historyDetailData) return;
+            const phone = historyDetailData.phoneDay || historyDetailData.phoneNight;
+            if (!phone) {
+                showAlert('⚠️ Нет телефона для SMS', 'warning');
+                return;
+            }
+            const message = encodeURIComponent(`История: ${TYPE_NAMES[historyDetailData.type]} №${historyDetailData.equipNum}, бригада ${historyDetailData.brigade}`);
+            window.open(`sms:${phone}?body=${message}`, '_self');
+        }
+
+        function sendSMSFromRepair(repair) {
+            const message = encodeURIComponent(`Ремонт: ${TYPE_NAMES[repair.type]} №${repair.num}, проблема: ${repair.what}`);
+            window.open(`sms:${repair.phoneDay}?body=${message}`, '_self');
+        }
+
         // ==================== РЕДАКТИРОВАНИЕ ====================
         function openEditModal(eid) {
             const item = equipment.find(e => e.id === eid);
@@ -1656,16 +1984,13 @@
                 return;
             }
             
-            // Архивируем текущее назначение
             const itemToArchive = equipment.find(e => e.type === repairId.type && e.equipNum === repairId.num);
             if (itemToArchive) {
                 archiveAssignment(itemToArchive, 'Ремонт');
             }
             
-            // Удаляем из активной техники
             equipment = equipment.filter(e => !(e.type === repairId.type && e.equipNum === repairId.num));
             
-            // Добавляем в ремонт
             repairList.push({
                 id: Date.now(),
                 type: repairId.type,
@@ -1677,7 +2002,6 @@
                 comment: repairComment
             });
             
-            // Обновляем статус в базе
             const dbItem = database.find(d => d.type === repairId.type && d.num === repairId.num);
             if (dbItem) {
                 dbItem.shiftType = 'repair';
@@ -1905,8 +2229,29 @@
             showAlert('✅ Сохранено', 'success');
         }
 
+        function addToDatabaseDirect(type, num, base, contractor, phoneDay, phoneNight, shiftType, comment) {
+            const exists = database.find(d => d.type === type && d.num === num);
+            if (exists) return false;
+            
+            database.push({
+                id: Date.now() + Math.random(),
+                type,
+                num,
+                base,
+                contractor,
+                phoneDay,
+                phoneNight: phoneNight || phoneDay,
+                shiftType,
+                comment,
+                added: new Date().toLocaleString('ru-RU')
+            });
+            saveData();
+            return true;
+        }
+
         // ==================== ИСТОРИЯ ====================
         function openHistoryDetailModal(record) {
+            historyDetailData = record;
             const modalBody = document.getElementById('historyDetailBody');
             const startDate = new Date(record.startDt);
             const endDate = new Date(record.endDt);
@@ -1973,6 +2318,7 @@
 
         function closeHistoryDetailModal() {
             document.getElementById('historyDetailModal').classList.remove('show');
+            historyDetailData = null;
         }
 
         function exportHistory() {
@@ -2007,6 +2353,93 @@
             showAlert(`✅ Экспортировано ${filtered.length} записей`, 'success');
         }
 
+        // ==================== РЕЗЕРВНОЕ КОПИРОВАНИЕ ====================
+        function openBackupModal() {
+            document.getElementById('backupModal').classList.add('show');
+        }
+
+        function closeBackupModal() {
+            document.getElementById('backupModal').classList.remove('show');
+        }
+
+        function exportBackup() {
+            const backup = {
+                equipment,
+                database,
+                repairList,
+                history,
+                exportedAt: new Date().toISOString(),
+                version: 'v9'
+            };
+            
+            // Конвертируем даты в строки для JSON
+            backup.equipment = backup.equipment.map(e => ({
+                ...e,
+                startDt: e.startDt.toISOString(),
+                endDt: e.endDt.toISOString()
+            }));
+            backup.history = backup.history.map(h => ({
+                ...h,
+                startDt: h.startDt.toISOString(),
+                endDt: h.endDt.toISOString()
+            }));
+            
+            const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `backup_pnotransport_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            showAlert('✅ Резервная копия создана', 'success');
+            closeBackupModal();
+        }
+
+        function importBackup(input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const backup = JSON.parse(e.target.result);
+                    
+                    if (!backup.equipment || !backup.database) {
+                        showAlert('⚠️ Неверный формат файла', 'warning');
+                        return;
+                    }
+                    
+                    if (!confirm('❗ Это заменит все текущие данные. Продолжить?')) {
+                        input.value = '';
+                        return;
+                    }
+                    
+                    equipment = backup.equipment.map(e => ({
+                        ...e,
+                        startDt: new Date(e.startDt),
+                        endDt: new Date(e.endDt)
+                    }));
+                    database = backup.database;
+                    repairList = backup.repairList || [];
+                    history = backup.history.map(h => ({
+                        ...h,
+                        startDt: new Date(h.startDt),
+                        endDt: new Date(h.endDt)
+                    }));
+                    notifiedEquipment = [];
+                    
+                    saveData();
+                    renderAll();
+                    showAlert('✅ Данные восстановлены', 'success');
+                    closeBackupModal();
+                } catch (err) {
+                    console.error(err);
+                    showAlert('⚠️ Ошибка импорта', 'warning');
+                }
+            };
+            reader.readAsText(file);
+            input.value = '';
+        }
+
         // ==================== ОТРИСОВКА ====================
         function updateColors() {
             if (refreshPaused) return;
@@ -2025,6 +2458,9 @@
                     e.shiftText = shiftInfo.text;
                 }
             });
+            
+            // Проверка уведомлений
+            checkEndingSoon();
             
             renderAll();
             updateStatusBar();
@@ -2092,7 +2528,6 @@
             });
             document.getElementById('dashHistory').textContent = history30.length;
             
-            // График по типам
             const typeCount = {};
             database.forEach(d => {
                 typeCount[d.type] = (typeCount[d.type] || 0) + 1;
@@ -2124,7 +2559,6 @@
             });
             document.getElementById('typeChart').innerHTML = typeHtml || '<p style="color: var(--text-secondary); text-align: center;">Нет данных</p>';
             
-            // График по базам
             const baseCount = {};
             database.forEach(d => {
                 baseCount[d.base] = (baseCount[d.base] || 0) + 1;
@@ -2344,6 +2778,7 @@
                         <span class="card-value"><a href="tel:${r.phoneDay}" class="phone-link">${r.phoneDay}</a></span>
                     </div>
                     <div class="card-actions">
+                        <button class="btn btn-sms" onclick="sendSMSFromRepair(${JSON.stringify(r).replace(/"/g, '&quot;')})">💬 SMS</button>
                         <button class="btn btn-success" onclick="restoreFromRepair(${r.id})">✅ Восстановить</button>
                         <button class="btn btn-danger" onclick="if(confirm('Удалить запись?')){repairList=repairList.filter(x=>x.id!==${r.id});saveData();renderAll();}">
                             ❌ Удалить
